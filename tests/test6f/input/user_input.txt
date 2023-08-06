@@ -1,0 +1,38 @@
+Natürlich! Hier erkläre ich die genannten IFRS-Standards detaillierter:
+
+1. IFRS 9 - Finanzinstrumente:
+IFRS 9 regelt die Bilanzierung und Bewertung von Finanzinstrumenten und ersetzt den alten Standard IAS 39. Der Standard besteht aus drei Hauptteilen:
+
+- Klassifizierung und Bewertung: Unternehmen müssen Finanzinstrumente bei der Erstbilanzierung in verschiedene Kategorien einteilen und diese je nach Ziel und Charakteristik des Instruments zu fortgeführten Anschaffungskosten, beizulegenden Zeitwerten über sonstiges Ergebnis oder zum beizulegenden Zeitwert über das Ergebnis bewerten.
+
+- Wertminderung: IFRS 9 führt ein neues Modell zur Ermittlung von Wertminderungen ein, das den erwarteten Kreditverlust berücksichtigt. Unternehmen müssen bei der Erfassung von Forderungen und anderen finanziellen Vermögenswerten die erwarteten Ausfallrisiken berücksichtigen und entsprechende Wertminderungen erfassen.
+
+- Sicherungsbeziehungen: Der Standard enthält detaillierte Anleitungen für die Bilanzierung von Sicherungsgeschäften, die darauf abzielen, das Risiko von Marktpreisschwankungen oder anderen Risiken abzusichern.
+
+2. IFRS 15 - Umsatzerlöse aus Verträgen mit Kunden:
+IFRS 15 bietet einen umfassenden Rahmen für die Erfassung von Umsatzerlösen aus Verträgen mit Kunden und ersetzt mehrere ältere Standards. Der Standard legt ein Fünf-Stufen-Modell für die Erlöserfassung fest:
+
+- Identifizierung des Vertrags mit dem Kunden
+- Identifizierung der Leistungsverpflichtungen im Vertrag
+- Bestimmung des Transaktionspreises
+- Verteilung des Transaktionspreises auf die Leistungsverpflichtungen
+- Erfassung der Umsatzerlöse, wenn die Leistungsverpflichtungen erfüllt werden
+
+IFRS 15 fordert Unternehmen auf, Umsatzerlöse auf eine Weise zu erfassen, die die tatsächliche Erfüllung des Vertrags widerspiegelt und die Zahlungsbereitschaft des Kunden berücksichtigt.
+
+3. IFRS 16 - Leasingverhältnisse:
+IFRS 16 ersetzt IAS 17 und revolutioniert die Bilanzierung von Leasingverhältnissen. Der Standard erfordert, dass fast alle Leasingverhältnisse, die für den Leasingnehmer von wirtschaftlicher Bedeutung sind, in der Bilanz erfasst werden. Der Leasingnehmer erfasst ein Nutzungsrecht am Vermögenswert (Right-of-Use Asset) und eine Leasingverbindlichkeit, die den Barwert der zukünftigen Leasingzahlungen darstellt.
+
+4. IFRS 13 - Fair Value Measurement:
+IFRS 13 legt allgemeine Leitlinien für die Bewertung von Vermögenswerten und Schulden zum Fair Value fest. Der Fair Value wird als der Preis definiert, zu dem ein Vermögenswert verkauft oder eine Verbindlichkeit übertragen werden könnte, wenn es einen aktiven Markt für das betreffende Instrument gibt. Wenn kein aktiver Markt vorhanden ist, gibt der Standard Anleitungen für die Schätzungen des Fair Value.
+
+5. IFRS 7 - Finanzinstrumente: Angaben:
+IFRS 7 legt die Anforderungen an die Offenlegung von Informationen über Finanzinstrumente in den Finanzberichten eines Unternehmens fest. Die Angaben betreffen unter anderem Kreditrisiken, Liquiditätsrisiken, Marktrisiken und die Bilanzierung von Derivaten.
+
+6. IFRS 5 - Nicht fortgeführte Aktivitäten und aufgegebene Geschäftsbereiche:
+IFRS 5 legt die Bilanzierung von nicht fortgeführten Aktivitäten und aufgegebenen Geschäftsbereichen fest. Dabei wird zwischen fortgeführten und nicht fortgeführten Geschäftsbereichen unterschieden, um die Transparenz und Vergleichbarkeit der Finanzberichte zu gewährleisten.
+
+7. IFRS 10 - Konzernabschlüsse:
+IFRS 10 legt fest, wie ein Unternehmen die Finanzberichte seiner Tochtergesellschaften, verbundenen Unternehmen und gemeinschaftlichen Vereinbarungen (Joint Ventures) in einen konsolidierten Konzernabschluss einbezieht. Der Standard enthält Kriterien, um zu entscheiden, ob ein Unternehmen die Kontrolle über eine Tochtergesellschaft hat und diese in den Konzernabschluss einbeziehen muss.
+
+Diese Erklärungen bieten einen Einblick in die verschiedenen IFRS-Standards und die Bedeutung jedes Standards für die Rechnungslegung von Unternehmen. Es ist wichtig zu beachten, dass die Anwendung der IFRS-Standards je nach Branche und Art des Unternehmens variieren kann und Unternehmen ihre spezifischen Bedingungen und Transaktionen berücksichtigen müssen, um die Standards korrekt umzusetzen.

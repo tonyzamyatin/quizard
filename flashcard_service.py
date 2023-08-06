@@ -8,13 +8,17 @@ import openai
 
 def parse_flashcard(line):
     split = line.split(';')
+    print(split)
     return FlashCard(split[0], split[1])
 
 
-def parse_flashcards(csv) -> List[FlashCard]:
+def parse_flashcards(csv: str) -> List[FlashCard]:
     cards = []
+    csv = csv.replace('\n\n', '\n') # sanitize multiple newlines
+    # we need to build a more robust parser
     lines = csv.split('\n')
     for line in lines:
+        print(line)
         cards.append(parse_flashcard(line))
 
     return cards

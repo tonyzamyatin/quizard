@@ -5,8 +5,7 @@ import sys
 
 import test_runner
 from example_messages import ExampleMessages
-from flashcard_service import FlashCardService
-
+from flashcard_service import FlashCardService, parse_flashcards
 
 def get_test_folders():
     user_input = input("Enter the name of a test folder, a comma-separated list of test folders, or 'all': ")

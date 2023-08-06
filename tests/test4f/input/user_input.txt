@@ -1,0 +1,47 @@
+Welchen Weg gehen wir, von unserer Forschungsidee, bis zu
+einem Ergebnis?
+Die nummerierten Pfeile, die in der Reihenfolge zurück nach
+hinten zeigen, sind Rückkoppelungen, die sich aus
+überraschenden, neuen und/oder unzureichenden Daten, wie auch
+aus eventuellen, aus den Daten resultierenden, neuen Fragen
+ergeben.
+Es gibt für alle Datensätze mehrere mögliche Modelle, um die
+Daten passend zu beschreiben, wobei selten einmal ein
+perfektes Modell existiert, das alle Daten vollständig
+beschreibt. Bei der Entscheidung für ein Modell sollte immer
+ein Kompromiss zwischen der Güte der Anpassung an die Daten
+und der Komplexität des gewählten Modells geschlossen werden.
+Es sollte ein möglichst effizientes Modell sein, das die Daten
+ausreichend beschreibt.
+Will man zum Beispiel nur eine Variable beschreiben, geht
+einiges an Information verloren, die aber zum Teil sehr wichtig
+ist, um die vorliegende Varianz genau zu erklären. Je mehr
+Variablen man aber wiederum verwendet, desto mehr Daten müssen
+gesammelt werden und irgendwann liegt so viel Information vor,
+dass sie nicht mehr verstanden wird.
+19
+Benjamin Frühbauer, 2014 - 2016
+Normalverteilung19
+Die Normalverteilung – oder Gauß’sche Glockenkurve – ist
+eine sehr freundliche Art der Verteilung, weil sich mit ihr
+eine Wahrscheinlichkeit recht einfach berechnen lässt. Sie
+besteht im Wesentlichen aus zwei wichtigen Parameter, dem
+Mittelwert (μ) und dem Standardfehler (s oder σ). Die Fläche
+unter so einer Normalverteilung ist IMMER gleich 1! Das
+ermöglicht die Berechnung der Wahrscheinlichkeit – am besten
+das Video aus der Fußzeile dazu ansehen.
+μ ist in der Normalverteilung der sogenannte Erwartungswert,
+also der Wert, der einfach im Durchschnitt am häufigsten
+vorkommt und daher auch außerhalb der Stichprobe am häufigsten
+ERWARTET wird.
+σ ist die Standardabweichung20. In der Glockenkurve reicht
+das σ immer vom μ bis zum Wendepunkt der Kurve. Je größer σ,
+desto höher ist die Abweichung, desto breiter ist die Kurve.
+Zusätzlich kann man noch sagen, dass 95% aller Werte zwischen
+μ und +/- 1,96*σ liegen.
+Die genaue Aufbauformel ist für unsere Zwecke nicht
+relevant, und sieht noch dazu recht kompliziert aus, muss aber
+deshalb so aussehen, dass die Standardisierung des
+Flächeninhaltes von 1 auch funktioniert.
+Die Standard-Normalverteilung wird auch als z-Verteilung
+bezeichnet.
