@@ -1,0 +1,126 @@
+Posttranscriptional regulation
+Gene regulation can occur after transcription by interaction of specific molecules with specific
+regions on the transcript. This can e.g., change the secondary structure of the RNA, establish covalent
+modifications of RNA, or change the stability of the RNA molecule. This can increase or decrease the
+efficiency of transcription. In bacteria, 2 principal manners of controlling transcription/translation by
+modifying the secondary structure of RNA are known. These are attenuation (reduction of gene
+expression levels) and riboswitches. Attenuation is the reduction of transcription through an
+attenuator sequence. It is a feature of operons responsible for amino acid synthesis (e.g., trp
+operon). A riboswitch is a conformation change in the secondary structure of the 5’ UTR or mRNA.
+After transcription secondary structures form, that can be recognized by ligands. This leads to
+modulation of transcription or translation. In e.g., B. subtilis 5% of genes are controlled by
+riboswitches.
+A reminder: In bacteria transcription and translation occur simultaneously.
+Attenuation at the trp operon – an additional layer of control of the trp operon activity
+Riboswitches
+The ligand binding site is called “aptamer”. They
+are similar to attenuation secondary structure is
+changed, but regulation occurs through specific
+ligand-aptamer interaction (?). Riboswitches can
+be controlled by a large number of ligands, e.g.,
+amino acids, vitamins, sugars, metal ions, … .
+Regulation of gene expression in eukaryotes
+Eukaryotic gene regulation establishes cellular heterogeneity and diversity
+In multicellular organisms, most cells contain the identical genome information (DNA). Diversity is
+established by specific regulations of gene expression. The rule of thumb states that in most cells
+approximately half of the available genes are expressed. The combination of expressed genes and
+their relative expression level define the cell identity.
+Features of gene expression regulation in eukaryotes
+Key differences between prokaryotic and eukaryotic gene expression are:
+• Much larger genome size and complexity
+• DNA is combined with histones and other proteins to form chromatin
+• Histones can be modified. Complex histone code influences local chromatin activity and
+accessibility
+• Spatial separation of transcription and
+translation (genes on numerous
+chromosomes are enclosed in a double
+membrane nucleus)
+• Processing of transcripts – splicing, capping
+polyadenylation
+• Transport to cytoplasm/export from nucleus
+• Less use of polycistronic transcripts
+• In prokaryotes transcription on-states are
+the norm – regulation is achieved by specific
+reduction of transcription
+Multiple levels of transcriptional regulation can be used to control gene expression in eukaryotes
+• Chromatin remodelling and regulatory histone modifications
+• Splicing and RNA processing
+• Regulation of RNA export from nucleus to cytoplasm
+• mRNA stability/degradation (mRNAs have a wide range of half-lives (t1/2))
+Control of translation rates
+• Posttranslational modifications of proteins and differential regulation
+of protein stability
+Changes in the nucleosome composition alter accessibility of DNA
+Nucleosomes consist of approximately 146bp of DNA wrapped around a
+histone octamer composed of pairs of each of the 4 core histones (H2A, H2B,
+H3 and H4). Histones normally contain histone H2A. Variant histones (e.g.,
+H2A.Z) affect the nucleosome mobility and positioning on DNA. Nucleosome
+position can repress or activate transcription by gating accessibility of the
+promoter sequence.
+Chromatin remodelling
+This involves repositioning or removal of nucleosomes on DNA.
+Chromatin remodelling requires energy in form of ATP. Repositioned
+nucleosomes make chromosome regions accessible to transcription
+regulatory proteins, transcription activators, RNA Pol II (RNAP II).
+SWI/SNF is one of the best studied remodelling complexes. It loosens
+the attachment between histone and DNA and causes reorganization
+of internal nucleosome components.
+Histone modifications
+Covalent bonding of functional groups onto N-terminal trails of
+histone proteins. This is most common on acetyl, methyl, and
+phosphate. Acetylation decreases positive charge, which reduces
+affinity of histones to (negatively charged) DNA → weaklier bond
+DNA is better accessible to transcription factors and RNAP II (that
+is why histones also must be negatively charged). Histone
+acetylation of nucleosomes is catalysed by histone
+acetyltransferase enzymes (HATs). They are associated with
+increased transcription. Histone acetylation is reversed by histone
+deacetylases (HDACs). Trimethylation of lysins 27 at histone H3
+(H3K27me3) established by polycomb proteins is one of the best studies of epigenetic marks
+associated with transcriptional silencing.
+DNA methylation
+DNA methylation occurs most often on the cytosine of CG doublets in DNA (“methyl CpG”). This is
+also called CpG methylation. CpG methylation is associated with transcriptional silencing. The
+majority (~80% of CpG di-nucleotides are methylated in mammals). Only at so called CpG islands the
+methylation rate is much lower. They are often found in promoters, and they are at least ~500bp in
+length. They have a CG content of over 50%. The average CG content genome-wide in humans is
+42%.
+Eukaryotic transcription initiation requires specific cis-acting sites
+A cis-acting sequence is located on the same chromosome as the gene that it regulates. It is required
+for accurate regulated transcription of gene, e.g., promoters, enhancers, silencers.
+Promoters
+Promoters are nucleotide sequences that serve as recognition sites for the transcription machinery.
+They are located immediately adjacent to regulatory genes and are critical for transcription initiation.
+A core promoter determines the accurate initiation of transcription, and they are upstream of the
+genes they promote. Proximal-promoter elements modulate efficiency of basal* levels of
+transcription.
+Enhancers, silencers and insulators
+Enhancers are located on either side of the gene, some distance from the gene (potentially 100s of
+kb or maybe Mb away) or even within the gene. They regulate the transcription of regulatory
+elements and are important for reaching the maximum level of transcription and for the cell type
+specific gene expression. Insulators are found between an enhancer and a promoter for a nontarget
+gene. They allow some enhancer-promoter interactions and block others. Silencers are cis-acting
+transcription regulatory elements. They repress the level of transcription initiation.
+Promoter diversity
+Great diversity exists in eukaryotic promoters, in structure and
+function. Focused promoters have a specific transcription initiation at
+the start site and are the major type of initiation for lower eukaryotes.
+Dispersed promoters direct initiation from several weak transcriptional
+start sites.
+Eukaryotic core promoter structure
+Proximal-promoter elements
+Promoters contain proximal-promoter
+elements. They are located upstream of
+TATA and BRE motifs and enhance levels
+of basal transcription. Examples are CAAT
+and GC boxes. Mutations in these
+sequences have a major impact on
+transcription levels.
+Transcriptional regulation and cell type specificity of gene
+expression are controlled by enhancers
+Enhancers are short genomic elements (~100-1000bp). The 1st one
+identified was a 70bp element from simian virus 40 (SV40).
+Enhancers are defined by a specific chromatin profile and by binding
+of mediator proteins. In the model: Looping brings enhancers and
+promoters in contact. This stabilises an active transcription initiation
+complex.

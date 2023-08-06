@@ -37,6 +37,15 @@ class FlashCardService:
         # make API call
         openai.api_key = self.api_key
         completion35 = openai.ChatCompletion.create(model='gpt-3.5-turbo', messages=messages, max_tokens=1000)
+        f = open('log.txt', 'a')
+        f.write('-------\n')
+        print(completion35)
+        print(completion35.response_ms)
+        f.write(str(completion35))
+        f.write('\n')
+        f.write(str(completion35.response_ms))
+        f.write('\n')
+        f.close()
         csv = completion35.choices[0].message.content
 
         # parse the response and return a new deck

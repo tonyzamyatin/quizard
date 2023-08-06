@@ -1,34 +1,43 @@
 import os
 import openai
 from dotenv import load_dotenv
+import sys
 
+import test_runner
 from example_messages import ExampleMessages
 from flashcard_service import FlashCardService
 
 
-def read_file(path) -> str:
-    f = open(path, "r")
-    content = f.read()
-    f.close()
-    return content
+def get_test_folders():
+    user_input = input("Enter the name of a test folder, a comma-separated list of test folders, or 'all': ")
+
+    if user_input.lower() == 'all':
+        return 'all'
+
+    # Splitting the input by comma and stripping any whitespace from each folder name
+    test_folders = [folder.strip() for folder in user_input.split(',')]
+    return test_folders
+
+
 
 # Load the openai api key from .env file
 load_dotenv('.env')
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-# Load example used in query
-example_system_prompt = read_file('example/example_system_prompt.txt')
-example_user_input = read_file('example/example_user_input.txt')
-example_response = read_file('example/example_response.txt')
+test_folders = get_test_folders()
+if test_folders == 'all':
+    print("Using all test folders...")
+    for file in os.listdir('tests'):
+        if os.path.isdir(os.path.join('tests', file)):
+            test_runner.run_test(os.path.join('tests', file), 'output/' + file + '.csv')
+else:
+    print(f"Using the following test folders: {test_folders}")
+    for folder in test_folders:
+        if os.path.isdir(os.path.join('tests', folder)):
+            test_runner.run_test(os.path.join('tests', folder), 'output/' + folder + '.csv')
 
-# Load the user input and system prompt
-system_prompt = read_file('input/system_prompt.txt') # Generiere 5 flashcards ...
-user_input = read_file('input/user_input.txt') # Ausgangstext
 
-example_messages = ExampleMessages(example_user_input, example_system_prompt, example_response)
-service = FlashCardService(os.getenv('OPENAI_API_KEY'), example_messages)
-deck = service.generate(user_input, system_prompt)
-deck.save_as_csv('output/generated.csv')
+
 exit()
 # messages = [
 #     {"role": "user", "content": example_user_input},
