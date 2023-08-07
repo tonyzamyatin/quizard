@@ -1,0 +1,15 @@
+Welchen Weg gehen wir, von unserer Forschungsidee, bis zu
+einem Ergebnis?
+Die nummerierten Pfeile, die in der Reihenfolge zurück nach
+hinten zeigen, sind Rückkoppelungen, die sich aus
+überraschenden, neuen und/oder unzureichenden Daten, wie auch
+aus eventuellen, aus den Daten resultierenden, neuen Fragen
+ergeben.
+Es gibt für alle Datensätze mehrere mögliche Modelle, um die
+Daten passend zu beschreiben, wobei selten einmal ein
+perfektes Modell existiert, das alle Daten vollständig
+beschreibt. Bei der Entscheidung für ein Modell sollte immer
+ein Kompromiss zwischen der Güte der Anpassung an die Daten
+und der Komplexität des gewählten Modells geschlossen werden.
+Es sollte ein möglichst effizientes Modell sein, das die Daten
+ausreichend beschreibt.

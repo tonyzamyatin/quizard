@@ -1,7 +1,7 @@
 import os.path
 
 from example_messages import ExampleMessages
-from flashcard_service import FlashCardService
+from flashcard_generator import FlashCardGenerator
 
 
 def read_file(path) -> str:
@@ -21,6 +21,6 @@ def run_test(base_path: str, csv_path: str):
     user_input = read_file(os.path.join(base_path, 'input/user_input.txt'))  # Ausgangstext
 
     example_messages = ExampleMessages(example_user_input, example_system_prompt, example_response)
-    service = FlashCardService(os.getenv('OPENAI_API_KEY'), example_messages)
+    service = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), example_messages)
     deck = service.generate(user_input, system_prompt)
     deck.save_as_csv(csv_path)

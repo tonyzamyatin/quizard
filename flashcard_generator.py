@@ -24,7 +24,7 @@ def parse_flashcards(csv: str) -> List[FlashCard]:
     return cards
 
 
-class FlashCardService:
+class FlashCardGenerator:
 
     # constructor
     def __init__(self, api_key, example_messages: ExampleMessages):

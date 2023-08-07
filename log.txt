@@ -339,3 +339,371 @@ parse_error
   }
 }
 14887
+-------
+{
+  "id": "chatcmpl-7ke3r8vs44i8Qy6gBoHzuX0NmcsL7",
+  "object": "chat.completion",
+  "created": 1691351439,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was sind R\u00fcckkoppelungen im Forschungsprozess?;R\u00fcckkoppelungen entstehen durch unvorhergesehene, neue oder unzureichende Daten sowie aus den Daten resultierenden neuen Fragen. Sie beeinflussen den Forschungsprozess und k\u00f6nnen zu Ver\u00e4nderungen in der Vorgehensweise f\u00fchren.\nWas sollte bei der Entscheidung f\u00fcr ein Modell ber\u00fccksichtigt werden?;Bei der Entscheidung f\u00fcr ein Modell sollte ein Kompromiss zwischen der G\u00fcte der Anpassung an die Daten und der Komplexit\u00e4t des gew\u00e4hlten Modells geschlossen werden. Es sollte ein m\u00f6glichst effizientes Modell sein, das die Daten ausreichend beschreibt.\nWas sind Datenabstraktion und warum ist sie wichtig?;Datenabstraktion bezieht sich auf die Idee, dass wir Informationen \u00fcber Daten erhalten, ohne alle implementierungsspezifischen Details zu kennen. Es erm\u00f6glicht uns, Datenmodelle zu nutzen, ohne uns um die internen Implementierungsdetails k\u00fcmmern zu m\u00fcssen. Dies ist wichtig, um komplexe Systeme effizient nutzen und weiterentwickeln zu k\u00f6nnen.\nWas bedeutet Datenkapselung in Bezug auf abstrakte Datentypen?;Datenkapselung bedeutet, dass Variablen und Methoden zu einem abstrakten Datentyp (Klasse) zusammengefasst werden. Die Variablen geh\u00f6ren zu einem Objekt und k\u00f6nnen nur von den Methoden des Objekts verwendet werden. Die Datenkapselung erm\u00f6glicht eine saubere Strukturierung von Daten und Methoden und erleichtert die Verwendung und Wartung des abstrakten Datentyps.\nWas sind Objektvariablen und wie unterscheiden sie sich von lokalen Variablen?;Objektvariablen sind Variablen, die zu einem Objekt geh\u00f6ren und w\u00e4hrend der gesamten Lebenszeit des Objekts existieren. Sie werden beim Erzeugen eines Objekts mittels \"new\" erstellt und k\u00f6nnen nur von den Methoden des Objekts verwendet werden. Im Gegensatz dazu sind lokale Variablen nur in dem Block oder der Methode sichtbar, in dem sie deklariert wurden, und werden zerst\u00f6rt, wenn der Block oder die Methode beendet ist."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2852,
+    "completion_tokens": 507,
+    "total_tokens": 3359
+  }
+}
+15524
+-------
+{
+  "id": "chatcmpl-7ke7ATH4WGzLl4LL9pnZJpRDmCxmk",
+  "object": "chat.completion",
+  "created": 1691351644,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was ist Datenkapselung in Java?;Datenkapselung in Java bezieht sich auf die Zusammenfassung von Variablen und Methoden in einer Klasse, um abstrakte Datentypen zu implementieren.\nWas sind Objektvariablen?;Objektvariablen sind Variablen, die zu einem Objekt geh\u00f6ren und w\u00e4hrend der gesamten Lebenszeit des Objekts existieren.\nWas sind Objektmethoden?;Objektmethoden sind Methoden, die in einem Objekt einer Klasse ausgef\u00fchrt werden k\u00f6nnen und auf die Objektvariablen des Objekts zugreifen k\u00f6nnen.\nWas ist der Unterschied zwischen Objektmethoden und Klassenmethoden?;Der Unterschied zwischen Objektmethoden und Klassenmethoden besteht darin, dass Objektmethoden auf Objektvariablen zugreifen k\u00f6nnen, w\u00e4hrend Klassenmethoden keine Objektvariablen verwenden k\u00f6nnen."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3080,
+    "completion_tokens": 203,
+    "total_tokens": 3283
+  }
+}
+6321
+-------
+{
+  "id": "chatcmpl-7kfK2Jadddmahhe1mDIyiGf3GvQMJ",
+  "object": "chat.completion",
+  "created": 1691356286,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "What is posttranscriptional regulation?;Posttranscriptional regulation occurs after transcription and can involve changes in RNA structure, modifications, or stability that affect transcription efficiency.\nWhat are the two principal manners of controlling transcription/translation in bacteria?;The two principal manners of controlling transcription/translation in bacteria are attenuation and riboswitches.\nWhat is attenuation?;Attenuation is the reduction of transcription through an attenuator sequence and is a feature of operons responsible for amino acid synthesis.\nWhat are riboswitches?;Riboswitches are conformational changes in the secondary structure of the 5' untranslated region (UTR) or mRNA that can modulate transcription or translation based on ligand-aptamer interactions.\nWhat is eukaryotic gene regulation?;Eukaryotic gene regulation establishes cellular heterogeneity and diversity through specific regulations of gene expression.\nWhat are some key differences between prokaryotic and eukaryotic gene expression?;Some key differences between prokaryotic and eukaryotic gene expression include larger genome size and complexity, DNA combined with histones in eukaryotes, spatial separation of transcription and translation in eukaryotes, and more extensive processing of transcripts in eukaryotes.\nWhat is chromatin remodelling?;Chromatin remodelling involves repositioning or removal of nucleosomes on DNA, allowing for accessibility of transcription regulatory proteins and RNA Pol II.\nWhat are histone modifications?;Histone modifications are covalent modifications of histone proteins, such as acetylation and methylation, that can influence chromatin activity and accessibility.\nWhat is DNA methylation?;DNA methylation is the addition of methyl groups to cytosine residues in DNA, often associated with transcriptional silencing.\nWhat are enhancers, silencers, and insulators?;Enhancers are short genomic elements that regulate the transcription of regulatory elements, while silencers repress transcription initiation. Insulators are DNA sequences that allow or block enhancer-promoter interactions."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2223,
+    "completion_tokens": 413,
+    "total_tokens": 2636
+  }
+}
+12443
+-------
+{
+  "id": "chatcmpl-7kfKFMm1ifYGaicEqGF6f4IbMhmbc",
+  "object": "chat.completion",
+  "created": 1691356299,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was versteht man unter Datenkapselung in Java?;Datenkapselung in Java bezieht sich auf die Zusammenfassung von Variablen und Methoden zu Objekten, wobei die Variablen (Objektvariablen) privat und die Methoden (Objektmethoden) \u00f6ffentlich definiert werden.\nWas sind Objektvariablen und wie entstehen sie?;Objektvariablen sind Variablen, die zu einem Objekt geh\u00f6ren und w\u00e4hrend der gesamten Lebenszeit des Objekts existieren. Sie entstehen beim Erzeugen eines Objekts mittels `new`.\nWas sind Objektmethoden und wie werden sie aufgerufen?;Objektmethoden sind Methoden, die auf Objekten einer Klasse ausgef\u00fchrt werden k\u00f6nnen und auf die Objektvariablen dieser Objekte zugreifen k\u00f6nnen. Man ruft sie auf, indem man den Methodennamen nach dem Namen des Objekts schreibt, z.B. `objekt.methode()`.\nWas ist der Unterschied zwischen Objektmethoden und Klassenmethoden?;Objektmethoden werden auf einem bestimmten Objekt einer Klasse aufgerufen und k\u00f6nnen auf die Objektvariablen dieses Objekts zugreifen. Klassenmethoden hingegen werden direkt auf der Klasse aufgerufen und haben keinen Zugriff auf Objektvariablen.\nWas ist Data-Hiding in der Datenabstraktion?;Data-Hiding bezeichnet das \"Verstecken\" von Implementierungsdetails vor Zugriffen von au\u00dfen. Es erm\u00f6glicht zwei verschiedene Sichten auf einen abstrakten Datentyp - die abstrakte Au\u00dfensicht und die Implementierungsdetails offenlegende Innensicht.\nWarum ben\u00f6tigen wir sowohl die Au\u00dfensicht als auch die Innensicht beim Data-Hiding?;Die Au\u00dfensicht dient der Verwendung des abstrakten Datentyps, w\u00e4hrend die Innensicht f\u00fcr die Implementierung des abstrakten Datentyps ben\u00f6tigt wird. Die Sichten unterscheiden sich oft, da unterschiedliche Interessen dahinter stehen.\nWie gestalten wir die Au\u00dfensicht?;Die Au\u00dfensicht wird so gestaltet, dass eine Implementierung mit vertretbarem Aufwand m\u00f6glich scheint. Hierbei werden die Methoden und Variablen definiert, die f\u00fcr die Verwendung des abstrakten Datentyps relevant sind.\nWie gestalten wir die Innensicht?;Die Innensicht konzentriert sich auf die Implementierung der Methoden und die Auswahl der n\u00f6tigen Objektvariablen. Hierbei werden Variablen und Typen gew\u00e4hlt, die die Beschreibungen der Au\u00dfensicht bestm\u00f6glich erf\u00fcllen.\nWas sind Klassenvariablen und wie unterscheiden sie sich von Objektvariablen?;Klassenvariablen sind Variablen, die nur einmal pro Klasse existieren und nicht in jedem Objekt. Im Gegensatz dazu geh\u00f6ren Objektvariablen zu einem bestimmten Objekt und existieren w\u00e4hrend der gesamten Lebenszeit dieses Objekts.\nWo liegt der Einsatz von Klassenvariablen?;Klassenvariablen werden meistens als Konstanten verwendet und sind \u00fcber die Klasse selbst zug\u00e4nglich. Sie k\u00f6nnen von Klassenmethoden und Objektmethoden verwendet werden, jedoch ist der Einsatz von Klassenvariablen mit ver\u00e4nderlichen Werten schwierig."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3082,
+    "completion_tokens": 749,
+    "total_tokens": 3831
+  }
+}
+22070
+-------
+{
+  "id": "chatcmpl-7kfKcoRi1a4GrTKHtFmC3ZvizZUjx",
+  "object": "chat.completion",
+  "created": 1691356322,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was regelt der IFRS 9?;Der IFRS 9 regelt die Bilanzierung und Bewertung von Finanzinstrumenten.\nWelche Hauptteile umfasst der IFRS 9?;Der IFRS 9 umfasst die Klassifizierung und Bewertung von Finanzinstrumenten, die Wertminderung von Forderungen und finanziellen Verm\u00f6genswerten sowie die Bilanzierung von Sicherungsbeziehungen.\nWas regelt der IFRS 15?;Der IFRS 15 regelt die Erfassung von Umsatzerl\u00f6sen aus Vertr\u00e4gen mit Kunden.\nWelches Modell f\u00fcr die Erl\u00f6serfassung legt der IFRS 15 fest?;Der IFRS 15 legt ein F\u00fcnf-Stufen-Modell f\u00fcr die Erl\u00f6serfassung fest.\nWas regelt der IFRS 16?;Der IFRS 16 regelt die Bilanzierung von Leasingverh\u00e4ltnissen.\nWas versteht man unter dem Fair Value nach IFRS 13?;Der Fair Value nach IFRS 13 ist der Preis, zu dem ein Verm\u00f6genswert verkauft oder eine Verbindlichkeit \u00fcbertragen werden k\u00f6nnte, wenn es einen aktiven Markt f\u00fcr das betreffende Instrument gibt.\nWas legt der IFRS 7 fest?;Der IFRS 7 legt die Anforderungen an die Offenlegung von Informationen \u00fcber Finanzinstrumente in den Finanzberichten eines Unternehmens fest.\nWas regelt der IFRS 5?;Der IFRS 5 regelt die Bilanzierung von nicht fortgef\u00fchrten Aktivit\u00e4ten und aufgegebenen Gesch\u00e4ftsbereichen.\nWas regelt der IFRS 10?;Der IFRS 10 regelt die Einbeziehung von Tochtergesellschaften, verbundenen Unternehmen und Joint Ventures in einen konsolidierten Konzernabschluss."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1721,
+    "completion_tokens": 430,
+    "total_tokens": 2151
+  }
+}
+12579
+-------
+{
+  "id": "chatcmpl-7kfKpx3tN7t7wniYuOxOMz7s18dxQ",
+  "object": "chat.completion",
+  "created": 1691356335,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Welche M\u00f6glichkeiten gibt es, um von einer Forschungsidee zu einem Ergebnis zu gelangen?;Es gibt verschiedene M\u00f6glichkeiten, von einer Forschungsidee zu einem Ergebnis zu gelangen, wie z.B. die Sammlung und Analyse von Daten, das Kreieren von Hypothesen und das Durchf\u00fchren von Experimenten.\nWas sind R\u00fcckkoppelungen im Forschungsprozess?;R\u00fcckkoppelungen im Forschungsprozess entstehen durch unvorhergesehene, neue oder unzureichende Daten sowie aus den Daten resultierenden neuen Fragen. Sie beeinflussen den Forschungsprozess und k\u00f6nnen zu Ver\u00e4nderungen in der Vorgehensweise f\u00fchren.\nWelche Rolle spielen Modelle bei der Beschreibung von Datens\u00e4tzen?;Bei der Beschreibung von Datens\u00e4tzen gibt es mehrere m\u00f6gliche Modelle, die die Daten passend beschreiben k\u00f6nnen. Es gibt selten ein perfektes Modell, das alle Daten komplett beschreibt. Es sollte ein Kompromiss zwischen der Anpassung an die Daten und der Komplexit\u00e4t des Modells gefunden werden.\nWas ist eine Normalverteilung und welche Parameter sind wichtig?;Eine Normalverteilung ist eine Verteilung, die sich durch den Mittelwert und die Standardabweichung auszeichnet. Der Mittelwert gibt den Wert an, der am h\u00e4ufigsten vorkommt und erwartet wird. Die Standardabweichung gibt die Abweichung vom Mittelwert an und bestimmt die Breite der Kurve.\nWas ist eine Transformation und warum ist sie manchmal notwendig?;Eine Transformation wird verwendet, um Daten zu normalisieren, wenn die Verteilung auf den ersten Blick nicht normal aussieht. Eine geeignete Transformation wird ausprobiert, um eine n\u00e4herungsweise Normalverteilung zu erreichen.\nWas ist eine Poisson-Verteilung und wof\u00fcr wird sie verwendet?;Eine Poisson-Verteilung ist eine Zufallsverteilung, bei der der Erwartungswert und die Varianz gleich sind. Sie wird verwendet, um diskrete Datens\u00e4tze zu modellieren, bei denen eine Zufallsverteilung vorliegt.\nWas ist eine Binomialverteilung und wof\u00fcr wird sie verwendet?;Eine Binomialverteilung tritt auf, wenn es genau zwei m\u00f6gliche Merkmale gibt, von denen immer nur eines vorliegt. Sie wird h\u00e4ufig verwendet, um die Verteilung von m\u00e4nnlichen und weiblichen Individuen einer Spezies zu beschreiben.\nWas sind Konfidenzintervalle und warum sind sie wichtig?;Konfidenzintervalle sind Bereiche um einen Sch\u00e4tzwert, die angeben, wie sicher man sich bez\u00fcglich des Sch\u00e4tzwerts ist. Sie erm\u00f6glichen die Ber\u00fccksichtigung der nat\u00fcrlichen Varianz und bieten eine Einsch\u00e4tzung der Genauigkeit des Sch\u00e4tzwerts.\nWie werden Konfidenzintervalle bei einer Normalverteilung konstruiert?;Bei einer Normalverteilung werden Konfidenzintervalle durch die Formel \"Sch\u00e4tzwert +/- kritischer Wert * Standardabweichung\" berechnet. Der kritische Wert h\u00e4ngt von der gew\u00fcnschten Konfidenzniveau ab, z.B. 1,96 f\u00fcr ein 95%iges Konfidenzintervall.\nWas ist der Unterschied zwischen Sch\u00e4rfe und Sicherheit bei Konfidenzintervallen?;Die Sch\u00e4rfe eines Konfidenzintervalls bezieht sich auf die Genauigkeit des Sch\u00e4tzwerts, w\u00e4hrend die Sicherheit die Wahrscheinlichkeit angibt, dass der wahre Wert innerhalb des Intervalls liegt. Sch\u00e4rfe und Sicherheit k\u00f6nnen nicht gleichzeitig maximiert werden, es muss eine Abw\u00e4gung getroffen werden."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2778,
+    "completion_tokens": 856,
+    "total_tokens": 3634
+  }
+}
+25081
+-------
+{
+  "id": "chatcmpl-7kfLEhQmrSL2HoidyzOHwT8MSIA47",
+  "object": "chat.completion",
+  "created": 1691356360,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was sind R\u00fcckkoppelungen im Forschungsprozess und wie entstehen sie?;R\u00fcckkoppelungen im Forschungsprozess entstehen durch \u00fcberraschende, neue oder unzureichende Daten sowie aus den Daten resultierenden neuen Fragen. Sie beeinflussen den Forschungsprozess und k\u00f6nnen zu Ver\u00e4nderungen in der Vorgehensweise f\u00fchren.\nWarum gibt es selten ein perfektes Modell, das alle Daten vollst\u00e4ndig beschreibt?;Es gibt selten ein perfektes Modell, das alle Daten vollst\u00e4ndig beschreibt, da es f\u00fcr alle Datens\u00e4tze mehrere m\u00f6gliche Modelle gibt. Bei der Entscheidung f\u00fcr ein Modell muss ein Kompromiss zwischen der G\u00fcte der Anpassung an die Daten und der Komplexit\u00e4t des Modells geschlossen werden.\nWas ist das Ziel bei der Wahl eines Modells zur Beschreibung von Daten?;Das Ziel bei der Wahl eines Modells zur Beschreibung von Daten ist es, ein m\u00f6glichst effizientes Modell zu w\u00e4hlen, das die Daten ausreichend beschreibt.\nWarum ist es wichtig, Informationen nicht zu verlieren, wenn man eine Variable beschreibt?;Es ist wichtig, Informationen nicht zu verlieren, wenn man eine Variable beschreibt, da diese Informationen dazu beitragen k\u00f6nnen, die vorliegende Varianz genau zu erkl\u00e4ren.\nWas sind die beiden wichtigen Parameter der Normalverteilung?;Die beiden wichtigen Parameter der Normalverteilung sind der Mittelwert (\u03bc) und der Standardfehler (s oder \u03c3).\nWas ist der Erwartungswert in der Normalverteilung?;In der Normalverteilung ist der Erwartungswert (\u03bc) der Wert, der im Durchschnitt am h\u00e4ufigsten vorkommt und daher auch au\u00dferhalb der Stichprobe am h\u00e4ufigsten erwartet wird.\nWas ist die Standardabweichung in der Normalverteilung?;Die Standardabweichung (\u03c3) in der Normalverteilung zeigt die Abweichung zwischen Werten und dem Mittelwert. Je gr\u00f6\u00dfer die Standardabweichung, desto h\u00f6her ist die Abweichung und desto breiter ist die Kurve.\nWo liegen 95% aller Werte in einer Normalverteilung?;In einer Normalverteilung liegen 95% aller Werte zwischen dem Mittelwert (\u03bc) und +/- 1,96*\u03c3.\nWas ist die Standard-Normalverteilung?;Die Standard-Normalverteilung wird auch als z-Verteilung bezeichnet. Sie basiert auf der Normalverteilung, die standardisiert wurde, um Fl\u00e4cheninhalte von 1 zu erm\u00f6glichen."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1208,
+    "completion_tokens": 593,
+    "total_tokens": 1801
+  }
+}
+17824
+-------
+{
+  "id": "chatcmpl-7kfLWsqFBqPFXuuTMOBHD1ZYnU7Tk",
+  "object": "chat.completion",
+  "created": 1691356378,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was regelt der IFRS 9 Standard?;IFRS 9 regelt die Bilanzierung und Bewertung von Finanzinstrumenten.\nWas beinhaltet der IFRS 15 Standard?;IFRS 15 behandelt die Rechnungslegung f\u00fcr Umsatzerl\u00f6se aus Vertr\u00e4gen mit Kunden.\nWas regelt der IFRS 16 Standard?;IFRS 16 regelt die Bilanzierung von Leasingverh\u00e4ltnissen.\nWorum geht es im IFRS 13 Standard?;IFRS 13 legt Richtlinien f\u00fcr die Bestimmung und Messung des Fair Value (beizulegender Zeitwert) von Verm\u00f6genswerten und Verbindlichkeiten fest.\nWas behandelt der IFRS 3 Standard?;IFRS 3 regelt die Bilanzierung von Unternehmenszusammenschl\u00fcssen.\nWas beinhaltet der IFRS 7 Standard?;IFRS 7 enth\u00e4lt die Anforderungen an die Offenlegung von Informationen \u00fcber Finanzinstrumente in den Finanzberichten eines Unternehmens.\nWelchen Bereich deckt der IFRS 5 Standard ab?;IFRS 5 behandelt die Bilanzierung von Verm\u00f6genswerten, Verbindlichkeiten und aufgegebenen Gesch\u00e4ftsbereichen.\nWas regelt der IFRS 10 Standard?;IFRS 10 legt fest, wie ein Unternehmen die Finanzberichte seiner Tochtergesellschaften, verbundenen Unternehmen und Joint Ventures konsolidiert."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1406,
+    "completion_tokens": 331,
+    "total_tokens": 1737
+  }
+}
+8234
+-------
+{
+  "id": "chatcmpl-7kfLfmPLlOQnKrzqtvbwE490dxKTp",
+  "object": "chat.completion",
+  "created": 1691356387,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "What are some feedback mechanisms in the research process?;Feedback mechanisms in the research process can arise from unexpected or new data, as well as from new questions that arise from the data.\nHow do we decide on a model to describe experimental data?;When choosing a model to describe experimental data, a compromise should be made between the fit of the model to the data and the complexity of the model.\nWhat is the normal distribution?;The normal distribution, also known as the Gaussian bell curve, is a probability distribution characterized by its mean (\u03bc) and standard deviation (s or \u03c3). The area under the curve of a normal distribution is always equal to 1.\nWhat is the purpose of normalizing data?;Normalizing data can make it easier to calculate probabilities, as it allows data to be more easily compared and analyzed using a normal distribution.\nWhat is a Poisson distribution?;A Poisson distribution is a random distribution where the variance is equal to the mean (\u03bb). It is commonly used as a null model when there are no unknown factors influencing the data.\nWhat is a binomial distribution?;A binomial distribution is a distribution that describes discrete variables with two possible outcomes, such as male or female. The distribution is often split evenly between the two possibilities.\nWhat are confidence intervals?;Confidence intervals are a range of values that can be used to estimate the true value of a population parameter. They provide a measure of uncertainty about the estimate.\nHow can the trade-off between sharpness and certainty be managed in confidence intervals?;To manage the trade-off between sharpness and certainty in confidence intervals, one can either increase the sample size to reduce the interval width or lower the required level of confidence.\nHow is a confidence interval constructed for a normal distribution?;A confidence interval for a normal distribution is constructed by adding and subtracting the appropriate number of standard deviations from the mean.\nWhat would a 95% confidence interval for a mean of 17.15 with a standard deviation of 3.12 look like?;A 95% confidence interval for a mean of 17.15 with a standard deviation of 3.12 would be 11.035 to 23.265."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2688,
+    "completion_tokens": 446,
+    "total_tokens": 3134
+  }
+}
+13360
+-------
+{
+  "id": "chatcmpl-7kfMcVlLhglOyTLAlqQNC2Acnghwh",
+  "object": "chat.completion",
+  "created": 1691356446,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "What are the two principal manners of posttranscriptional regulation in bacteria?;Attenuation and riboswitches.\nWhat is attenuation?;Attenuation is the reduction of transcription through an attenuator sequence and is a feature of operons responsible for amino acid synthesis.\nWhat is a riboswitch?;A riboswitch is a conformation change in the secondary structure of the 5\u2019 UTR or mRNA that occurs upon ligand binding and can modulate transcription or translation.\nWhat is the purpose of gene regulation in eukaryotes?;Gene regulation in eukaryotes establishes cellular heterogeneity and diversity, allowing different cells to express different sets of genes.\nWhat are some key differences between prokaryotic and eukaryotic gene expression in terms of regulation?;Prokaryotes have simultaneous transcription and translation, while eukaryotes have spatial separation between transcription and translation. Eukaryotes also have larger genome size and complexity, chromatin remodeling, splicing and RNA processing, and regulation of RNA export and stability.\nWhat are nucleosomes and how do they impact transcription?;Nucleosomes are structures formed by DNA wrapped around histone proteins. Changes in nucleosome composition can alter the accessibility of DNA, allowing for transcription activation or repression.\nWhat is chromatin remodeling?;Chromatin remodeling involves repositioning or removal of nucleosomes on DNA, which can make chromosomal regions more accessible to transcription regulatory proteins and activate transcription.\nWhat are histone modifications and how do they influence gene expression?;Histone modifications are covalent modifications of histone proteins, such as acetylation and methylation. These modifications can influence the accessibility of DNA, allowing for gene activation or repression.\nWhat is DNA methylation and what role does it play in gene regulation?;DNA methylation is the addition of a methyl group to the cytosine of CG doublets in DNA. It is associated with transcriptional silencing and can regulate gene expression.\nWhat are cis-acting sequences and what are their functions?;Cis-acting sequences are nucleotide sequences on the same chromosome as the gene they regulate. They include promoters, enhancers, silencers, and insulators, and are required for accurate transcription initiation and regulation of gene expression."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2223,
+    "completion_tokens": 461,
+    "total_tokens": 2684
+  }
+}
+13877
+-------
+{
+  "id": "chatcmpl-7kfMq74Gu3blSEiAfJNXRsA970gkm",
+  "object": "chat.completion",
+  "created": 1691356460,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was ist Datenkapselung?;Datenkapselung bedeutet, dass Objekte Daten und Methoden zusammenfassen und diese nicht direkt von au\u00dfen zug\u00e4nglich sind.\nWas sind Objektvariablen?;Objektvariablen sind Variablen, die zu einem Objekt geh\u00f6ren und w\u00e4hrend der gesamten Lebenszeit des Objekts existieren.\nWas sind Objektmethode?;Objektmethode sind Methoden in einer Klasse, die auf Objektvariablen zugreifen k\u00f6nnen.\nWas ist der Unterschied zwischen Objektmethode und Klassenmethode?;Objektmethode k\u00f6nnen auf Objektvariablen zugreifen, w\u00e4hrend Klassenmethode keine Objektvariablen verwenden d\u00fcrfen.\nWas sind Klassenvariablen?;Klassenvariablen sind Variablen, die einmal pro Klasse existieren und von Klassenmethoden und Objektmethode verwendet werden k\u00f6nnen.\nWas ist Data-Hiding?;Data-Hiding bedeutet, dass Implementierungsdetails eines abstrakten Datentyps vor Zugriffen von au\u00dfen verborgen werden.\nWelche Sichten gibt es auf einen abstrakten Datentyp?;Es gibt die Au\u00dfensicht, die von Anwendern verwendet wird, und die Innensicht, die die Implementierungsdetails offenlegt.\nWarum ist es wichtig, die Au\u00dfen- und Innensicht in Einklang zu bringen?;Es ist wichtig, die Au\u00dfen- und Innensicht in Einklang zu bringen, um sicherzustellen, dass die Implementierung den Anforderungen der Au\u00dfensicht entspricht.\nWas ist das Ziel der Au\u00dfensicht?;Das Ziel der Au\u00dfensicht ist es, eine benutzerfreundliche Schnittstelle bereitzustellen, um den abstrakten Datentyp zu verwenden.\nWas ist das Ziel der Innensicht?;Das Ziel der Innensicht ist es, eine implementierbare L\u00f6sung f\u00fcr den abstrakten Datentyp zu bieten, die effizient und korrekt ist."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3082,
+    "completion_tokens": 451,
+    "total_tokens": 3533
+  }
+}
+13483
+-------
+{
+  "id": "chatcmpl-7kfN4QwWAEbBNh8M6NoPqihc2UtW2",
+  "object": "chat.completion",
+  "created": 1691356474,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was regelt der IFRS 9 Standard?;Der IFRS 9 Standard regelt die Bilanzierung und Bewertung von Finanzinstrumenten.\nWas sind die drei Hauptteile des IFRS 9 Standards?;Die drei Hauptteile des IFRS 9 Standards sind Klassifizierung und Bewertung, Wertminderung und Sicherungsbeziehungen.\nWas wird durch den IFRS 15 Standard geregelt?;Der IFRS 15 Standard regelt die Erfassung von Umsatzerl\u00f6sen aus Vertr\u00e4gen mit Kunden.\nWas sind die f\u00fcnf Stufen des Erl\u00f6serfassungsmodells im IFRS 15 Standard?;Die f\u00fcnf Stufen des Erl\u00f6serfassungsmodells im IFRS 15 Standard sind Identifizierung des Vertrags, Identifizierung der Leistungsverpflichtungen, Bestimmung des Transaktionspreises, Verteilung des Transaktionspreises und Erfassung der Umsatzerl\u00f6se.\nWas regelt der IFRS 16 Standard?;Der IFRS 16 Standard regelt die Bilanzierung von Leasingverh\u00e4ltnissen.\nWas sind die grundlegenden Anforderungen des IFRS 13 Standards?;Die grundlegenden Anforderungen des IFRS 13 Standards betreffen die Bewertung von Verm\u00f6genswerten und Schulden zum Fair Value.\nWas regelt der IFRS 7 Standard?;Der IFRS 7 Standard regelt die Offenlegung von Informationen \u00fcber Finanzinstrumente in den Finanzberichten eines Unternehmens.\nWas regelt der IFRS 5 Standard?;Der IFRS 5 Standard regelt die Bilanzierung von nicht fortgef\u00fchrten Aktivit\u00e4ten und aufgegebenen Gesch\u00e4ftsbereichen.\nWas legt der IFRS 10 Standard fest?;Der IFRS 10 Standard legt fest, wie ein Unternehmen die Finanzberichte seiner Tochtergesellschaften, verbundenen Unternehmen und Joint Ventures in einen konsolidierten Konzernabschluss einbezieht."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1721,
+    "completion_tokens": 466,
+    "total_tokens": 2187
+  }
+}
+13529
+-------
+{
+  "id": "chatcmpl-7kfNIN83WZ6q2dzrEVAfwtS3mGqUG",
+  "object": "chat.completion",
+  "created": 1691356488,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Welche m\u00f6glichen Modelle gibt es, um Datens\u00e4tze zu beschreiben?;Es gibt mehrere m\u00f6gliche Modelle, um Datens\u00e4tze zu beschreiben, wobei selten ein perfektes Modell existiert. Man sollte einen Kompromiss zwischen der Anpassung an die Daten und der Komplexit\u00e4t des Modells finden.\nWelche Rolle spielt die Normalverteilung in der Statistik?;Die Normalverteilung ist eine wichtige Verteilung in der Statistik, da mit ihr Wahrscheinlichkeiten einfach berechnet werden k\u00f6nnen. Sie wird durch den Mittelwert und die Standardabweichung definiert und kann zur Beschreibung von Variablen verwendet werden.\nWozu dienen Transformationen in der Statistik?;Transformationen werden in der Statistik eingesetzt, um Daten n\u00e4herungsweise zu normalisieren. Eine Normalverteilung erleichtert die Berechnung von Wahrscheinlichkeiten.\nWas ist eine Poisson-Verteilung?;Die Poisson-Verteilung ist eine Zufallsverteilung, bei der die Varianz gleich dem Erwartungswert ist. Sie wird oft als Nullmodell verwendet, um den Einfluss unbekannter Faktoren auf das Ergebnis auszuschlie\u00dfen.\nWas versteht man unter einer Binomialverteilung?;Eine Binomialverteilung tritt auf, wenn eine diskrete Variable genau zwei m\u00f6gliche Merkmale hat, z.B. m\u00e4nnlich und weiblich. Es handelt sich um eine Aufteilung mit ungef\u00e4hr gleicher Wahrscheinlichkeit f\u00fcr beide Merkmale.\nWas sind Konfidenzintervalle?;Konfidenzintervalle geben einen Bereich an, in dem ein Sch\u00e4tzwert mit einer bestimmten Wahrscheinlichkeit liegt. Sie werden verwendet, um die nat\u00fcrliche Varianz von Daten darzustellen und eine Aussage \u00fcber die Genauigkeit des Sch\u00e4tzwerts zu treffen.\nWie kann man die Sch\u00e4rfe und Sicherheit eines Konfidenzintervalls maximieren?;Die Sch\u00e4rfe und Sicherheit eines Konfidenzintervalls k\u00f6nnen nicht gleichzeitig maximiert werden. Wenn man mit den Ergebnissen unzufrieden ist, kann man entweder die Stichprobengr\u00f6\u00dfe erh\u00f6hen oder die Anforderungen an die Wahrscheinlichkeit senken.\nWie berechnet man ein Konfidenzintervall?;Um ein Konfidenzintervall zu berechnen, ben\u00f6tigt man den Lageparameter (z.B. den Mittelwert) und die Standardabweichung der Daten. Mit Hilfe von Statistikberechnungen und Wahrscheinlichkeitsverteilungen kann das Intervall bestimmt werden.\nWozu dient der Zentrale Grenzwertsatz?;Der Zentrale Grenzwertsatz besagt, dass bei ausreichend gro\u00dfer Stichprobe eine Normalverteilung entsteht, unabh\u00e4ngig von der Verteilung der Daten. Dies erleichtert statistische Analysen und Sch\u00e4tzungen.\nWelche Entscheidungen m\u00fcssen beim Festlegen eines Konfidenzintervalls getroffen werden?;Bei der Festlegung eines Konfidenzintervalls muss entschieden werden, wie viel Sicherheit man haben m\u00f6chte und wie scharf die Aussage sein soll. Ein gr\u00f6\u00dferes Konfidenzintervall bietet mehr Sicherheit, aber eine weniger pr\u00e4zise Aussage."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2778,
+    "completion_tokens": 749,
+    "total_tokens": 3527
+  }
+}
+21667
+-------
+{
+  "id": "chatcmpl-7kfNeA4QCTKufutHgRG4eKhZhZ0uR",
+  "object": "chat.completion",
+  "created": 1691356510,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Welche Faktoren k\u00f6nnen zu R\u00fcckkoppelungen im Forschungsprozess f\u00fchren?;R\u00fcckkoppelungen im Forschungsprozess k\u00f6nnen durch \u00fcberraschende, neue oder unzureichende Daten sowie aus den Daten resultierende neue Fragen entstehen.\nWarum gibt es selten ein perfektes Modell, um Daten vollst\u00e4ndig zu beschreiben?;Es gibt selten ein perfektes Modell, das alle Daten vollst\u00e4ndig beschreibt, weil es f\u00fcr alle Datens\u00e4tze mehrere m\u00f6gliche Modelle gibt und es einen Kompromiss zwischen Anpassungsg\u00fcte und Modellkomplexit\u00e4t geben sollte.\nWas sind die Vorteile der Normalverteilung in der Statistik?;Die Normalverteilung, auch als Gau\u00df'sche Glockenkurve bezeichnet, erm\u00f6glicht die einfache Berechnung von Wahrscheinlichkeiten. Sie hat zwei wichtige Parameter: den Mittelwert (\u03bc) und die Standardabweichung (\u03c3). Die Fl\u00e4che unter der Kurve betr\u00e4gt immer 1.\nWas ist der Mittelwert (\u03bc) in der Normalverteilung?;Der Mittelwert (\u03bc) ist der Erwartungswert, also der Wert, der im Durchschnitt am h\u00e4ufigsten vorkommt und au\u00dferhalb der Stichprobe am h\u00e4ufigsten erwartet wird.\nWas ist die Standardabweichung (\u03c3) in der Normalverteilung?;Die Standardabweichung (\u03c3) gibt an, wie weit die Werte um den Mittelwert streuen. Je gr\u00f6\u00dfer \u03c3, desto h\u00f6her ist die Abweichung und desto breiter ist die Glockenkurve.\nWo liegen 95% der Werte in der Normalverteilung?;95% aller Werte liegen zwischen \u03bc und \u00b1 1,96*\u03c3 in der Normalverteilung.\nWas ist die Standard-Normalverteilung?;Die Standard-Normalverteilung, auch als z-Verteilung bezeichnet, ist eine spezielle Form der Normalverteilung, bei der der Mittelwert 0 und die Standardabweichung 1 betr\u00e4gt.\nWarum ist die genaue Aufbauformel der Normalverteilung f\u00fcr unsere Zwecke nicht relevant?;Die genaue Aufbauformel der Normalverteilung ist f\u00fcr unsere Zwecke nicht relevant, da sie kompliziert ist und wir nur die Grundkonzepte der Normalverteilung verstehen m\u00fcssen.\nWarum ist die Standardisierung des Fl\u00e4cheninhaltes von 1 bei der Normalverteilung wichtig?;Die Standardisierung des Fl\u00e4cheninhaltes von 1 bei der Normalverteilung ist wichtig, um Wahrscheinlichkeiten berechnen zu k\u00f6nnen und die Fl\u00e4che unter der Kurve korrekt zu interpretieren.\nWarum wird die Normalverteilung oft als freundliche Art der Verteilung bezeichnet?;Die Normalverteilung wird oft als freundliche Art der Verteilung bezeichnet, weil sie verschiedene statistische Berechnungen und Analysen erleichtert und eine einfache Interpretation der Kurve erm\u00f6glicht."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1208,
+    "completion_tokens": 680,
+    "total_tokens": 1888
+  }
+}
+19506
+-------
+{
+  "id": "chatcmpl-7kfNz5GShAFdD3YBDKTvXRjY6rWPu",
+  "object": "chat.completion",
+  "created": 1691356531,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Was regelt der IFRS 9?;Der IFRS 9 regelt die Bilanzierung und Bewertung von Finanzinstrumenten.\nWas behandelt der IFRS 15?;Der IFRS 15 behandelt die Rechnungslegung f\u00fcr Umsatzerl\u00f6se aus Vertr\u00e4gen mit Kunden.\nWelches Konzept f\u00fchrt der IFRS 16 ein?;Der IFRS 16 f\u00fchrt das Konzept des \"Right-of-Use Asset\" (Nutzungsrecht am Verm\u00f6genswert) und der Leasingverbindlichkeit ein.\nWas legt der IFRS 13 fest?;Der IFRS 13 legt Richtlinien f\u00fcr die Bestimmung und Messung des Fair Value (beizulegender Zeitwert) von Verm\u00f6genswerten und Verbindlichkeiten fest.\nWas regelt der IFRS 3?;Der IFRS 3 regelt die Bilanzierung von Unternehmenszusammenschl\u00fcssen.\nWas enth\u00e4lt der IFRS 7?;Der IFRS 7 enth\u00e4lt die Anforderungen an die Offenlegung von Informationen \u00fcber Finanzinstrumente in den Finanzberichten eines Unternehmens.\nWas behandelt der IFRS 5?;Der IFRS 5 behandelt die Bilanzierung von Verm\u00f6genswerten, Verbindlichkeiten und aufgegebenen Gesch\u00e4ftsbereichen.\nWas legt der IFRS 10 fest?;Der IFRS 10 legt fest, wie ein Unternehmen die Finanzberichte seiner Tochtergesellschaften, verbundenen Unternehmen und Joint Ventures in einen konsolidierten Konzernabschluss einbezieht."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1406,
+    "completion_tokens": 368,
+    "total_tokens": 1774
+  }
+}
+10897
+-------
+{
+  "id": "chatcmpl-7kfOBeu3i2c6I6IyFS4oNs5nosoSc",
+  "object": "chat.completion",
+  "created": 1691356543,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Welche M\u00f6glichkeiten gibt es, um von einer Forschungsidee zu einem Ergebnis zu gelangen?;Es gibt R\u00fcckkoppelungen, die sich aus \u00fcberraschenden, neuen und/oder unzureichenden Daten ergeben. Es gibt mehrere m\u00f6gliche Modelle, um die Daten passend zu beschreiben. Es sollte ein Kompromiss zwischen der Anpassung an die Daten und der Komplexit\u00e4t des Modells gefunden werden. \nWas sind die zwei wichtigsten Parameter der Normalverteilung?;Die zwei wichtigsten Parameter sind der Mittelwert (\u03bc) und die Standardabweichung (s oder \u03c3).\nWas ist die Standardabweichung?;Die Standardabweichung (s oder \u03c3) gibt an, wie stark die einzelnen Werte um den Mittelwert streuen. Je gr\u00f6\u00dfer die Standardabweichung, desto gr\u00f6\u00dfer ist die Abweichung der Werte vom Mittelwert.\nWelche Rolle spielt die Normalverteilung in der Statistik?;Die Normalverteilung ist eine sehr freundliche Art der Verteilung, da sich mit ihr Wahrscheinlichkeiten recht einfach berechnen lassen. Sie wird h\u00e4ufig verwendet, um verschiedene Ph\u00e4nomene in der Natur zu beschreiben.\nWas ist eine Poisson Verteilung?;Die Poisson Verteilung ist eine Zufallsverteilung und basiert auf diskreten Datens\u00e4tzen. Sie wird oft als Nullmodell verwendet, um zu zeigen, dass keine unbekannten Faktoren das Ergebnis beeinflussen.\nWann wird eine Transformation der Daten zur Normalisierung verwendet?;Eine Transformation der Daten wird verwendet, wenn eine H\u00e4ufigkeitsverteilung nicht auf den ersten Blick nach einer Normalverteilung aussieht. Eine geeignete Transformation kann dazu f\u00fchren, dass die Daten n\u00e4herungsweise normalisiert werden.\nWas sind Konfidenzintervalle?;Konfidenzintervalle sind Vertrauensbereiche, die in statistischen Grafiken dargestellt werden, um nat\u00fcrliche Varianz nicht unter den Tisch fallen zu lassen. Sie geben die Sicherheit an, mit der der wahre Wert in einem bestimmten Bereich liegt.\nWie kann man die Sch\u00e4rfe und Sicherheit eines Konfidenzintervalls maximieren?;Die Sch\u00e4rfe und Sicherheit eines Konfidenzintervalls k\u00f6nnen nicht gleichzeitig maximiert werden. Wenn man mit den Ergebnissen unzufrieden ist, kann man entweder die Stichprobengr\u00f6\u00dfe erh\u00f6hen oder die Wahrscheinlichkeitsanforderungen an das Experiment senken.\nWas ist ein m\u00f6glicher Grund, warum man Daten normalisieren m\u00f6chte?;Ein m\u00f6glicher Grund ist, dass es mit einer normalisierten Verteilung einfacher ist, Wahrscheinlichkeiten zu berechnen.\nWas sind einige Beispiele f\u00fcr diskrete Variablen, die eine binomiale Verteilung aufweisen?;Beispiele f\u00fcr diskrete Variablen mit zwei m\u00f6glichen Merkmalen sind Geschlecht (M\u00e4nnlich/Weiblich) oder Ja/Nein-Fragen."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2688,
+    "completion_tokens": 678,
+    "total_tokens": 3366
+  }
+}
+19885

@@ -1,0 +1,10 @@
+Was ist Datenkapselung?;Datenkapselung bedeutet, dass Objekte Daten und Methoden zusammenfassen und diese nicht direkt von außen zugänglich sind.
+Was sind Objektvariablen?;Objektvariablen sind Variablen, die zu einem Objekt gehören und während der gesamten Lebenszeit des Objekts existieren.
+Was sind Objektmethode?;Objektmethode sind Methoden in einer Klasse, die auf Objektvariablen zugreifen können.
+Was ist der Unterschied zwischen Objektmethode und Klassenmethode?;Objektmethode können auf Objektvariablen zugreifen, während Klassenmethode keine Objektvariablen verwenden dürfen.
+Was sind Klassenvariablen?;Klassenvariablen sind Variablen, die einmal pro Klasse existieren und von Klassenmethoden und Objektmethode verwendet werden können.
+Was ist Data-Hiding?;Data-Hiding bedeutet, dass Implementierungsdetails eines abstrakten Datentyps vor Zugriffen von außen verborgen werden.
+Welche Sichten gibt es auf einen abstrakten Datentyp?;Es gibt die Außensicht, die von Anwendern verwendet wird, und die Innensicht, die die Implementierungsdetails offenlegt.
+Warum ist es wichtig, die Außen- und Innensicht in Einklang zu bringen?;Es ist wichtig, die Außen- und Innensicht in Einklang zu bringen, um sicherzustellen, dass die Implementierung den Anforderungen der Außensicht entspricht.
+Was ist das Ziel der Außensicht?;Das Ziel der Außensicht ist es, eine benutzerfreundliche Schnittstelle bereitzustellen, um den abstrakten Datentyp zu verwenden.
+Was ist das Ziel der Innensicht?;Das Ziel der Innensicht ist es, eine implementierbare Lösung für den abstrakten Datentyp zu bieten, die effizient und korrekt ist.

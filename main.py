@@ -5,7 +5,7 @@ import sys
 
 import test_runner
 from example_messages import ExampleMessages
-from flashcard_service import FlashCardService, parse_flashcards
+from flashcard_generator import FlashCardGenerator, parse_flashcards
 
 def get_test_folders():
     user_input = input("Enter the name of a test folder, a comma-separated list of test folders, or 'all': ")
@@ -28,6 +28,7 @@ if test_folders == 'all':
     print("Using all test folders...")
     for file in os.listdir('tests'):
         if os.path.isdir(os.path.join('tests', file)):
+            print(file)
             test_runner.run_test(os.path.join('tests', file), 'output/' + file + '.csv')
 else:
     print(f"Using the following test folders: {test_folders}")

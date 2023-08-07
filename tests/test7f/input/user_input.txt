@@ -1,0 +1,143 @@
+
+2.1.2 Datenkapselung
+In Java sind abstrakte Datentypen durch Klassen implementiert. So
+wie Klassen in EP1 eingesetzt wurden, können wir jedoch kaum von
+abstrakten Datentypen sprechen. Eine Klasse sollten wir dann als Im- Klasse
+plementierung eines abstrakten Datentyps betrachten, wenn die Klasse
+• Objektvariablen deklariert, die in jedem Objekt der Klasse vor- Objektvariable
+handen sind – in jedem Objekt eigene Variablen (wobei Deklara-
+tionen von Objektvariablen denen lokaler Variablen ähneln, aber
+nicht in Methoden, sondern direkt in Klassen stehen),
+• Objektmethoden (in der Klasse, ohne static) definiert, die in Objektmethode
+Objekten der Klasse ausführbar sind und auf Objektvariablen
+dieser Objekte zugreifen,
+• nur durch Erzeugung von einem oder mehreren Objekten der Objekt
+Klasse sinnvoll verwendbar ist.
+Objektvariablen – also Variablen, die zu einem Objekt gehören und im
+Gegensatz zu lokalen Variablen während der gesamten Lebenszeit ei-
+nes Objekts existieren – entstehen beim Erzeugen eines Objekts mittels
+new. In der Regel verwenden nur Objektmethoden diese Objektvaria-
+blen – siehe Abschnitt 2.1.3. Objektvariablen sind ohne Objektmetho-
+den nur selten sinnvoll, genau wie Objektmethoden ohne Objektvaria-
+blen. Das Zusammenfügen von Variablen und Methoden zu Objekten
+nennen wir Datenkapselung – Objekte kapseln Daten und Methoden. Kapselung
+Listing 2.5 zeigt eine mögliche Implementierung des in Listing 2.3
+beschriebenen abstrakten Datentyps. Eine Ausführung der Methode in Implementierung
+von abstraktem
+Datentyp
+Listing 2.4 produziert damit die oben dargestellte erwartete Ausgabe.
+Eigentlich sollten die Kommentare aus Listing 2.3 bei der Klassendefi-
+nition und den Methodendefinitionen stehen. Zwecks besserer Übersicht
+wurden sie in Listing 2.5 weggelassen.
+35
+2 Datenabstraktion
+2.1 Prinzip und Sprachunterstützung
+In den Zeilen 3 bis 5 in Listing 2.5 werden Objektvariablen deklariert
+und initialisiert. Wie üblich beginnen die Deklarationen mit dem Wort Java
+private und stehen direkt in der Klasse (nicht in einer Methode),
+gleichen sonst aber syntaktisch lokalen Variablendeklarationen.
+Die in EP1 verwendeten Methoden begannen (außer main) meist
+mit private static. In Listing 2.5 beginnen viele mit public und
+enthalten kein static. Die Bedeutung von private und public wer- Java
+den wir in Abschnitt 2.1.3 analysieren. Zunächst ist das Weglassen von
+static wichtig: Methoden ohne static sind Objektmethoden. Eine Objektmethode
+verwendet
+Objektvariablen
+Objektmethode kann auf Objektvariablen in gleicher Weise zugreifen
+wie auf formale Parameter und lokale Variablen, wie an vielen Stellen
+in Listing 2.5 zu sehen ist. Wenn ein Methodenkopf dagegen static
+enthält – wir sprechen von statischen Methoden oder Klassenmethoden Klassenmethode
+kennt keine
+Objektvariablen
+– darf die Methode nicht auf Objektvariablen zugreifen. Eine Klasse
+kann sowohl Objektmethoden als auch Klassenmethoden enthalten; in
+BoxedText stehen aber nur Objektmethoden.
+Objektmethoden rufen wir anders auf als Klassenmethoden. Für den
+Aufruf einer Objektmethode benötigen wir ein Objekt der entsprechen-
+den Klasse, für den Aufruf einer Klassenmethode nur die Klasse selbst.
+Wenn o als Objektmethode und c als Klassenmethode in Klasse C
+implementiert ist, können wir die Aufrufe so schreiben:
+C.c(...); // Aufruf von c in Klasse C
+C x = new C(); // Erzeugen von Objekt x der Klasse C
+x.o(...); // Aufruf von o in Objekt x
+Das hat den Grund, dass bei Ausführung von o auf die Objektvaria-
+blen des Objekts in x zugegriffen werden kann, während zur Ausfüh-
+rung von c keine Objektvariablen nötig sind. Konkrete Beispiele sind
+die Aufrufe von Objektmethoden in Listing 2.4 sowie der Aufruf der
+Klassenmethode min aus Math in Zeile 17 von Listing 2.5.
+Innerhalb der Klasse BoxedText sehen wir das Objekt, das die zuge- aktuelles Objekt
+griffenen Objektvariablen enthält, nicht direkt (wir könnten aber über
+this darauf zugreifen – siehe Abschnitt 2.1.4). Bei Zugriffen schreiben
+wir einfach nur die Namen der Objektvariablen hin, ohne dazuzuschrei-
+ben, dass es sich z. B. um die Objektvariablen des Objekts handelt, das
+in der Variablen t von Listing 2.4 steht. Wie wir in Listing 2.6 sehen,
+kann sich ein Zugriff auf eine Objektvariable manchmal auf das Objekt
+in x beziehen, dann wieder auf das in y. So wie eine Ausführung von
+x.print() nur die Objektvariablen von x verwendet, greift eine Aus-
+37
+2 Datenabstraktion
+führung von y.print() nur auf Objektvariablen von y zu. Es werden
+zwei unterschiedliche umrandete Texte ausgegeben.
+In Zeile 32 von Listing 2.5 wird toString() aufgerufen, ohne an-
+zugeben, in welchem Objekt die Methode ausgeführt werden soll (das
+Objekt, das normalerweise links von „.“ steht). Es wird die ab Zeile
+35 definierte Objektmethode aufgerufen. Wir können in einer Objekt-
+methode (nicht in einer Klassenmethode) eine andere ObjektmethodeAufruf im selben
+Objekt desselben Objekts aufrufen, ohne dabei das Objekt anzugeben; es ist
+ja ohnehin dasselbe Objekt. Auf diese Weise wird auch fill in den
+Zeilen 11 und 22 von Listing 2.5 aufgerufen. Wenn wir eine Klassen-
+methode ohne Klasse und Punkt vor dem Methodennamen aufrufen,Aufruf in selber
+Klasse wird die Methode dieses Namens in der gleichen Klasse (unabhängig
+von einem Objekt) ausgeführt.
+Neben Objektvariablen unterstützt Java Klassenvariablen, die mitKlassenvariable
+static in einer Klasse deklariert sind. Eine Klassenvariable existiert
+nur einmal pro Klasse, nicht in jedem Objekt. Auf Klassenvariablen
+können Klassenmethoden und Objektmethoden zugreifen. Der sinnvol-
+le Einsatz von Klassenvariablen mit veränderlichen Werten ist schwie-
+rig. Wir verwenden Klassenvariablen daher meist nur als Konstanten
+(static final Variablen). Gelegentlich greifen wir über vordefinierte
+Klassen auf Klassenvariablen zu, z. B. auf in und out in der Klasse
+System: In Zeile 32 von Listing 2.5 wird die Objektmethode println
+in dem Objekt aufgerufen, das in out von System steht.
+Aufgabe 2.1 Aus didaktischen Gründen verzichten wir in Beispiel-
+programmen auf Kommentare; Programme sollen durch ihr Verhalten
+verstanden werden, nicht nur intuitiv durch Namen und Kommentare.
+Schreiben Sie zum Kopf jeder Methode in allen Beispielen, auch den
+noch folgenden, einen kurzen, aussagekräftigen Kommentar, der besagt,
+38
+2.1 Prinzip und Sprachunterstützung
+wozu die Methode dient und worauf bei der Verwendung zu achten ist,
+sodass die Außensicht deutlich erkennbar wird. Schreiben Sie außer-
+dem zur Deklaration jeder Objektvariablen einen kurzen Kommentar,
+der besagt, wozu die Variable dient.
+Aufgabe 2.2 Beschreiben Sie Gemeinsamkeiten und Unterschiede zwi-
+schen Klassen- und Objektmethoden. Beschreiben Sie, anhand welcher
+Kriterien Sie sich für welche Art von Methode entscheiden.
+Aufgabe 2.3 Veranschaulichen Sie sich, welche Variablen bei Ausfüh-
+rung der Methode in Listing 2.6 (auch in dabei erzeugten Objekten)
+angelegt werden und welche Werte sie nach jedem Ausführungsschritt
+enthalten. Beschreiben Sie die einzelnen Schritte.
+2.1.3 Data-Hiding
+Datenabstraktion ist die kombinierte Anwendung von Datenkapselung
+und Data-Hiding, das „Verstecken“ von Implementierungsdetails vor
+Zugriffen von außen. Durch Data-Hiding bekommen wir zwei verschie-
+dene Sichten auf einen abstrakten Datentyp, die abstrakte Außensicht Außensicht
+wie in Listing 2.3 und die Implementierungsdetails offenlegende Innen-
+sicht wie in Listing 2.5. Wir brauchen beide, die Außensicht für die Innensicht
+Verwendung und die Innensicht für die Implementierung des abstrak-
+ten Datentyps. Diese Sichten unterscheiden sich meist wesentlich von-
+einander, weil verschiedene Interessen dahinterstecken:
+• Die Außensicht ist die Anwendersicht. Als Zusammenfassung von Außensicht für
+AnwenderListing 2.3 wird man zuerst mit newDimension die Größe eines
+umrandeten Texts bestimmen, danach über setLine Textinhalte
+in die einzelnen Zeilen schreiben, über print ausgeben und bei
+Bedarf einzelne Schritte wiederholen, wobei zu bedenken ist, dass
+newDimension alte Textinhalte löscht.
+• Die Innensicht konzentriert sich auf die Implementierung der Me- Innensicht zum
+Implementierenthoden mit den nötigen Objektvariablen. Variablen und Typen
+werden so gewählt, dass die Implementierungen möglichst ein-
+fach sind und dennoch den Beschreibungen entsprechen.
+Wir müssen die Sichten in Einklang zueinander bringen. Die Außen-
+sicht entwerfen wir so, dass eine Implementierung mit vertretbarem
+Aufwand möglich scheint. Danach gestalten wir die Innensicht, sodass
+alle nötigen Aspekte der Außensicht bestmöglich erfüllt sind.
