@@ -1,9 +1,10 @@
+import math
 from typing import List
-
 from example_messages import ExampleMessages
 from flash_card import FlashCard
 from flash_card_deck import FlashCardDeck
 import openai
+import tiktoken
 
 
 def parse_flashcard(line):
@@ -38,9 +39,22 @@ class FlashCardGenerator:
         messages.append({"role": "user", "content": user_input})
         messages.append({"role": "system", "content": system_prompt})
 
+        # load the encoding for the model
+        encoding = tiktoken.encoding_for_model('gpt-3.5-turbo')
+        encoded_user_input = encoding.encode(user_input)
+        print('tokens:')
+        token_count = sum([len(encoding.encode(message['content'])) + len(encoding.encode(message['role'])) for message in messages])
+        # count of input tokens needs to be below 3k to use 4k model
+        model = 'gpt-3.5-turbo'
+        max_tokens: int = 1000
+        if token_count > 3000:
+            model = 'gpt-3.5-turbo-16k'
+            max_tokens = math.floor(token_count / 3)
         # make API call
         openai.api_key = self.api_key
-        completion35 = openai.ChatCompletion.create(model='gpt-3.5-turbo', messages=messages, max_tokens=1000)
+        print(model)
+        print(max_tokens)
+        completion35 = openai.ChatCompletion.create(model=model, messages=messages, max_tokens=max_tokens)
         f = open('log.txt', 'a')
         f.write('-------\n')
         print(completion35)

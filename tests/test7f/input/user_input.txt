@@ -137,7 +137,4 @@ newDimension alte Textinhalte löscht.
 Implementierenthoden mit den nötigen Objektvariablen. Variablen und Typen
 werden so gewählt, dass die Implementierungen möglichst ein-
 fach sind und dennoch den Beschreibungen entsprechen.
-Wir müssen die Sichten in Einklang zueinander bringen. Die Außen-
-sicht entwerfen wir so, dass eine Implementierung mit vertretbarem
-Aufwand möglich scheint. Danach gestalten wir die Innensicht, sodass
-alle nötigen Aspekte der Außensicht bestmöglich erfüllt sind.
+Wir müssen die Sichten in Einklang zueinander bringen.
