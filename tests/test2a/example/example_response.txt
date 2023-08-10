@@ -1,0 +1,4 @@
+This is an example response:
+
+What is regulation of gene expression?;Regulation of gene expression directs the production of RNA transcripts in a way that the right amount of RNA is produced at the right time in the right cells.
+What are the two manners of transcriptional regulation in prokaryotes?;Positive regulation and negative regulation.
