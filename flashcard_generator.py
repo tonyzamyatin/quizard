@@ -1,4 +1,5 @@
 import math
+import os
 from typing import List
 from example_messages import ExampleMessages
 from flash_card import FlashCard
@@ -55,7 +56,7 @@ class FlashCardGenerator:
         print(model)
         print(max_tokens)
         completion35 = openai.ChatCompletion.create(model=model, messages=messages, max_tokens=max_tokens)
-        f = open('log.txt', 'a')
+        f = open(os.getenv('LOG_FILE', default='log.txt'), 'a')
         f.write('-------\n')
         print(completion35)
         print(completion35.response_ms)
