@@ -1,8 +1,10 @@
 import json
+import math
 import os.path
 
+import tiktoken
 from dotenv import load_dotenv
-from example_messages import ExampleMessages
+from completion_messages import Messages
 from flashcard_generator import FlashCardGenerator
 
 
@@ -38,6 +40,7 @@ def load_config(config_path='config.json') -> dict:
     except Exception as e:
         raise ConfigLoadError(f"An error occurred while loading the configuration file: {str(e)}")
 
+
 def read_file(path) -> str:
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -72,6 +75,7 @@ def set_flashcard_number(file_path, number):
     with open(file_path, 'w') as file:
         file.write(modified_text)
 
+
 class TestRunner:
     def __init__(self, config_path: str):
         self.config = load_config(config_path)
@@ -81,16 +85,35 @@ class TestRunner:
         example_system_prompt = read_file(os.path.join(base_path, 'example/example_system_prompt.txt'))
         example_user_input = read_file(os.path.join(base_path, 'example/example_user_input.txt'))
         example_response = read_file(os.path.join(base_path, 'example/example_response.txt'))
-
-        # Specify number of flashcards to be generated
-        if self.config["flashcards"].get("active"):
-            set_flashcard_number(os.path.join(base_path, 'input/system_prompt.txt'), self.config["flashcards"].get("number_to_generate"))
-
         # Load the user input and system prompt
-        system_prompt = read_file(os.path.join(base_path, 'input/system_prompt.txt'))
-        user_input = read_file(os.path.join(base_path, 'input/user_input.txt'))
+        input_system_prompt = read_file(os.path.join(base_path, 'input/system_prompt.txt'))
+        input_user_prompt = read_file(os.path.join(base_path, 'input/user_input.txt'))
 
-        example_messages = ExampleMessages(example_user_input, example_system_prompt, example_response)
-        service = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), example_messages, self.config)
-        deck = service.generate(user_input, system_prompt)
+        messages = Messages(example_user_input, example_system_prompt, example_response, input_system_prompt,
+                            input_user_prompt).as_message_list()
+
+        # Run config
+        # Load the encoding for the model
+        encoding = tiktoken.encoding_for_model('gpt-3.5-turbo')
+        encoded_user_input = encoding.encode(input_user_prompt)
+        total_prompt_size = sum(
+            [len(encoding.encode(message['content'])) + len(encoding.encode(message['role'])) for message in messages])
+        # count of input tokens needs to be below 3k to use 4k model
+        if total_prompt_size > 3000:
+            self.config["model"]["name"] = "gpt-3.5-turbo-16k"
+            self.config["model"]["max_tokens"] = math.floor(total_prompt_size / 3)
+
+        # Set flashcard number
+        if self.config["flashcards"].get("active"):
+            if self.config["flashcards"].get("auto"):
+                # messages[4] is the user input in the message list.
+                user_text_size = len(encoding.encode(messages[4]['content'])) + len(
+                    encoding.encode(messages[4]['role']))
+                number_to_generate = math.floor(user_text_size / 300) + 1
+            else:
+                number_to_generate = self.config["flashcards"].get("number_to_generate")
+            set_flashcard_number(os.path.join(base_path, 'input/system_prompt.txt'), number_to_generate)
+
+        generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), messages, self.config)
+        deck = generator.generate_deck()
         deck.save_as_csv(csv_path)

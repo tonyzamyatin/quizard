@@ -1,6 +1,7 @@
 {
     "flashcards": {
         "active": true,
+        "auto": false,
         "number_to_generate": 10
     },
     "tokens": {
