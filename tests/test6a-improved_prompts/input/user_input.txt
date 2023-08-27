@@ -1,0 +1,139 @@
+Wichtige Wahrscheinlichkeitsmodelle in der Biologie
+Normalverteilung (Carl F. Gauß)
+– wichtigste theoretische Verteilungsform für stetige Zufallsvariable
+– zwei Parameter: Lagemaß  und Dispersion  (wir kennen die nicht, aber können sie schätzen/approximieren
+durch SD und Mittelwert, beste Schätzwert für  ist x̅
+– deren empirische Schätzungen: Mittelwert x̅ & SD
+– Verteilung symmetrisch um Parameter 
+- Gebrochene Exponentialfunktion
+- Im Wesentlichen 2 Parameter, die die
+Verteilungsform bestimmen, Lagemaß und
+Dispersion
+- Unterscheiden sich durch die Werte der mi
+und sigma
+- Wichtig: symmetrische Verteilung
+Die Normalverteilung – einige wichtige Eigenschaften
+– ca. 95 % aller Werte liegen im Bereich µ ± 1.96 
+– Standard-Normalverteilung N(0; 1): µ = 0,  = 1  z-Verteilung
+- Hat eine deutlich vereinfachte Gleichung –
+man skaliert den Mittelwert als 0 und die
+Standardabweichung als 1
+- Dasselbe wie eine Normalverteilung, nur
+hier ist es so skaliert, dass man hier eine absolute
+Skala hat
+Die Standard-Normalverteilung (z-Verteilung)
+– Approximation für viele Tests (auch wenn Datenmaterial bzw. Prüfgrößen oft nicht „perfekt“ normalverteilt sind!)
+– z-Transformation für Messdaten: eliminiert Skalen-Abhängigkeit (man zentriert die Daten auf Mittelwert 0, SD 1)
+- V.a. interessant dann, wenn ich mehrere
+Zufallsvariablen gemessen habe, die auf ganz
+unterschiedliche Skalen laufen, aber die ich
+verknüpfen will – ich eliminiere alle
+Skaleneffekte und mich interessiert nur die
+interne Variabilitätsstruktur
+➔ x̅ = 0 𝑢𝑛𝑑 𝑆𝐷 = 1
+- Quantil wo z=1,96 wäre – wir würden eine Wahrscheinlichkeit 97,5% haben und nur 2,5 alle denkbare
+mögliche Ereignisse liegen im nicht-schraffierten Raum
+- Wichtig, weil wir an diese Stelle dann schon ein wichtiges Signifikanz-Niveau haben (Erreignisse, wo wir
+wahrscheinlich einen Signifaknz-Befund absichtigen können
+- Werte für die z-Statistik
+Zentraler Grenzwertsatz (Carl F. Gauß)
+• Summe beliebig verteilter, stetiger Zufallsvariablen → Normalverteilung
+Besagt, dass die Summe irgendwelcher, stetiger Zufallsvariablen eine vollkommen beliebige Verteilung haben kann –
+aber, wenn ich eine Summe bilde, dann wird sie näherungsweise normal verteilt sein
+- Zwar umso besser, je mehr Summanden ich in diese Summenbildung zu berücksichtigen habe (zB. je mehr
+Zufallsfaktoren auf eine Größe wirken)
+- Je mehr Einflussfaktoren existieren, desto eher sollte am Ende eine Normalverteilung herauskommen – das
+war genauso bei Körpergröße
+Biologie: viele Faktoren wirken (mit ihren Zufallsfehlern...) additiv auf eine betrachtete Zielvariable;
+z. B.: Körpergröße  Nahrung, Licht, Temperatur ... + (viele!) Gene – jeder von denen hat eine andere Form von
+Einwirkung, aber in Summe sollte ich dass eine Zufallsvariable wie Körpergröße näherungswise normal verteilt ist
+Noch wichtiger, aber eine andere Formulierung desselben Zentralen Grenzwrtsatzes:
+• Mittelwerte beliebig verteilter Variablen → Normalverteilung (Mittelwerte von irgendwelche, beliebige Verteilung
+konvergieren auch gegen eine Normalverteilung – mathematisch bewiesen)
+Biologie: Verwendung des Mittelwerts (v. a.: große Stichproben, viele Wiederholungen)
+➔ Zentrale Bedeutung der Normalverteilung als „universelles“ Wahrscheinlichkeitsmodell!
+- Begründen warum auch heute zentraler Grenzwertsatz noch immer am meisten benutzt wird
+– Stichproben ordinaler Variabler oft in guter Näherung normalverteilt
+Beispiel: Klausurnoten, Artenzahlen (bei ausreichendem n) (es kann nicht 1,5 Pflanzenarten geben, nur 1,2,3...)
+– „mittlere“ Bereiche nicht normalverteilter Grundgesamtheiten ± normal
+– oft: Transformation → Normalisierung „schiefer“ Verteilungen
+Beispiel: Pflanzenvielfalt (ordinal) in Graslandsystemen (NP Neusiedler See)
+• Ich stelle fest: obwohl es nicht
+wirklich normal verteilt sein kann (nicht
+möglich), es ist eigentlich nicht so weit
+davon
+• Insbesonder in mittleren Bereich ist
+die Normalverteilung nicht eine schlechte
+Schätzung
+- Shapiro-Wilk Test gibt kein Signifikanz-Befund – auch wenn das eine Normalverteilung nicht sein kann, kann
+ich trotzdem das Modell der Normalverteilung erstmal hinterlegen und weiter damit tun, weil ich eigentlich
+auf der sicheren Seite bin und keine gröberen Abweichung zu Befürchten habe
+Beispiele wichtiger Transformationen
+▪ Ziel: (näherungsweise) Normalisierung, oft primär: Varianzhomogenität
+▪ Bedingung: streng monoton  Reihenfolge bleibt erhalten – verändert die Reihenfolge NICHT, die interne Struktur
+bleibt erhalten
+▪ Auswahl geeigneter Transformation: Probieren, Erfahrung ...
+▪ sehr schiefe Verteilungen: Box-Cox-, Weibull-Transformation
+- wir haben mehrere Stichproben,
+eine ist links-steil, andere rechts-schief – wir
+wollen Varianzhomogenität bekommen
+a) Sehr ausgeprägte links-steil, rechts-stief: oft in Biologie wie zB. Körpermasse, Abundanz – hier bietet sich eine
+logarithmus Transformation anzuwenden: Log-Transformation, müssen alfa einführen
+b) Etwas weniger Ausprägung: zB. Wurzel-Transformation
+c) Logit-Transformation – eignet sich zur Normalisierung von Werten zwischen 0 und 1 – Anteil an einer Menge
+– oft in Biologie verwendet
+(Statt des Wertes x, benutze ich die Gleichung oben in Tabelle)
+Beispiel: klar signifikante Abweichung von der Annahme an Normalität
+- Man durchführt log-Transformation: sehr gute Näherung
+Die Poisson-Verteilung
+– ganzzahlige Zufallsvariable – wichtige Unterschied zur Normalverteilung
+– kleine Ereigniswahrscheinlichkeit
+– nur ein Parameter  - auch wichtige Unterschied zur Normalverteilung
+– Gleichung mit Exponentialfunktion, Euler‘sche Zahl als Basis
+Schätzung: arithmetisches Mittel
+Varianz und Erwartungwert sind gleich – werden durch Mittelwert optimal geschätzt – man kann als Kriterium
+verwenden, Hinweis auf Poisson-Verteilung
+Beispiele:
+– Zufallsverteilung von Organismen in (homogenem) Raum
+– radioaktiver Zerfall
+Vorgehen:
+– Auszählen – Ereignisse pro Zeit- oder Raum-Einheit
+– Vergleich: Mittelwert  Varianz
+Bildbeschreibung: diese Quadrat – Stück Wiese, jede Punkt ist eine
+Löwenpflanze. Wir möchten wissen, wie groß ist die Wahrscheinlichkeit,
+das in ein einzelnen Quadranten eine Löwenzahlpflanze existiert. Es kann
+eine sein, keine oder drei drinnen. Typischerweise relativ seltene
+Ereignisse
+Poisson-Verteilung (Forts.)
+▪ Ereignisse treten (völlig) unabhängig voneinander ein
+▪ wichtiges Modell: zufällige Verteilung diskreter Ereignisse in Raum bzw. Zeit
+▪ Modell für „seltene“ Ereignisse
+▪ wenn Daten (in guter Näherung) Poisson-verteilt → kein Hinweis auf
+überzufällige weitere Prozesse (zB. Konkurrenz zwischen Pflanzen – das weiß ich
+nicht)
+▪ Varianz  Mittelwert → Verdacht auf Poisson-Verteilung
+- wirklich zufällige Geschichte, dass
+sie gestorben sind
+Die Binomial-Verteilung
+– diskrete Zufallsvariable – in Unterschied zu Poisson kann nur in 2 Merkmalsalternativen auftreten
+– 2 Merkmalsalternativen mit fester Wahrscheinlichkeit: p; q = 1–p
+p+q=1
+– Zufallsprozess: Stichprobenziehung mit Zurücklegen k = 0,1,2,...n
+– wenn ohne Zurücklegen → Hypergeometrische Verteilung
+- Hier: Wenn ich aus irgendeine sehr große Gesamtheitstichprobe ziehe und feststellen möchte: wie groß
+ist die Wahrscheinlichkeit, dass da die eine, oder in Alternative die andere Merkmalsalternative
+aufgetreten ist
+Beispiele:
+– Geschlechterverteilung in natürlichen, bisexuellen Populationen Erwartung meist: 𝑝 ≈ 𝑞 ≈ 0.5
+– Aber: nur wenn Allelfrequenzen, Lokus mit 2 Allelvarianten
+Beispiel zur Binomial-Verteilung
+▪ Geschlechterverhältnis in einer Mäusepopulation:
+p ♂= 0.52, p ♀= 0.48
+▪ Wie groß ist Wahrscheinlichkeit, dass unter n = 20 Mäusen genau k = 7 ♂ sind?
+In knapp 6% aller Stichproben vom Umfang n = 20 erwartet man genau k = 7 männliche Mäuse für p = 0.52
+- Kann natürlich nur zwischen 1 und 20
+variieren – verblüffend ähnlich zur
+Normalverteilung
+- Es würde aber nicht zuverlässig, diese
+Punkte in eine Kurve zu verbinden – es gibt
+GENAU 5 Männchen oder 6 Männchen usw.

@@ -13,9 +13,7 @@ class FlashCardDeck:
         return json.dumps(self, indent=4, default=vars)
 
     def save_as_csv(self, filename: str):
-        # todo here
-        f = open(filename, 'w')
-        for flashcard in self.flashcards:
-            f.write(flashcard.as_csv())
-            f.write('\n')
-        f.close()
+        with open(filename, 'w', encoding='utf-8') as f:
+            for flashcard in self.flashcards:
+                f.write(flashcard.as_csv())
+                f.write('\n')

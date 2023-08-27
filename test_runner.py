@@ -3,7 +3,6 @@ import math
 import os.path
 
 import tiktoken
-from dotenv import load_dotenv
 from completion_messages import Messages
 from flashcard_generator import FlashCardGenerator
 
@@ -90,14 +89,20 @@ class TestRunner:
         input_user_prompt = read_file(os.path.join(base_path, 'input/user_input.txt'))
 
         messages = Messages(example_user_input, example_system_prompt, example_response, input_system_prompt,
-                            input_user_prompt).as_message_list()
+                            input_user_prompt)
+
+        # Add additional instructions for language detection to input_user_prompt
+        messages.insert_text_into_message('input_user_prompt', os.path.join(base_path, 'insert_instructions.txt'), 0)
+        message_list = messages.as_message_list()
+
 
         # Run config
         # Load the encoding for the model
         encoding = tiktoken.encoding_for_model('gpt-3.5-turbo')
         encoded_user_input = encoding.encode(input_user_prompt)
         total_prompt_size = sum(
-            [len(encoding.encode(message['content'])) + len(encoding.encode(message['role'])) for message in messages])
+            [len(encoding.encode(message['content'])) + len(encoding.encode(message['role'])) for message in message_list])
+
         # count of input tokens needs to be below 3k to use 4k model
         if total_prompt_size > 3000:
             self.config["model"]["name"] = "gpt-3.5-turbo-16k"
@@ -105,15 +110,11 @@ class TestRunner:
 
         # Set flashcard number
         if self.config["flashcards"].get("active"):
-            if self.config["flashcards"].get("auto"):
+            if not self.config["flashcards"].get("manual"):
                 # messages[4] is the user input in the message list.
-                user_text_size = len(encoding.encode(messages[4]['content'])) + len(
-                    encoding.encode(messages[4]['role']))
-                number_to_generate = math.floor(user_text_size / 300) + 1
-            else:
                 number_to_generate = self.config["flashcards"].get("number_to_generate")
-            set_flashcard_number(os.path.join(base_path, 'input/system_prompt.txt'), number_to_generate)
+                set_flashcard_number(os.path.join(base_path, 'input/system_prompt.txt'), number_to_generate)
 
-        generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), messages, self.config)
+        generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), message_list, self.config)
         deck = generator.generate_deck()
         deck.save_as_csv(csv_path)
