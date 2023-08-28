@@ -937,3 +937,26 @@ parse_error
   }
 }
 56061
+-------
+{
+  "id": "chatcmpl-7peAQ2ThFY80ZXKS3Ne2Gs522aOwj",
+  "object": "chat.completion",
+  "created": 1692543486,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "What are some examples of posttranscriptional regulation?;Some examples of posttranscriptional regulation include changes in RNA secondary structure, covalent modifications of RNA, and changes in RNA stability.\nWhat are the two principal manners of controlling transcription/translation in bacteria?;The two principal manners of controlling transcription/translation in bacteria are attenuation and riboswitches.\nWhat is attenuation and where is it found?;Attenuation is the reduction of transcription through an attenuator sequence. It is a feature of operons responsible for amino acid synthesis, such as the trp operon.\nWhat are riboswitches and how do they regulate gene expression?;Riboswitches are conformational changes in the secondary structure of the 5' UTR or mRNA that can be controlled by ligand-aptamer interactions. They can regulate transcription or translation based on the presence or absence of specific ligands.\nWhat is the rule of thumb regarding gene expression in most cells?;In most cells, approximately half of the available genes are expressed, and the combination of expressed genes and their relative expression levels define the cell identity.\nWhat are some key differences between prokaryotic and eukaryotic gene expression?;Some key differences between prokaryotic and eukaryotic gene expression include the larger genome size and complexity in eukaryotes, the presence of chromatin and histones in eukaryotic DNA, the spatial separation of transcription and translation in eukaryotes, and the processing of transcripts in eukaryotes.\nWhat are some levels of transcriptional regulation in eukaryotes?;Some levels of transcriptional regulation in eukaryotes include chromatin remodeling and regulatory histone modifications, splicing and RNA processing, regulation of RNA export, mRNA stability/degradation, and control of translation rates.\nHow do changes in nucleosome composition affect gene expression?;Changes in nucleosome composition can alter the accessibility of DNA, allowing for the repression or activation of transcription by controlling the accessibility of the promoter sequence.\nWhat are enhancers and what is their role in gene expression regulation?;Enhancers are short genomic elements that regulate the transcription of regulatory elements. They are important for reaching the maximum level of transcription and for cell type-specific gene expression.\nWhat are some examples of cis-acting sequences involved in transcription initiation?;Examples of cis-acting sequences involved in transcription initiation include promoters, enhancers, silencers, and insulators."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2224,
+    "completion_tokens": 498,
+    "total_tokens": 2722
+  }
+}
+12885
