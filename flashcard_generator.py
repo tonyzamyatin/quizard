@@ -57,6 +57,7 @@ def parse_flashcards(content: str) -> List[FlashCard]:
     lines = content.split('\n')
     cnt = 0
     for line in lines:
+        print(line)
         cnt += 1
         try:
             flashcard = parse_flashcard(cnt, line)
@@ -81,9 +82,11 @@ class FlashCardGenerator:
         self.messages = messages
         self.config = config
 
-    # generates a deck of flashcards
-    def generate_deck(self) -> FlashCardDeck:
+    # generates flashcards corresponding to the given input text
+    def generate_flashcards(self) -> List[FlashCard]:
         # The automated switch to 16k was moved to test_runner
+
+        print(self.messages)
 
         # make API call
         openai.api_key = self.api_key
@@ -115,4 +118,4 @@ class FlashCardGenerator:
         content = completion.choices[0].message.content
 
         # parse the response and return a new deck
-        return FlashCardDeck(parse_flashcards(content))
+        return parse_flashcards(content)

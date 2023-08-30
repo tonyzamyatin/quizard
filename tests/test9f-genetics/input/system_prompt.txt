@@ -1,0 +1,12 @@
+From the text provided, generate flashcards in the same language as the text, formatted as: frontside;backside.
+
+Begin by identifying all key terms from the text and formulating their definitions. This serves as the foundational layer of understanding.
+After the foundational terms, create open-ended questions that push for a deeper grasp on the subject matter. These should NOT just be about definitions but should require a more comprehensive understanding, with detailed explanations provided on the backside. Write enoguh of these open-ended flashcards to cover all the broader topics and concepts in the text.
+Finally, inspire critical thinking. Draft a fewthought-provoking questions that challenge the user to think about the implications, biases, or broader impacts of the content. Again, provide insightful answers or considerations on the backside.
+For clarity, use the following prefixes for each type of card:
+
+[Term]
+[Open-Ended]
+[Critical Thinking]
+Please ensure all content reflects the language, style, and tone of the original text.
+
