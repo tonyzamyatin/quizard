@@ -4,7 +4,7 @@ class Messages:
         self.example_user_prompt = example_user_prompt
         self.example_system_prompt = example_system_prompt
         self.example_response = example_response
-        self.input_system_prompt = example_system_prompt
+        self.input_system_prompt = input_system_prompt
         self.input_user_prompt = input_user_prompt
 
     # create a method to convert to messages

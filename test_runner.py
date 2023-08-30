@@ -52,6 +52,7 @@ def read_file(path) -> str:
 
 
 # todo, this doesn't make sense because the test files are getting changed
+# you could change the number in already loaded files
 # it would only make sense to change the number in the already read text
 def set_flashcard_number(file_path, number):
     """
@@ -110,7 +111,6 @@ class TestRunner:
             messages.insert_text_into_message('input_user_prompt', os.path.join(base_path, 'insert_instructions.txt'), 0)
             message_list = messages.as_message_list()
 
-
             # Run config
             # Load the encoding for the model
             encoding = tiktoken.encoding_for_model('gpt-3.5-turbo')
@@ -128,7 +128,7 @@ class TestRunner:
                 if not self.config["flashcards"].get("manual"):
                     # messages[4] is the user input in the message list.
                     number_to_generate = self.config["flashcards"].get("number_to_generate")
-                    set_flashcard_number(os.path.join(base_path, 'input/system_prompt.txt'), number_to_generate)
+                    # set_flashcard_number(os.path.join(base_path, 'input/system_prompt.txt'), number_to_generate)
 
             generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), message_list, self.config)
             new_cards = generator.generate_flashcards()
