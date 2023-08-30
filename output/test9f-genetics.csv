@@ -1,0 +1,161 @@
+Genome; All genetic information present in a single cell of an organism.
+Transcriptome; The set of all RNA transcripts, including coding and noncoding, in an individual or a population of cells.
+Proteome; The entire set of proteins that is expressed by a genome, cell, tissue, or organism at a certain time.
+Homologous genes; Genes that are evolutionarily related and share the same evolutionary origin.
+Orthologs; Homologous genes found in different species that have largely equivalent molecular functions.
+Paralogs; Homologous genes in the same species that have the same evolutionary origin but distinct molecular functions.
+Genetic linkage; Linked genes on the same chromosome that are not randomly segregated in gametes.
+Heterosis; The advantage of individuals, often hybrids, that possess different alleles of many genes.
+Polygenic; Phenotypes that result from the input of many genes.
+Polygenes; Groups of genes that co-regulate quantitative traits.
+Multifactorial or complex traits; Traits that result from both gene action and environmental influences.
+Gene targeting; Manipulating a specific allele, locus, or base sequence to learn its function.
+Gene knockout; Disrupting or eliminating specific genes to study the resulting phenotype.
+Gene knockin; Modifying an endogenous locus, such as expressing a fusion protein of a gene of interest.
+Transgenic animals; Animals that express or overexpress a particular gene of interest.
+Genome; All genetic information present in a single cell of an organism.
+What is the difference between orthologs and paralogs?; Orthologs are homologous genes found in different species that share the same evolutionary origin and have largely equivalent molecular functions. Paralogs, on the other hand, are homologous genes found in the same species that have the same evolutionary origin but distinct molecular functions.
+How is genetic linkage different from genetic recombination?; Genetic linkage refers to the non-random segregation of linked genes on the same chromosome during gamete formation. Genetic recombination, on the other hand, refers to the exchange of genetic material between homologous chromosomes during meiosis.
+What are some examples of multifactorial or complex traits?; Multifactorial or complex traits are influenced by both gene action and environmental factors. Some examples include height, intelligence, and susceptibility to certain diseases.
+What are some potential ethical considerations or concerns with genetic engineering techniques like gene targeting and transgenic animals?; Some ethical considerations include the potential for unintended consequences or unforeseen impacts on ecosystems, the welfare and well-being of the engineered organisms, and the potential for genetic discrimination or inequality.
+How might the study of proteomics contribute to our understanding of complex diseases?; Proteomics, the study of the proteome, can provide insights into the proteins expressed by an organism at a certain time. By studying the proteome, researchers can identify differences in protein expression patterns between healthy individuals and those with a disease, potentially leading to a better understanding of disease mechanisms and the development of targeted treatments.
+Bivalent; A structure formed by the pairing of homologous chromosomes during meiosis.
+Tetrad; Four chromatids (two homologous chromosomes) that make up a bivalent during meiosis.
+Spo11; An enzyme that breaks DNA strands during meiosis to create small gaps.
+DNA Replication; The process of copying DNA to produce a new identical DNA molecule.
+Cyclins; Proteins that activate cyclin-dependent kinases (CDKs) and regulate the cell cycle.
+CDKs; Cyclin-dependent kinases, enzymes that phosphorylate substrates to trigger events in the cell cycle.
+G1/S Checkpoint; Also known as the "START" checkpoint, it monitors the size, availability of nutrients, cell density, signals from neighboring cells, and DNA integrity before allowing replication to proceed.
+G2/M Checkpoint; Also known as the DNA Damage Checkpoint, it monitors the completion of DNA synthesis before allowing cells to enter mitosis.
+Spindle Assembly Checkpoint (SAC); Monitors the formation of the spindle and kinetochore attachment before allowing cells to proceed with mitosis.
+DNA Polymerization; The process of synthesizing a new DNA strand by extending the RNA primer during DNA replication.
+Splicing; The process of removing introns from pre-mRNA and joining exons together to form a mature mRNA molecule.
+5'-Capping; The attachment of a guanosine cap to the 5' end of pre-mRNA, which protects the mRNA from degradation and helps in efficient translation.
+3'-Polyadenylation; The addition of a poly(A) tail consisting of multiple adenosine nucleotides to the 3' end of mRNA, which protects the mRNA from degradation and regulates mRNA stability and translation efficiency.
+Translation; The process of using the information from mRNA to synthesize a protein.
+Kozak Sequence; A sequence surrounding the start codon that influences the binding of the ribosome to the mRNA and affects the rate of translation initiation.
+Euchromatin; The less compact form of chromatin that is more accessible to transcription factors and RNA polymerase and contains actively transcribed genes.
+Heterochromatin; The highly compact and tightly packed form of chromatin that contains repetitive sequences and is involved in chromosome organization and maintenance of chromosome stability.
+SMC Proteins; Structural maintenance of chromosomes proteins that form large complexes to organize and regulate DNA.
+Loss-of-function Mutations; Mutations that reduce or completely prevent the function of a gene product.
+Lethal Mutations; Mutations that disturb essential processes and are incompatible with life.
+Gain-of-function Mutations; Mutations that create gene products with novel or enhanced functions.
+Neutral Mutations; Mutations that do not influence the phenotype.
+Conditional Mutations; Mutations that display a phenotype dependent on external (environmental) conditions.
+Substitution; The replacement of a DNA base with another one.
+Deletion; The removal of one or more base pairs from a DNA molecule.
+Insertion; The addition of one or more base pairs to a DNA molecule.
+Deletion; A mutation that occurs when a segment of DNA is lost from a chromosome.
+Duplication; A mutation that occurs when a segment of DNA is copied and inserted into a chromosome, resulting in an extra copy of that segment.
+Inversion; A mutation where a chromosome is reversed end-to-end.
+Translocations; A mutation where a segment of one chromosome breaks off and becomes attached to a non-homologous chromosome.
+Polyploidy; A change in chromosome number where the whole set of chromosomes is multiplied.
+Aneuploidy; A change in chromosome number where individual chromosomes are present or missing.
+DNA Damage; Changes to the DNA molecule caused by endogenous or exogenous factors.
+Deamination; The process where a base in DNA is converted to a different base due to the removal of an amino group (e.g., cytosine to uracil).
+Oxidation; The process where DNA bases are damaged by reactive oxygen species (ROS) generated during cellular metabolism.
+Hydrolytic Fission; The breaking of a chemical bond using a molecule of water, which can lead to spontaneous deamination of bases or depurination.
+Transposon Insertion; The insertion of mobile DNA sequences (transposons) into a gene, changing its sequence and potentially affecting its function.
+What is the role of the bivalent structure in meiosis?; The bivalent structure, consisting of homologous chromosomes paired up, allows for genetic recombination between the chromosomes, which leads to genetic diversity in offspring.
+How does the cell monitor the completion of DNA synthesis before entering mitosis?; The G2/M checkpoint, also known as the DNA Damage Checkpoint, monitors the completion of DNA synthesis by checking for any DNA damage or errors in replication. If the DNA is deemed to be intact and replication is complete, the cell can proceed to mitosis.
+What is the purpose of splicing during post-transcriptional processing?; Splicing removes introns from pre-mRNA and joins together exons to create a mature mRNA molecule that can be translated into a protein. It allows for the generation of different isoforms of mRNA and proteins from a single gene.
+How does the Kozak sequence influence the rate of translation initiation?; The Kozak sequence, which surrounds the start codon, affects the binding of the ribosome to the mRNA molecule. A strong interaction between the ribosome and the Kozak sequence promotes efficient translation
+Replication Slippage; Errors in DNA replication that result in insertion or deletion of nucleotides.
+Hydrolytic Fission; Breaking of a chemical bond using a molecule of water, leading to spontaneous deamination or depurination.
+Transposon-Insertion; Mobile DNA sequences inserting into a gene and changing its sequence.
+High-Energy Radiation; Radiation that can cause breaks in DNA or the formation of cellular oxygen radicals.
+Intercalating Substances; Planar molecules that can incorporate between neighboring base pairs in DNA, causing structural changes.
+Mismatch Repair (MMR); Mechanism that removes mismatched bases during replication by endonuclease, DNA polymerase, and DNA ligase.
+Base Excision Repair (BER); Mechanism that removes and replaces a single damaged base in DNA.
+Nucleotide Excision Repair (NER); Mechanism that corrects various DNA lesions that distort the DNA helix.
+Non-Homologous End Joining (NHEJ); Homology-independent repair mechanism for double-stranded breaks in DNA.
+Homology-dependent Repair (Recombinational Repair); Homology-dependent repair mechanism for double-stranded breaks in DNA.
+Positive Regulation; Activation of transcription induced by a specific signal.
+Negative Regulation; Inactivation of transcription once sufficient levels of protein have been produced.
+Attenuation; A mechanism of gene expression control that regulates transcription termination within the leader sequence of an mRNA molecule.
+Riboswitches; A mechanism of gene expression control that involves conformational changes in the secondary structure of the mRNA molecule.
+Alternative Splicing; A mechanism of post-transcriptional gene regulation in eukaryotes that allows for the generation of different mRNA isoforms from a single gene.
+Deadenylation-dependent mRNA Decay; A mechanism of mRNA degradation that occurs when the poly(A) tail and 5' cap are removed from mRNA.
+Nonsense-mediated Decay (NMD); A surveillance mechanism that targets mRNA transcripts containing premature stop codons for degradation.
+RNA-induced Gene Silencing (RIGS) or RNA Interference (RNAi); A mechanism of gene regulation involving small RNA molecules that silence or reduce the expression of target genes.
+Posttranslational Modifications; Modifications made to proteins after translation that regulate their activity.
+Phosphorylation; Addition of a phosphate group to a specific amino acid residue on a protein.
+Ubiquitin-Mediated Protein Degradation; A process where a protein targeted for degradation is modified with ubiquitin and recognized by the proteasome.
+lncRNAs; Long noncoding RNAs that interact with chromatin-modifying enzymes to regulate gene expression.
+Epigenetics; The study of changes in gene expression that occur without changes to the underlying DNA sequence.
+DNA Methylation; Addition or removal of methyl groups to DNA, altering gene expression.
+CpG Islands; Regions of DNA that contain a high frequency of CpG dinucleotides, typically unmethylated in normal cells.
+Genomic Imprinting; An epigenetic phenomenon where certain genes are expressed in a parent-of-origin-specific manner.
+X Chromosome Inactivation; The process by which one X chromosome in mammalian females is inactivated to achieve dosage compensation.
+Multipotent progenitor cell; A type of cell that can give rise to multiple cell types.
+Terminally differentiated cells; Cells that have reached their final stage of differentiation and have no further potential for differentiation or self-renewal.
+Epigenetic changes; Changes in gene expression that are not caused by alterations in the DNA sequence, but rather by modifications to the DNA or histone proteins.
+DNA Methylation; The addition or removal of methyl groups to the DNA molecule, which can affect gene expression.
+CpG Islands; Regions of DNA that contain a high frequency of cytosine-guanine pairs and are often associated with gene regulation.
+Histone modification; Chemical modifications to the histone proteins that can alter the structure of chromatin and affect gene expression.
+Chromatin remodeling; The process of repositioning or restructuring nucleosomes to allow or restrict access to DNA by transcription factors and other proteins.
+Imprinting disorders; Genetic disorders that result from abnormal gene expression patterns due to errors in genomic imprinting.
+Polymerase chain reaction (PCR); A technique used to amplify specific DNA sequences in vitro.
+Restriction enzymes; Enzymes that can recognize specific DNA sequences and cleave the DNA at those sites.
+Plasmid vectors; Small, circular DNA molecules that can replicate independently within bacterial cells and are used to carry and replicate foreign DNA fragments.
+Fluorescence in situ hybridization (FISH); A technique used to detect and analyze specific DNA or RNA sequences in cells and tissues using fluorescently labeled probes.
+Southern blot; A technique used to detect specific DNA sequences in a sample by hybridizing them with a complementary probe.
+Sanger sequencing; A method of DNA sequencing that uses dideoxynucleotides to terminate DNA synthesis at specific points, allowing the sequence of the DNA fragment to be determined.
+Open reading frame (ORF); A sequence of DNA or RNA that contains a start codon (usually ATG) and a stop codon (TAA, TAG, or TGA) and has the potential to be translated into a protein.
+BLAST searches; Basic Local Alignment Search Tool, a tool used to compare sequences of DNA or protein to a database to identify similar sequences and infer their function.
+Chromatin immunoprecipitation sequencing (ChIP-seq); A technique used to identify the locations on the DNA where a specific protein binds by immunoprecipitating the protein-DNA complexes and sequencing the associated DNA.
+What is the role of DNA methylation in gene expression?; DNA methylation can regulate gene expression by preventing the binding of transcription factors and other proteins to the DNA, leading to the silencing of genes.
+How does chromatin remodeling affect gene expression?; Chromatin remodeling can open up or condense the structure of chromatin, making genes more or less accessible to the transcriptional machinery and thus affecting their expression.
+What is the purpose of using plasmid vectors in cloning?; Plasmid vectors allow for the replication and amplification of cloned DNA fragments within bacterial cells, making it easier to study and manipulate specific genes or sequences.
+How does fluorescence in situ hybridization (FISH) work?; FISH involves labeling specific DNA or RNA sequences with fluorescent probes and then hybridizing these probes to complementary sequences within cells or tissues. The fluorescent signal can then be visualized under a microscope to determine the presence or absence of the target sequences.
+What is the purpose of Southern blotting?; Southern blotting is used to detect and analyze specific DNA sequences in a sample by hybridizing them with a complementary probe. This technique can provide information about the presence, absence, or abundance of specific DNA sequences.
+How does Sanger sequencing work?; Sanger sequencing uses dideoxynucleotides, which lack a 3' hydroxyl group, to terminate DNA synthesis at specific points during DNA replication. By incorporating fluorescently labeled dideoxynucleotides into the growing DNA chain, the sequence of the DNA fragment can be determined based on the order and intensity of the fluorescence signals.
+What is the purpose of ChIP-seq?; ChIP-seq is used to identify the locations on the DNA where a specific protein binds. This technique involves immunoprecipitating the protein-DNA complexes, sequencing the associated DNA, and analyzing the resulting sequences to infer the binding sites of the protein of interest.
+How can the presence of an open reading frame (ORF) help identify genes from DNA sequences?; An ORF is a sequence of DNA or RNA that has the potential to be translated into a protein. By identifying ORFs within a DNA sequence, researchers can infer the presence of genes and study their potential functions.
+What is the purpose of performing BLAST searches?; BLAST searches allow researchers to compare sequences of DNA or protein to a database to identify similar sequences. By identifying similar sequences, researchers can infer the potential function of an unknown sequence based on the known function of similar sequences in the database.
+How can the distribution of GC vs AT content in a DNA sequence provide information about its nature?; The GC vs AT content in a DNA sequence can provide insights into its characteristics. Genomic background is often AT-rich, so a DNA sequence with a distribution close to 50:50 GC vs AT may indicate a region with genes or important regulatory sequences.
+Why is it important to determine the exon/intron structure and the transcription start site of a gene?; Determining the exon/intron structure and the transcription start site of a gene is important for understanding its splicing patterns, the protein-coding regions, and the regulatory regions involved in its expression. This information can help
+Anneal; The process of binding or attaching to the ends of the target sequence.
+Sequencing Reaction; A process that uses DNA polymerase, dideoxynucleotides (ddNTPs), and normal deoxynucleotides (dNTPs) to determine the sequence of a DNA fragment.
+Gel Electrophoresis; A technique used to separate DNA fragments by size using an electric field.
+Open Reading Frame (ORF); A sequence of DNA that begins with a start codon (ATG) and ends with a stop codon (TAA, TAG, or TGA) and is potentially a protein-coding region.
+CpG Islands; Regions of DNA where a cytosine nucleotide is followed by a guanine nucleotide, often associated with gene regulation.
+Chromatin Immunoprecipitation Sequencing (ChIP-seq); A technique used to identify the locations where a specific protein binds to chromatin in order to study gene regulation.
+Proteomics; The study of the proteome, the entire set of proteins produced by an organism.
+Autosomal Dominant; A form of inheritance in which a single copy of a disease-causing gene is sufficient to manifest the disorder.
+Autosomal Recessive; A form of inheritance in which an individual must inherit two copies of a disease-causing gene to develop the disorder.
+X-linked Recessive; A form of inheritance in which the disease-causing gene is located on the X chromosome, and males are more likely to be affected than females.
+X-linked Dominant; A form of inheritance in which a mutated gene on the X chromosome affects both males and females, and affected females have a 50% chance of passing the gene to their children.
+De Novo Mutations; Mutations that occur for the first time in an individual and are not inherited from their parents.
+Genetic Instability; An increase in the rate at which mutations accumulate, leading to genome instability.
+BRAF; A proto-oncogene frequently mutated in human cancers, leading to uncontrolled cell growth and division.
+c-myc (MYC); A proto-oncogene that is commonly activated in cancer, promoting increased cell proliferation and altered metabolism.
+Telomerase (TERT); An enzyme that adds telomere repeats to the ends of chromosomes, enabling cancer cells to maintain their telomeres and proliferate indefinitely.
+Tumor Suppressors; Genes that normally regulate cell growth and prevent the formation of tumors. When mutated or inactivated, they can contribute to cancer development.
+How is the sequence of a DNA fragment determined through sequencing reaction?; DNA polymerase, dideoxynucleotides (ddNTPs), and normal deoxynucleotides (dNTPs) are used. The ddNTPs are labeled with a fluorescent dye and terminate DNA synthesis when incorporated, allowing the sequence to be read by analyzing the order and intensity of the fluorescent signals.
+What are CpG islands and why are they important in gene regulation?; CpG islands are regions of DNA where a cytosine nucleotide is followed by a guanine nucleotide. They are often associated with gene regulation and can influence transcriptional activity.
+How does chromatin immunoprecipitation sequencing (ChIP-seq) help in studying gene regulation?; ChIP-seq identifies the locations where a specific protein binds to chromatin, providing insights into how transcription factors, histone modifications, and other chromatin-associated proteins regulate gene expression.
+What is the role of telomerase in cancer cells?; Telomerase is an enzyme that adds telomere repeats to the ends of chromosomes, enabling cancer cells to maintain their telomeres and proliferate indefinitely. Its reactivation is a critical step in the immortalization and transformation of cancer cells.
+How do tumor suppressors contribute to cancer development?; Tumor suppressors are genes that normally regulate cell growth and prevent the formation of tumors. When mutated or inactivated, they can no longer fulfill their function, leading to uncontrolled cell proliferation and increased risk of cancer.
+Why are errors in DNA replication considered a common source of mutations in cancer?; Errors in DNA replication can occur naturally and are difficult to prevent. As cells divide and replicate their DNA, mistakes can be made during the process, leading to mutations accumulating over time. Since cell division is a fundamental process in the body, errors in replication can affect any cell type and contribute to the development of cancer.
+How does the presence of CpG islands affect gene regulation?; CpG islands are often associated with gene regulation because their methylation status can influence transcriptional activity. Methylation of CpG islands can silence gene expression, while demethylation can activate gene expression. This dynamic regulation of CpG islands plays a role in various biological processes and can contribute to disease development, including cancer.
+Why are de novo mutations typically rare?; De novo mutations occur for the first time in an individual and are not inherited from their parents. They are typically rare because they arise from spontaneous errors in DNA replication or mutagenic events that occur during gametogenesis or early embryonic development. These mutations are less likely to be passed on to future generations unless they confer a selective advantage or occur in regions of the genome prone to mutation.
+In what ways can chromatin immunoprecipitation sequencing (ChIP-seq) advance our understanding of gene regulation?; ChIP-seq can provide insights into the binding locations of specific proteins on chromatin, helping to identify regulatory elements and understand the mechanisms of gene regulation. By studying the interactions between transcription factors, histone modifications, and other chromatin-associated proteins, ChIP-seq can uncover
+Proto-oncogene; A gene that has the potential to become an oncogene and promote cancer growth when mutated or overexpressed.
+Aberrant Activation; Unusual or abnormal activation of a gene or protein.
+Telomerase; An enzyme that adds telomere repeats to the ends of chromosomes to maintain their stability and integrity.
+Tumor Suppressor; A gene that regulates cell growth and division, preventing the formation and progression of tumors.
+Loss of Heterozygosity (LOH); A phenomenon where both copies of a tumor suppressor gene are inactivated through mutations or deletion, increasing the risk of cancer development.
+Gene Targeting; The process of introducing specific genetic modifications into the genome of an organism.
+Conditional Gene Targeting; Manipulating gene expression in a specific cell type or at a specific developmental stage.
+Cre-Lox System; A genetic system that allows for the temporal control of gene expression and deletion of genes of interest in specific tissues or developmental stages.
+CRISPR-Cas9; A genome editing tool that uses a guide RNA (gRNA) to target specific DNA sequences and the Cas9 enzyme to create double-strand breaks in the DNA for repair.
+Non-homologous End Joining (NHEJ); An error-prone DNA repair mechanism that often results in small insertions or deletions at the site of a DNA double-strand break.
+Homology-Directed Repair (HDR); A more precise DNA repair mechanism that can be used to introduce specific changes to the DNA sequence.
+Genome Transplantation; The process of replacing the genome of one organism with a synthetic genome.
+What is the role of c-Myc in cancer development?; c-Myc is a transcription factor that regulates cell growth and proliferation. Aberrant activation of c-Myc is commonly found in many types of cancer and is associated with increased cell proliferation, reduced apoptosis, and altered metabolism.
+How does telomerase contribute to cancer development?; Telomerase is highly active in cancer cells, allowing them to maintain their telomeres and proliferate indefinitely. Reactivation of telomerase, specifically its catalytic subunit TERT, is a critical step in the immortalization and transformation of cancer cells.
+What is the "two-hit" hypothesis and how does it relate to loss of heterozygosity in tumor suppressor genes?; The "two-hit" hypothesis proposes that both copies of a tumor suppressor gene need to be inactivated for cancer to develop. Loss of heterozygosity (LOH) is a process where the first copy of a tumor suppressor gene is mutated, and then the mutated copy can be transferred to the other chromosome through various mechanisms, completing the inactivation of both copies.
+How does the Cre-Lox system work in conditional gene targeting?; The Cre-Lox system involves the use of the Cre recombinase enzyme, which recognizes specific DNA sequences called loxP sites. When Cre is expressed, it catalyzes the excision or inversion of the DNA sequence between the loxP sites, allowing for the conditional deletion or modification of a gene of interest in specific tissues or developmental stages.
+What are some ethical considerations when using genetic engineering techniques like CRISPR-Cas9?; Some ethical considerations include the potential for off-target effects, unintended consequences of modifying the genome, and the use of genetic engineering in germline editing. There are also concerns about inequality in access to these technologies and the potential for creating "designer babies."
+How might the development of synthetic bacteria impact the field of genetic engineering?; The development of synthetic bacteria, like Mycoplasma mycoides JCVI-syn1.0, opens up possibilities for creating organisms with custom-designed genomes. This could have applications in various fields, such as biotechnology, agriculture, and medicine. However, it also raises questions about safety, regulation, and potential unintended consequences of releasing synthetic organisms into the environment.

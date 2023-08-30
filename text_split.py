@@ -13,13 +13,3 @@ def split_text(text, token_step, take_amount):
         splits.append(encoding.decode(current_text))
         current_start += token_step
     return splits
-
-
-f = open('tests/test8f-16k/input/user_input.txt', 'r')
-text = f.read()
-f.close()
-splited_text = split_text(text, 2500, 3000)
-for text in splited_text:
-    print(text)
-    print('split')
-print(splited_text)
