@@ -12,14 +12,33 @@ logging.basicConfig(filename=os.getenv('FLASHCARD_ERRORS_LOG_PATH', default='log
 
 
 def get_test_folders():
-    user_input = input("Enter the name of a test folder, a comma-separated list of test folders, or 'all': ")
+    while True:
+        user_input = input("Enter 'f' to use a test_config file or 'l' to use a list of test folders: ")
+        # Handling of test_config files
+        if user_input == 'f':
+            while True:
+                user_input = input("Enter name of test config to run: ")
+                if not user_input.endswith(".txt"):
+                    print("File name must end with '.txt'.")
+                # Attempt to read the file and get the folder names
+                try:
+                    with open(os.path.join('teste_configs', user_input), 'r') as file:
+                        test_folders = [line.strip() for line in file.readlines() if line.strip() != '']
+                    return test_folders
+                except FileNotFoundError:
+                    print(f"File {user_input} not found. Please enter a valid file.")
 
-    if user_input.lower() == 'all':
-        return 'all'
-
-    # Splitting the input by comma and stripping any whitespace from each folder name
-    test_folders = [folder.strip() for folder in user_input.split(',')]
-    return test_folders
+        # Handling of comme seperated lists of folders
+        elif user_input == 'l':
+            while True:
+                try:
+                    user_input = input("Enter comma seperated list of test folders: ")
+                    test_folders = [folder.strip() for folder in user_input.split(',')]
+                    return test_folders
+                except:
+                    print("Test folder names must be seperated by ','.")
+        else:
+            print("Unknown command, please try again.")
 
 
 # Load the openai api key from .env file
@@ -45,4 +64,3 @@ else:
             print(f"No such folder found: {folder}")
 
 exit()
-
