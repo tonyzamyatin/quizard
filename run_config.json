@@ -5,7 +5,9 @@
         "number_to_generate": 10
     },
     "tokens": {
-        "prompt_limit": 3000
+        "prompt_limit": 3000,
+        "window_size": 3000,
+        "window_overlap": 500
     },
     "model": {
         "name": "gpt-3.5-turbo",

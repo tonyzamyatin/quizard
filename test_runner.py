@@ -98,7 +98,7 @@ class TestRunner:
         input_user_prompt = read_file(os.path.join(base_path, 'input/user_input.txt'))
 
         input_user_prompts = (
-            text_split.split_text(input_user_prompt, 2000, 2400)) # 2k and 2.4k for 4k model, 10k, 10.4k respectivey for 16k model
+            text_split.split_text(input_user_prompt, 400, 2400)) # 2k and 2.4k for 4k model, 10k, 10.4k respectivey for 16k model
         flashcards: List[FlashCard] = []
         count = 1
         for input_user_prompt in input_user_prompts:
