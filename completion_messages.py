@@ -6,15 +6,30 @@ class Messages:
         self.example_response = example_response
         self.input_system_prompt = input_system_prompt
         self.input_user_prompt = input_user_prompt
+        self._messages = [
+            {"role": "system", "content": self.example_system_prompt},
+            {"role": "user", "content": self.example_user_prompt},
+            {"role": "assistant", "content": self.example_response},
+            {"role": "system", "content": self.input_system_prompt},
+            {"role": "user", "content": self.input_user_prompt},
+        ]
+        self._index = 0  # Initialize index for the iterator
 
-    # create a method to convert to messages
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._index < len(self._messages):
+            result = self._messages[self._index]
+            self._index += 1
+            return result
+        else:
+            self._index = 0  # Reset the index in case you want to iterate again
+            raise StopIteration  # Signal that iteration is complete
+
+    # Convert Message object to an iterable message list
     def as_message_list(self):
-        return [{"role": "system", "content": self.example_system_prompt},
-                {"role": "user", "content": self.example_user_prompt},
-                {"role": "assistant", "content": self.example_response},
-                {"role": "system", "content": self.input_system_prompt},
-                {"role": "user", "content": self.input_user_prompt}
-                ]
+        return self._messages
 
     def insert_text_into_message(self, attribute_name, insert_file_path, position):
         """

@@ -20,24 +20,22 @@ class FlashCardWarning(InvalidFlashCardFormatError):
         super().__init__(message)
         self.flashcard = flashcard
 
-    pass
 
-
+# Function to parse individual flashcard
 def parse_flashcard(number: int, line: str):
     split = line.split(';')
 
-    # Check that split has at least two elements before attempting to access them
     if len(split) < 2:
         raise InvalidFlashCardFormatError(f"Invalid format for flashcard {number}: Missing ';' or content after ';'")
 
-    # Check if the prefix is at the beginning
     prefix_match = re.match(r'\[(.*?)\]', split[0])
+
     if prefix_match:
         prefix = prefix_match.group(1).lower()
-
         # Remove prefix from front_side
         front_side = split[0][split[0].find(']') + 1:].strip()
 
+        # Handle flashcards based on their prefixes
         if "term" in prefix:
             return FlashCard(number, FlashCardType.TERM, front_side, split[1])
         elif "open-ended" in prefix:
@@ -51,44 +49,36 @@ def parse_flashcard(number: int, line: str):
         raise InvalidFlashCardFormatError(f"No prefix found for flashcard {number}")
 
 
+# Function to parse multiple flashcards from the content
 def parse_flashcards(content: str) -> List[FlashCard]:
     cards = []
     content = content.replace('\n\n', '\n')
     lines = content.split('\n')
-    cnt = 0
-    for line in lines:
-        print(line)
-        cnt += 1
+
+    for cnt, line in enumerate(lines, start=1):
         try:
             flashcard = parse_flashcard(cnt, line)
             cards.append(flashcard)
-            print(flashcard)
         except (InvalidFlashCardFormatError, FlashCardWarning) as e:
             if isinstance(e, FlashCardWarning):
                 logging.warning(f"Unexpected prefix for flashcard {cnt}: {e}")
-                cards.append(e.flashcard)  # Append the unknown-type flashcard
-                print(e.flashcard)
+                cards.append(e.flashcard)
             else:
                 logging.error(f"Invalid format for flashcard {cnt}: {e}")
 
     return cards
 
 
+# Class to handle the flashcard generation
 class FlashCardGenerator:
 
-    # constructor
     def __init__(self, api_key, messages: list, config: dict):
         self.api_key = api_key
         self.messages = messages
         self.config = config
 
-    # generates flashcards corresponding to the given input text
+    # Method to generate flashcards
     def generate_flashcards(self) -> List[FlashCard]:
-        # The automated switch to 16k was moved to test_runner
-
-        print(self.messages)
-
-        # make API call
         openai.api_key = self.api_key
         completion = openai.ChatCompletion.create(
             model=self.config["model"].get("name"),
@@ -100,13 +90,11 @@ class FlashCardGenerator:
             presence_penalty=self.config["model"].get("presence_penalty", 0.0)
         )
 
-        f = open(os.getenv('LOG_FILE', default='log/log.txt'), 'a')
-        f.write('-------\n')
-        f.write(str(completion))
-        f.write('\n')
-        f.write(f"Response time: {str(completion.response_ms)}")
-        f.write('\n')
-        f.close()
+        with open(os.getenv('LOG_FILE', default='log/log.txt'), 'a') as f:
+            f.write('-------\n')
+            f.write(str(completion))
+            f.write('\n')
+            f.write(f"Response time: {str(completion.response_ms)}\n")
 
         print(f"Model:{completion.model}")
         print(f"Response time (ms): {completion.response_ms}")
@@ -116,6 +104,4 @@ class FlashCardGenerator:
         print(f"Max tokens: {self.config['model']['max_tokens']}\n")
 
         content = completion.choices[0].message.content
-
-        # parse the response and return a new deck
         return parse_flashcards(content)
