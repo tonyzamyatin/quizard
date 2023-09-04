@@ -1,0 +1,33 @@
+# TODO: Add parameters, optimize and test!
+flashcards:
+  active: true
+  manual: false
+  number_to_generate: 10
+
+tokens:
+  # Short text config for 4k model
+  4k_model:
+    prompt_limit: 3500
+    base_prompt_limit: 2000
+    completion_limit: 500
+  # Medium text config for 16k model
+  16k_model:
+    prompt_limit: 13000
+    base_prompt_limit: 4000
+    completion_limit: 1000
+  # For texts longer than 12k tokens text splitting is used
+  # Window size and overlap will be calculated by the program automatically depending on the size of the base prompt. The window overlap factor
+  # determines how much percent of the whole window should be overlap
+  text_splitting:
+    window_overlap_factor: 0.167
+
+  # Optimal parameters:
+  # 3.000, 2.400 and 400 when using the 4k model
+  # _____, 10.000 and 10.400 when using the 16k model
+
+model:
+  name: "gpt-3.5-turbo"   # Base model to use for text splitting
+  temperature: 0.8
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
