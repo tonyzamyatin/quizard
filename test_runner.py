@@ -43,12 +43,20 @@ def read_file(path: str) -> str:
 
 
 class TestRunner:
+    GENERATION_MODE = ['autogen', 'open_ended', 'definitions', 'quiz', 'cloze']
+
     def __init__(self, config_path: str):
         self.config = load_config(config_path)
+        self.generation_mode = self.config.get('flashcard_generation', {}).get('mode', 'default')
 
-    def run_test(self, base_path: str, csv_path: str):
+        # Check validity of specified deck type
+        if self.generation_mode not in TestRunner.GENERATION_MODE:
+            raise ConfigLoadError(f"Invalid flashcard type: {self.generation_mode}. Expected one of {TestRunner.GENERATION_MODE}.")
+
+    def run_test(self, test_path: str, csv_path: str):
         try:
-            messages = self._initialize_messages(base_path)
+            messages = self._initialize_messages(test_path)
+
             total_prompt_size = self._calculate_total_prompt_size(messages)
             formatted_total_prompt_size = format_num(total_prompt_size)
             write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
@@ -63,21 +71,21 @@ class TestRunner:
             if total_prompt_size < prompt_limit_4k:
                 write_to_log("Using 4k model...\n")
                 completion_token_limit = 4000 - prompt_limit_4k
-                self._run_full_text(base_path, messages, "gpt-3.5-turbo", completion_token_limit)
+                self._run_full_text(test_path, messages, "gpt-3.5-turbo", completion_token_limit)
                 flashcards += self._generate_flashcards(messages)
 
             # Run medium-sized texts with 16k model
             elif total_prompt_size < prompt_limit_16k:
                 write_to_log("Using 16k model...\n")
                 completion_token_limit = 16000 - prompt_limit_16k
-                self._run_full_text(base_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
+                self._run_full_text(test_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
                 flashcards += self._generate_flashcards(messages)
 
             # Run long text using test splitting
             else:
                 write_to_log(f"Using text splitting with the {self.config['model']['name']}...\n")
 
-                # Choose model and calculate window size for text splitting based on the base_prompt_size
+                # Choose model and calculate window size for text splitting based on the size of the base prompt (prompt without text_input)
                 base_prompt_size = self._calculate_base_prompt_size(messages)
                 if self.config["model"]["name"] == "gpt-3.5-turbo" and base_prompt_size < self.config["tokens"]["4k_model"]["base_prompt_limit"]:
                     window_size = 4000 - base_prompt_size - self.config["tokens"]["4k_model"]["completion_limit"]
@@ -89,32 +97,37 @@ class TestRunner:
                         f"The base prompt size of {base_prompt_size} exceeds the allowed base prompt limit. "
                         "You may need to adjust the base prompt size, base prompt limit, or the completion limit.")
 
-                input_user_prompts = text_split.split_text(
-                    messages.input_user_prompt,
+                # Split the text into fragments
+                fragment_list = text_split.split_text(
+                    messages.text_input,
                     window_size,
                     self.config["tokens"]["text_splitting"]["window_overlap_factor"]
                 )
 
-                for input_user_prompt in input_user_prompts:
+                for text_fragment in fragment_list:
                     write_to_log(f'Processing text fragment No {count}')
                     count += 1
 
+                    # Generate a new Messages for the new shorter text_fragment
                     new_messages = Messages(
-                        messages.example_user_prompt,
-                        messages.example_system_prompt,
-                        messages.example_response,
-                        messages.input_system_prompt,
-                        input_user_prompt
+                        messages.system,
+                        messages.example_user,
+                        messages.example_assistant,
+                        text_fragment
                     )
+
                     sub_prompt_size = self._calculate_total_prompt_size(new_messages)
                     formatted_sub_prompt_size = format_num(sub_prompt_size)
                     write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
 
+                    # Add language instructions to the text_input to enable language recognition
                     new_messages.insert_text_into_message(
-                        'input_user_prompt',
-                        os.path.join(base_path, 'insert_instructions.txt'),
+                        'text_input',
+                        'system_prompts/lang_instruction.txt',
                         0
                     )
+
+                    # Generate flashcards and add them to the flashcard list
                     new_cards = self._generate_flashcards(new_messages)
                     flashcards += new_cards
 
@@ -127,7 +140,6 @@ class TestRunner:
         #     logging.error(f"An unexpected error occurred: {str(e)}")
         #     print(f"Terminating the program due to an unexpected error: {str(e)}")
         #     exit(1)
-
 
     def _calculate_total_prompt_size(self, messages: Messages) -> int:
         """Calculates the total prompt size based on the message content."""
@@ -152,23 +164,26 @@ class TestRunner:
         print(f"Using {model_name} for total prompt size.")
         self.config["model"]["name"] = model_name
         self.config["tokens"]["completion_limit"] = completion_token_limit
-        messages.insert_text_into_message('input_user_prompt', os.path.join(base_path, 'insert_instructions.txt'), 0)
+        messages.insert_text_into_message('text_input', os.path.join(base_path, 'lang_instruction.txt'), 0)
 
+    # Modify this method
     def _generate_flashcards(self, messages: Messages) -> List[FlashCard]:
         """Generates flashcards based on the provided messages."""
-        generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), messages.as_message_list(), self.config)
+        generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), messages.as_message_list(), self.config, self.generation_mode)
         return generator.generate_flashcards()
 
-    @staticmethod
-    def _initialize_messages(base_path: str) -> Messages:
+    def _initialize_messages(self, test_path: str) -> Messages:
         """Initializes Messages object from files."""
-        return Messages(
-            read_file(os.path.join(base_path, 'example/example_user_input.txt')),
-            read_file(os.path.join(base_path, 'example/example_system_prompt.txt')),
-            read_file(os.path.join(base_path, 'example/example_response.txt')),
-            read_file(os.path.join(base_path, 'input/system_prompt.txt')),
-            read_file(os.path.join(base_path, 'input/user_input.txt'))
-        )
+        try:
+            system_prompt_file = f"{self.generation_mode}.txt"
+            return Messages(
+                read_file(os.path.join(f'system_prompts/generation_mode/{system_prompt_file}')),
+                read_file(os.path.join(test_path, 'example_user.txt')),
+                read_file(os.path.join(test_path, 'example_assistant.txt')),
+                read_file(os.path.join(test_path, 'text_input.txt'))
+            )
+        except FileNotFoundError as e:
+            raise ConfigLoadError(f"System prompt file not found for generation mode {self.generation_mode}.")
 
     @staticmethod
     def _save_flashcards_as_csv(flashcards: List[FlashCard], csv_path: str):

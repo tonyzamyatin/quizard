@@ -90,8 +90,8 @@ if __name__ == '__main__':
     write_to_log(f"Using the following test folders: {test_folders}\n")
 
     for folder in test_folders:
-        folder_path = os.path.join('tests', folder)
-        if os.path.isdir(folder_path):
-            test_runner.run_test(folder_path, f'output/{folder}.csv')
+        test_folder_path = os.path.join('tests', folder)
+        if os.path.isdir(test_folder_path):
+            test_runner.run_test(test_folder_path, f'output/{folder}.csv')
         else:
             write_to_log(f"No such folder found: {folder}")

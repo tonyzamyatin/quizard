@@ -1,17 +1,14 @@
 class Messages:
-    def __init__(self, example_user_prompt: str, example_system_prompt: str, example_response: str,
-                 input_system_prompt: str, input_user_prompt):
-        self.example_user_prompt = example_user_prompt
-        self.example_system_prompt = example_system_prompt
-        self.example_response = example_response
-        self.input_system_prompt = input_system_prompt
-        self.input_user_prompt = input_user_prompt
+    def __init__(self, system: str, example_user: str, example_assistant: str, text_input):
+        self.example_user = example_user
+        self.system = system
+        self.example_assistant = example_assistant
+        self.text_input = text_input
         self._messages = [
-            {"role": "system", "content": self.example_system_prompt},
-            {"role": "user", "content": self.example_user_prompt},
-            {"role": "assistant", "content": self.example_response},
-            {"role": "system", "content": self.input_system_prompt},
-            {"role": "user", "content": self.input_user_prompt},
+            {"role": "system", "content": self.system},
+            {"role": "user", "content": self.example_user},
+            {"role": "assistant", "content": self.example_assistant},
+            {"role": "user", "content": self.text_input},
         ]
         self._index = 0  # Initialize index for the iterator
 
