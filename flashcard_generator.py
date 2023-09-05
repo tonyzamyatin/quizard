@@ -38,7 +38,7 @@ def parse_flashcard(number: int, line: str) -> FlashCard:
 
 def get_flashcard_type(prefix: str, number: int) -> FlashCardType:
     if "term" in prefix:
-        return FlashCardType.TERM
+        return FlashCardType.DEFINITION
     elif "open-ended" in prefix:
         return FlashCardType.OPEN_ENDED
     elif "critical thinking" in prefix:
@@ -47,12 +47,15 @@ def get_flashcard_type(prefix: str, number: int) -> FlashCardType:
     raise FlashCardWarning(f"Unexpected prefix for flashcard {number}", FlashCard(number, FlashCardType.UNKNOWN, '', ''))
 
 
-def parse_flashcards(content: str) -> List[FlashCard]:
+def parse_flashcards(content: str, generation_mode: str) -> List[FlashCard]:
     cards = []
     lines = content.replace('\n\n', '\n').split('\n')
     for cnt, line in enumerate(lines, start=1):
         try:
-            flashcard = parse_flashcard(cnt, line)
+            if generation_mode == 'autogen':  # For autogen mode, expect prefixes
+                flashcard = parse_flashcard(cnt, line)
+            else:  # For static modes, assume the flashcard type from the mode
+                flashcard = FlashCard(cnt, FlashCardType[generation_mode.upper()], line.split(";")[0], line.split(";")[1])
             cards.append(flashcard)
         except (InvalidFlashCardFormatError, FlashCardWarning) as e:
             if isinstance(e, FlashCardWarning):
@@ -64,10 +67,11 @@ def parse_flashcards(content: str) -> List[FlashCard]:
 
 
 class FlashCardGenerator:
-    def __init__(self, api_key: str, messages: list, config: dict):
+    def __init__(self, api_key: str, messages: list, config: dict, generation_mode: str):
         self.api_key = api_key
         self.messages = messages
         self.config = config
+        self.generation_mode = generation_mode
 
     def generate_flashcards(self) -> List[FlashCard]:
         openai.api_key = self.api_key
@@ -81,7 +85,7 @@ class FlashCardGenerator:
             presence_penalty=self.config["model"].get("presence_penalty", 0.0)
         )
         log_completion_metrics(completion)
-        return parse_flashcards(completion.choices[0].message.content)
+        return parse_flashcards(completion.choices[0].message.content,  self.generation_mode)
 
 
 def log_completion_metrics(completion):

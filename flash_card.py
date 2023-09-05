@@ -4,9 +4,11 @@ from enum import Enum
 
 class FlashCardType(Enum):
     UNKNOWN = 0
-    TERM = 1
+    DEFINITION = 1
     OPEN_ENDED = 2
     CRITICAL_THINKING = 3
+    QUIZ = 4
+    CLOZE = 5
 
 
 class FlashCard:
