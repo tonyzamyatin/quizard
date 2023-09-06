@@ -3,14 +3,14 @@ import os
 import logging
 import openai
 from dotenv import load_dotenv
-from test_runner import TestRunner
-from global_helpers import write_to_log
+from backend.tests.test_runner import TestRunner
+from backend.src.utils.global_helpers import write_to_log
 
 
 # Configure logging
 def configure_logging():
     logging.basicConfig(
-        filename=os.getenv('FLASHCARD_ERRORS_LOG_PATH', default='log/flashcard_errors.log'),
+        filename=os.getenv('FLASHCARD_ERRORS_LOG_PATH', default='logs/flashcard_errors.logs'),
         filemode='a',
         level=logging.WARNING,
         format='%(asctime)s %(levelname)s %(message)s',
@@ -20,13 +20,13 @@ def configure_logging():
 
 # Read the current test configuration
 def read_current_test_config():
-    with open("test_configs/current_test_config.json", 'r') as f:
+    with open("../tests/test_configs/current_test_config.json", 'r') as f:
         return json.load(f)
 
 
-# Start a new section in the log
+# Start a new section in the logs
 def start_log():
-    with open(os.getenv('LOG_FILE', default='log/log.txt'), 'a') as f:
+    with open(os.getenv('LOG_FILE', default='logs/logs.txt'), 'a') as f:
         f.write('\n-----------------------------------------------------------------------------------------------------------\n')
 
 
@@ -38,7 +38,7 @@ def get_test_folders():
 
         if user_input == 'f':
             try:
-                with open(os.path.join('test_configs', current_test_config["current_test_config"]), 'r') as file:
+                with open(os.path.join('../tests/test_configs', current_test_config["current_test_config"]), 'r') as file:
                     folder_names = [line.strip() for line in file if line.strip()]
                     start_log()
                     write_to_log(f"Using {current_test_config['current_test_config']} as test configuration...")
@@ -54,12 +54,12 @@ def get_test_folders():
                     continue
 
                 try:
-                    with open(os.path.join('test_configs', new_test_config), 'r') as file:
+                    with open(os.path.join('../tests/test_configs', new_test_config), 'r') as file:
                         folder_names = [line.strip() for line in file if line.strip()]
                         start_log()
                         write_to_log(f"Using {new_test_config} as new test configuration...")
                         current_test_config['current_test_config'] = new_test_config
-                        with open("test_configs/current_test_config.json", 'w') as f:
+                        with open("../tests/test_configs/current_test_config.json", 'w') as f:
                             json.dump(current_test_config, f)
                         return folder_names
                 except FileNotFoundError:
@@ -86,11 +86,11 @@ if __name__ == '__main__':
     test_folders = get_test_folders()
 
     # Initialize and run tests
-    test_runner = TestRunner('run_config.yaml')
+    test_runner = TestRunner('../config/run_config.yaml')
     write_to_log(f"Using the following test folders: {test_folders}\n")
 
     for folder in test_folders:
-        test_folder_path = os.path.join('tests', folder)
+        test_folder_path = os.path.join('../tests', folder)
         if os.path.isdir(test_folder_path):
             test_runner.run_test(test_folder_path, f'output/{folder}.csv')
         else:

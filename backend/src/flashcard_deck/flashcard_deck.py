@@ -1,8 +1,7 @@
 import json
-import csv
 from typing import List
 
-from flash_card import FlashCard
+from backend.src.flashcard.flashcard import FlashCard
 
 
 class FlashCardDeck:

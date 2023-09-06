@@ -9,7 +9,7 @@ def format_num(number: int) -> str:
 
 
 def write_to_log(message: str):
-    """Write to the log and also print the message."""
-    with open(os.getenv('LOG_FILE', default='log/log.txt'), 'a') as f:
+    """Write to the logs and also print the message."""
+    with open(os.getenv('LOG_FILE', default='logs/logs.txt'), 'a') as f:
         f.write(message + '\n')
     print(message)

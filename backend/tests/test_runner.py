@@ -3,13 +3,13 @@ import os
 import logging
 from typing import List
 
-from completion_messages import Messages
-from flash_card import FlashCard
-from flash_card_deck import FlashCardDeck
-from flashcard_generator import FlashCardGenerator
-from global_helpers import format_num, write_to_log
+from backend.src.utils.completion_messages import Messages
+from backend.src.flashcard.flashcard import FlashCard
+from backend.src.flashcard_deck.flashcard_deck import FlashCardDeck
+from backend.src.flashcard_generator.flashcard_generator import FlashCardGenerator
+from backend.src.utils.global_helpers import format_num, write_to_log
 import tiktoken
-import text_split
+from backend.src.text_splitting import text_split
 
 
 class ConfigLoadError(Exception):
@@ -177,7 +177,7 @@ class TestRunner:
         try:
             system_prompt_file = f"{self.generation_mode}.txt"
             return Messages(
-                read_file(os.path.join(f'system_prompts/generation_mode/{system_prompt_file}')),
+                read_file(os.path.join(f'backend/system_prompts/generation_mode/{system_prompt_file}')),
                 read_file(os.path.join(test_path, 'example_user.txt')),
                 read_file(os.path.join(test_path, 'example_assistant.txt')),
                 read_file(os.path.join(test_path, 'text_input.txt'))

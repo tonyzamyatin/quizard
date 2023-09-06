@@ -2,8 +2,8 @@ import os
 import re
 import logging
 from typing import List
-from flash_card import FlashCard, FlashCardType
-from global_helpers import format_num
+from backend.src.flashcard.flashcard import FlashCard, FlashCardType
+from backend.src.utils.global_helpers import format_num
 import openai
 
 
@@ -96,5 +96,5 @@ def log_completion_metrics(completion):
     ]
 
     print("\n".join(metrics))
-    with open(os.getenv('LOG_FILE', default='log/log.txt'), 'a') as f:
+    with open(os.getenv('LOG_FILE', default='logs/logs.txt'), 'a') as f:
         f.write("\n".join(metrics))
