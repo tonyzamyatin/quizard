@@ -3,22 +3,10 @@ import re
 import logging
 from typing import List
 from backend.src.flashcard.flashcard import FlashCard, FlashCardType
+from backend.src.custom_exceptions.invalid_flashcard_format_error import InvalidFlashCardFormatError
+from backend.src.custom_exceptions.flashcard_warning import  FlashCardWarning
 from backend.src.utils.global_helpers import format_num
 import openai
-
-
-class InvalidFlashCardFormatError(Exception):
-    """Exception raised when the flashcard format is invalid."""
-    pass
-
-
-class FlashCardWarning(InvalidFlashCardFormatError):
-    """Exception raised for unexpected prefixes."""
-
-    def __init__(self, message: str, flashcard: FlashCard):
-        super().__init__(message)
-        self.flashcard = flashcard
-
 
 def parse_flashcard(number: int, line: str) -> FlashCard:
     split_line = line.split(';')
@@ -85,7 +73,7 @@ class FlashCardGenerator:
             presence_penalty=self.config["model"].get("presence_penalty", 0.0)
         )
         log_completion_metrics(completion)
-        return parse_flashcards(completion.choices[0].message.content,  self.generation_mode)
+        return parse_flashcards(completion.choices[0].message.content, self.generation_mode)
 
 
 def log_completion_metrics(completion):

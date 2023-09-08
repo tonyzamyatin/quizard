@@ -3,23 +3,17 @@ import os
 import logging
 from typing import List
 
+# Import custom exceptions
+from backend.src.custom_exceptions.config_load_error import ConfigLoadError
+from backend.src.custom_exceptions.prompt_size_error import PromptSizeError
+
 from backend.src.utils.completion_messages import Messages
 from backend.src.flashcard.flashcard import FlashCard
 from backend.src.flashcard_deck.flashcard_deck import FlashCardDeck
 from backend.src.flashcard_generator.flashcard_generator import FlashCardGenerator
 from backend.src.utils.global_helpers import format_num, write_to_log
-import tiktoken
 from backend.src.text_splitting import text_split
-
-
-class ConfigLoadError(Exception):
-    """Custom exception for config loading issues."""
-    pass
-
-
-class PromptSizeError(Exception):
-    """Custom exception for prompt size issues."""
-    pass
+import tiktoken
 
 
 def load_config(config_path='config.yaml') -> dict:
@@ -177,7 +171,7 @@ class TestRunner:
         try:
             system_prompt_file = f"{self.generation_mode}.txt"
             return Messages(
-                read_file(os.path.join(f'backend/system_prompts/generation_mode/{system_prompt_file}')),
+                read_file(os.path.join('backend/src/system_prompts/generation_mode', system_prompt_file)),
                 read_file(os.path.join(test_path, 'example_user.txt')),
                 read_file(os.path.join(test_path, 'example_assistant.txt')),
                 read_file(os.path.join(test_path, 'text_input.txt'))
