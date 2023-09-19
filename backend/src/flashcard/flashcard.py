@@ -2,7 +2,7 @@ import json
 from enum import Enum
 
 
-class FlashCardType(Enum):
+class FlashcardType(Enum):
     UNKNOWN = 0
     DEFINITION = 1
     OPEN_ENDED = 2
@@ -11,8 +11,8 @@ class FlashCardType(Enum):
     CLOZE = 5
 
 
-class FlashCard:
-    def __init__(self, id: int, type: FlashCardType, frontside: str, backside: str):
+class Flashcard:
+    def __init__(self, id: int, type: FlashcardType, frontside: str, backside: str):
         self.id = id
         self.type = type
         self.frontside = frontside

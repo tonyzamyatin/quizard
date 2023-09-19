@@ -2,40 +2,41 @@ import os
 import re
 import logging
 from typing import List
-from backend.src.flashcard.flashcard import FlashCard, FlashCardType
-from backend.src.custom_exceptions.invalid_flashcard_format_error import InvalidFlashCardFormatError
-from backend.src.custom_exceptions.flashcard_warning import  FlashCardWarning
+from backend.src.flashcard.flashcard import Flashcard, FlashcardType
+from backend.src.custom_exceptions.custom_exceptions import FlashcardInvalidFormatError
+from backend.src.custom_exceptions.custom_exceptions import FlashcardPrefixError
 from backend.src.utils.global_helpers import format_num
 import openai
 
-def parse_flashcard(number: int, line: str) -> FlashCard:
+
+def parse_flashcard(number: int, line: str) -> Flashcard:
     split_line = line.split(';')
     if len(split_line) < 2:
-        raise InvalidFlashCardFormatError(f"Invalid format for flashcard {number}")
+        raise FlashcardInvalidFormatError(f"Invalid format for flashcard {number}")
 
     prefix_match = re.match(r'\[(.*?)\]', split_line[0])
     if not prefix_match:
-        raise InvalidFlashCardFormatError(f"No prefix found for flashcard {number}")
+        raise FlashcardInvalidFormatError(f"No prefix found for flashcard {number}")
 
     prefix = prefix_match.group(1).lower()
     front_side = split_line[0][len(prefix) + 2:].strip()
     flashcard_type = get_flashcard_type(prefix, number)
 
-    return FlashCard(number, flashcard_type, front_side, split_line[1])
+    return Flashcard(number, flashcard_type, front_side, split_line[1])
 
 
-def get_flashcard_type(prefix: str, number: int) -> FlashCardType:
+def get_flashcard_type(prefix: str, number: int) -> FlashcardType:
     if "term" in prefix:
-        return FlashCardType.DEFINITION
+        return FlashcardType.DEFINITION
     elif "open-ended" in prefix:
-        return FlashCardType.OPEN_ENDED
+        return FlashcardType.OPEN_ENDED
     elif "critical thinking" in prefix:
-        return FlashCardType.CRITICAL_THINKING
+        return FlashcardType.CRITICAL_THINKING
 
-    raise FlashCardWarning(f"Unexpected prefix for flashcard {number}", FlashCard(number, FlashCardType.UNKNOWN, '', ''))
+    raise FlashcardPrefixError(f"Unexpected prefix for flashcard {number}", Flashcard(number, FlashcardType.UNKNOWN, '', ''))
 
 
-def parse_flashcards(content: str, generation_mode: str) -> List[FlashCard]:
+def parse_flashcards(content: str, generation_mode: str) -> List[Flashcard]:
     cards = []
     lines = content.replace('\n\n', '\n').split('\n')
     for cnt, line in enumerate(lines, start=1):
@@ -43,25 +44,25 @@ def parse_flashcards(content: str, generation_mode: str) -> List[FlashCard]:
             if generation_mode == 'autogen':  # For autogen mode, expect prefixes
                 flashcard = parse_flashcard(cnt, line)
             else:  # For static modes, assume the flashcard type from the mode
-                flashcard = FlashCard(cnt, FlashCardType[generation_mode.upper()], line.split(";")[0], line.split(";")[1])
+                flashcard = Flashcard(cnt, FlashcardType[generation_mode.upper()], line.split(";")[0], line.split(";")[1])
             cards.append(flashcard)
-        except (InvalidFlashCardFormatError, FlashCardWarning) as e:
-            if isinstance(e, FlashCardWarning):
-                logging.warning(f"Unexpected prefix for flashcard {cnt}: {e}")
+        except (FlashcardInvalidFormatError, FlashcardPrefixError) as e:
+            if isinstance(e, FlashcardPrefixError):
+                logging.warning(e)
                 cards.append(e.flashcard)
             else:
-                logging.error(f"Invalid format for flashcard {cnt}: {e}")
+                logging.error(e)
     return cards
 
 
-class FlashCardGenerator:
+class FlashcardGenerator:
     def __init__(self, api_key: str, messages: list, config: dict, generation_mode: str):
         self.api_key = api_key
         self.messages = messages
         self.config = config
         self.generation_mode = generation_mode
 
-    def generate_flashcards(self) -> List[FlashCard]:
+    def generate_flashcards(self) -> List[Flashcard]:
         openai.api_key = self.api_key
         completion = openai.ChatCompletion.create(
             model=self.config["model"].get("name"),

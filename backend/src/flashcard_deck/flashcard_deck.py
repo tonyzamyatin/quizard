@@ -1,11 +1,11 @@
 import json
 from typing import List
 
-from backend.src.flashcard.flashcard import FlashCard
+from backend.src.flashcard.flashcard import Flashcard
 
 
-class FlashCardDeck:
-    def __init__(self, flashcards: List[FlashCard]):
+class FlashcardDeck:
+    def __init__(self, flashcards: List[Flashcard]):
         self.flashcards = flashcards
 
     def __str__(self):
