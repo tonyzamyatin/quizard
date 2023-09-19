@@ -1,19 +1,19 @@
 import yaml
 import os
 import logging
+import tiktoken
 from typing import List
 
-# Import custom exceptions
-from backend.src.custom_exceptions.config_load_error import ConfigLoadError
-from backend.src.custom_exceptions.prompt_size_error import PromptSizeError
-
 from backend.src.utils.completion_messages import Messages
-from backend.src.flashcard.flashcard import FlashCard
-from backend.src.flashcard_deck.flashcard_deck import FlashCardDeck
-from backend.src.flashcard_generator.flashcard_generator import FlashCardGenerator
+from backend.src.flashcard.flashcard import Flashcard
+from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
+from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
 from backend.src.utils.global_helpers import format_num, write_to_log
 from backend.src.text_splitting import text_split
-import tiktoken
+
+# Import custom exceptions
+from backend.src.custom_exceptions.custom_exceptions import ConfigLoadingError
+from backend.src.custom_exceptions.custom_exceptions import PromptSizeError
 
 
 def load_config(config_path='config.yaml') -> dict:
@@ -23,11 +23,11 @@ def load_config(config_path='config.yaml') -> dict:
             config = yaml.safe_load(config_file)
             return config
     except FileNotFoundError:
-        raise ConfigLoadError(f"The configuration file '{config_path}' was not found.")
+        raise ConfigLoadingError(f"The configuration file '{config_path}' was not found.")
     except yaml.YAMLError:
-        raise ConfigLoadError(f"The configuration file '{config_path}' contains invalid YAML.")
+        raise ConfigLoadingError(f"The configuration file '{config_path}' contains invalid YAML.")
     except Exception as e:
-        raise ConfigLoadError(f"An error occurred while loading the configuration file: {str(e)}")
+        raise ConfigLoadingError(f"An error occurred while loading the configuration file: {str(e)}")
 
 
 def read_file(path: str) -> str:
@@ -39,104 +39,91 @@ def read_file(path: str) -> str:
 class TestRunner:
     GENERATION_MODE = ['autogen', 'open_ended', 'definitions', 'quiz', 'cloze']
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str, backend_root_dir: str):
         self.config = load_config(config_path)
+        self.backend_root_dir = backend_root_dir
         self.generation_mode = self.config.get('flashcard_generation', {}).get('mode', 'default')
 
         # Check validity of specified deck type
         if self.generation_mode not in TestRunner.GENERATION_MODE:
-            raise ConfigLoadError(f"Invalid flashcard type: {self.generation_mode}. Expected one of {TestRunner.GENERATION_MODE}.")
+            raise ConfigLoadingError(f"Invalid flashcard type: {self.generation_mode}. Expected one of {TestRunner.GENERATION_MODE}.")
 
     def run_test(self, test_path: str, csv_path: str):
-        try:
-            messages = self._initialize_messages(test_path)
+        messages = self._initialize_messages(test_path)
 
-            total_prompt_size = self._calculate_total_prompt_size(messages)
-            formatted_total_prompt_size = format_num(total_prompt_size)
-            write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
+        total_prompt_size = self._calculate_total_prompt_size(messages)
+        formatted_total_prompt_size = format_num(total_prompt_size)
+        write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
-            flashcards = []  # List to collect flashcards from each run
-            count = 1  # Counter for debug print statements
+        flashcards = []  # List to collect flashcards from each run
+        count = 1  # Counter for debug print statements
 
-            prompt_limit_4k = self.config["tokens"]["4k_model"]["prompt_limit"]
-            prompt_limit_16k = self.config["tokens"]["16k_model"]["prompt_limit"]
+        prompt_limit_4k = self.config["tokens"]["4k_model"]["prompt_limit"]
+        prompt_limit_16k = self.config["tokens"]["16k_model"]["prompt_limit"]
 
-            # Run short texts with 4k model
-            if total_prompt_size < prompt_limit_4k:
-                write_to_log("Using 4k model...\n")
-                completion_token_limit = 4000 - prompt_limit_4k
-                self._run_full_text(test_path, messages, "gpt-3.5-turbo", completion_token_limit)
-                flashcards += self._generate_flashcards(messages)
+        # Run short texts with 4k model
+        if total_prompt_size < prompt_limit_4k:
+            write_to_log("Using 4k model...\n")
+            completion_token_limit = 4000 - prompt_limit_4k
+            self._run_full_text(test_path, messages, "gpt-3.5-turbo", completion_token_limit)
+            flashcards += self._generate_flashcards(messages)
 
-            # Run medium-sized texts with 16k model
-            elif total_prompt_size < prompt_limit_16k:
-                write_to_log("Using 16k model...\n")
-                completion_token_limit = 16000 - prompt_limit_16k
-                self._run_full_text(test_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
-                flashcards += self._generate_flashcards(messages)
+        # Run medium-sized texts with 16k model
+        elif total_prompt_size < prompt_limit_16k:
+            write_to_log("Using 16k model...\n")
+            completion_token_limit = 16000 - prompt_limit_16k
+            self._run_full_text(test_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
+            flashcards += self._generate_flashcards(messages)
 
-            # Run long text using test splitting
-            else:
-                write_to_log(f"Using text splitting with the {self.config['model']['name']}...\n")
+        # Run long text using test splitting
+        else:
+            write_to_log(f"Using text splitting with the {self.config['model']['name']}...\n")
 
-                # Choose model and calculate window size for text splitting based on the size of the base prompt (prompt without text_input)
-                base_prompt_size = self._calculate_base_prompt_size(messages)
-                if self.config["model"]["name"] == "gpt-3.5-turbo" and base_prompt_size < self.config["tokens"]["4k_model"]["base_prompt_limit"]:
-                    window_size = 4000 - base_prompt_size - self.config["tokens"]["4k_model"]["completion_limit"]
-                elif base_prompt_size < self.config["tokens"]["16k_model"]["base_prompt_limit"]:
-                    window_size = 16000 - base_prompt_size - self.config["tokens"]["16k_model"]["completion_limit"]
-                else:
-                    # If the base_prompt_size exceeds the base_prompt_limit, raise an exception.
-                    raise PromptSizeError(
-                        f"The base prompt size of {base_prompt_size} exceeds the allowed base prompt limit. "
-                        "You may need to adjust the base prompt size, base prompt limit, or the completion limit.")
-
-                # Split the text into fragments
+            # Split the text into fragments
+            base_prompt_size = self._calculate_base_prompt_size(messages)
+            try:
                 fragment_list = text_split.split_text(
                     messages.text_input,
-                    window_size,
-                    self.config["tokens"]["text_splitting"]["window_overlap_factor"]
+                    base_prompt_size,
+                    self.config
+                )
+            except PromptSizeError as e:
+                logging.error(f"Prompt size error occurred: {str(e)}")
+                print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
+                exit(1)
+
+            for text_fragment in fragment_list:
+                write_to_log(f'Processing text fragment No {count}')
+                count += 1
+
+                # Generate a new Messages for the new shorter text_fragment
+                new_messages = Messages(
+                    messages.system,
+                    messages.example_user,
+                    messages.example_assistant,
+                    text_fragment
                 )
 
-                for text_fragment in fragment_list:
-                    write_to_log(f'Processing text fragment No {count}')
-                    count += 1
+                sub_prompt_size = self._calculate_total_prompt_size(new_messages)
+                formatted_sub_prompt_size = format_num(sub_prompt_size)
+                write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
 
-                    # Generate a new Messages for the new shorter text_fragment
-                    new_messages = Messages(
-                        messages.system,
-                        messages.example_user,
-                        messages.example_assistant,
-                        text_fragment
-                    )
+                # Add language instructions to the text_input to enable language recognition
+                new_messages.insert_text_into_message(
+                    'text_input',
+                    os.path.join(self.backend_root_dir, 'system_prompts/lang_instruction.txt'),
+                    0
+                )
 
-                    sub_prompt_size = self._calculate_total_prompt_size(new_messages)
-                    formatted_sub_prompt_size = format_num(sub_prompt_size)
-                    write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
+                # Generate flashcards and add them to the flashcard list
+                new_cards = self._generate_flashcards(new_messages)
+                flashcards += new_cards
 
-                    # Add language instructions to the text_input to enable language recognition
-                    new_messages.insert_text_into_message(
-                        'text_input',
-                        'system_prompts/lang_instruction.txt',
-                        0
-                    )
-
-                    # Generate flashcards and add them to the flashcard list
-                    new_cards = self._generate_flashcards(new_messages)
-                    flashcards += new_cards
-
-            self._save_flashcards_as_csv(flashcards, csv_path)
-        except PromptSizeError as e:
-            logging.error(f"Prompt size error occurred: {str(e)}")
-            print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
-            exit(1)
-        # except Exception as e:
-        #     logging.error(f"An unexpected error occurred: {str(e)}")
-        #     print(f"Terminating the program due to an unexpected error: {str(e)}")
-        #     exit(1)
+        self._save_flashcards_as_csv(flashcards, csv_path)
 
     def _calculate_total_prompt_size(self, messages: Messages) -> int:
         """Calculates the total prompt size based on the message content."""
+        print(self.config['model']['name'])
         encoding = tiktoken.encoding_for_model(self.config['model']['name'])
         # There are 18 additional tokens in the prompt due to the list format
         return 18 + sum(
@@ -161,9 +148,9 @@ class TestRunner:
         messages.insert_text_into_message('text_input', os.path.join(base_path, 'lang_instruction.txt'), 0)
 
     # Modify this method
-    def _generate_flashcards(self, messages: Messages) -> List[FlashCard]:
+    def _generate_flashcards(self, messages: Messages) -> List[Flashcard]:
         """Generates flashcards based on the provided messages."""
-        generator = FlashCardGenerator(os.getenv('OPENAI_API_KEY'), messages.as_message_list(), self.config, self.generation_mode)
+        generator = FlashcardGenerator(os.getenv('OPENAI_API_KEY'), messages.as_message_list(), self.config, self.generation_mode)
         return generator.generate_flashcards()
 
     def _initialize_messages(self, test_path: str) -> Messages:
@@ -171,18 +158,18 @@ class TestRunner:
         try:
             system_prompt_file = f"{self.generation_mode}.txt"
             return Messages(
-                read_file(os.path.join('backend/src/system_prompts/generation_mode', system_prompt_file)),
+                read_file(os.path.join(self.backend_root_dir, "system_prompts/generation_mode", system_prompt_file)),
                 read_file(os.path.join(test_path, 'example_user.txt')),
                 read_file(os.path.join(test_path, 'example_assistant.txt')),
                 read_file(os.path.join(test_path, 'text_input.txt'))
             )
         except FileNotFoundError as e:
-            raise ConfigLoadError(f"System prompt file not found for generation mode {self.generation_mode}.")
+            raise ConfigLoadingError(f"System prompt file not found for generation mode {self.generation_mode}.")
 
     @staticmethod
-    def _save_flashcards_as_csv(flashcards: List[FlashCard], csv_path: str):
+    def _save_flashcards_as_csv(flashcards: List[Flashcard], csv_path: str):
         """Saves the generated flashcards as a CSV file."""
-        deck = FlashCardDeck(flashcards)
+        deck = FlashcardDeck(flashcards)
         deck.save_as_csv(csv_path)
 
 # todo: Check run_config for specified export format and add conditional statement

@@ -19,11 +19,15 @@ tokens:
     prompt_limit: 13000
     base_prompt_limit: 4000
     completion_limit: 1000
+
   # For texts longer than 12k tokens text splitting is used
-  # Window size and overlap will be calculated by the program automatically depending on the size of the base prompt. The window overlap factor
-  # determines how much percent of the whole window should be overlap
+  # Window size will be calculated by the program automatically depending on the size of the base prompt (i.e. system prompt + example)
+  # The window overlap can be either set relative to the text fragment being processed via relative_window_overlap or set to an absolute token value.
+  # Depending on what setting is being used
   text_splitting:
-    window_overlap_factor: 0.167
+    window_overlap_type: "absolute"         # needs to be "relative" or "absolute"
+    relative_window_overlap: 0.167
+    absolute_window_overlap: 20
 
   # Optimal parameters:
   # 3.000, 2.400 and 400 when using the 4k model
