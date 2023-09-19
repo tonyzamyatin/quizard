@@ -28,8 +28,8 @@ def configure_logging():
 # todo: Define the root directory of your backend code.
 # This assumes that main.py is in backend/src/
 backend_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-test_configs_dir = os.path.join(backend_root_dir, 'tests', 'test_configs')
+output_root_dir = os.path.join(os.path.dirname(backend_root_dir), 'output')
+test_configs_dir = os.path.join(backend_root_dir, 'tests/test_configs')
 log_dir = os.path.join(backend_root_dir, 'logs')
 
 
@@ -49,101 +49,46 @@ def start_log():
 # Get specific test folders from the terminal
 def get_test_folders():
     while True:
-        logging.debug("Getting user input for test folder selection.")
         user_input = input("Enter 'f' to use the test config file, 'n' to enter a new test_config file, or 'l' to use a list of test folders: ")
         current_test_config = read_current_test_config()
         full_path = os.path.join(test_configs_dir, current_test_config["current_test_config"])
-        logging.debug(f"Read saved test config: {current_test_config['current_test_config']}")
 
         if user_input == 'f':
             try:
-                logging.debug("Attempting to use saved test config.")
-                print(os.environ)
-                # Debugging
-                logging.debug(f"Full path: {full_path}")
-                logging.debug(f"Available test configs in: {os.listdir(test_configs_dir)}.")
-
-                if os.path.isfile(full_path):
-                    logging.debug(f"{full_path} exists.")
-                else:
-                    logging.debug(f"{full_path} does not exist.")
-
-                if os.access(full_path, os.R_OK):
-                    logging.debug(f"File {full_path} is accessible to read")
-                else:
-                    logging.debug(f"File {full_path} is not readable")
-
                 with open(full_path, 'r', encoding='UTF-8') as file:
                     folder_names = [line.strip() for line in file if line.strip()]
                     start_log()
                     write_to_log(f"Using {current_test_config['current_test_config']} as test configuration...")
                     return folder_names
             except FileNotFoundError:
-                print(os.environ)
-                logging.debug(f"Could not open {full_path} for reading.")
+                logging.warning(f"Could not open {full_path} for reading.")
                 logging.debug(f"Stack trace: {traceback.format_exc()}")
-                logging.debug(f"Environment: {os.environ}")
-                logging.debug(f"Path repr: {repr(full_path)}")
                 print(f"File {current_test_config['current_test_config']} not found. Please enter a valid file.")
 
         elif user_input == 'n':
             while True:
                 new_test_config = input("Enter name of test_config file to use as new test configuration: ")
-                logging.debug(f"New test config entered: {new_test_config}")
                 if not new_test_config.endswith(".txt"):
                     logging.warning("File name does not end with '.txt'.")
                     print("File name must end with '.txt'.")
                     continue
                 full_path = os.path.join(test_configs_dir, new_test_config)
 
-                # Debugging
-                logging.debug(f"Full path: {full_path}")
-                logging.debug(f"Available test configs in: {os.listdir(test_configs_dir)}.")
-
-                if os.path.isfile(full_path):
-                    logging.debug(f"{full_path} exists.")
-                else:
-                    logging.debug(f"{full_path} does not exist.")
-
-                if os.access(full_path, os.R_OK):
-                    logging.debug(f"File {full_path} is accessible to read")
-                else:
-                    logging.debug(f"File {full_path} is not readable")
-
-                try:
-                    logging.debug("Attempting to open new test config.")
-                    file = open(full_path, 'r')
-                    file.close()
-                    logging.debug("File could be opened.")
-                except FileNotFoundError:
-                    logging.warning(f"File {new_test_config} not found.")
-                    stack_trace = traceback.format_exc()
-                    logging.warning(f"Stack trace: {stack_trace}")
-                except Exception as e:
-                    logging.warning(f"Exception caught: {e}")
-                    stack_trace = traceback.format_exc()
-                    logging.warning(f"Stack trace: {stack_trace}")
-
                 try:
                     with open(full_path, 'r', encoding='UTF-8') as file:
                         folder_names = [line.strip() for line in file if line.strip()]
-                        logging.debug("Folder names were collected.")
                         start_log()
-                        logging.debug(f"Starting running log.")
                         write_to_log(f"Using {new_test_config} as new test configuration...")
-                        logging.debug(f"Writing to log works.")
                         current_test_config['current_test_config'] = new_test_config
-                        logging.debug("")
                     with open(os.path.join(test_configs_dir, 'current_test_config.json'), 'w') as f:
                         json.dump(current_test_config, f)
                     return folder_names
                 except FileNotFoundError:
-                    logging.warning(f"File not found: There was an issue with reading {new_test_config}.")
+                    logging.warning(f"Could not open {full_path} for reading.")
                     print(f"File {new_test_config} not found. Please enter a valid file.")
 
         elif user_input == 'l':
             folder_list = input("Enter comma-separated list of test folders: ")
-            logging.debug(f"Folder list entered: {folder_list}")
             folder_names = [folder_name.strip() for folder_name in folder_list.split(',')]
             start_log()
             write_to_log(f"Using the following test folders: {folder_names}")
@@ -170,6 +115,6 @@ if __name__ == '__main__':
     for folder in test_folders:
         test_folder_path = os.path.join(test_configs_dir, '..', folder)
         if os.path.isdir(test_folder_path):
-            test_runner.run_test(test_folder_path, f'output/{folder}.csv')
+            test_runner.run_test(test_folder_path, os.path.join(output_root_dir, f'{folder}.csv'))
         else:
             write_to_log(f"No such folder found: {folder}")

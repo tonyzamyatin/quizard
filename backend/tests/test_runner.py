@@ -123,7 +123,6 @@ class TestRunner:
 
     def _calculate_total_prompt_size(self, messages: Messages) -> int:
         """Calculates the total prompt size based on the message content."""
-        print(self.config['model']['name'])
         encoding = tiktoken.encoding_for_model(self.config['model']['name'])
         # There are 18 additional tokens in the prompt due to the list format
         return 18 + sum(
