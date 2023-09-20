@@ -35,7 +35,7 @@ tokens:
 
 
 flashcard_generation:
-  mode: "autogen"
+  mode: "open_ended"
 
 
 export:

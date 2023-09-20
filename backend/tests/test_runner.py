@@ -118,6 +118,8 @@ class TestRunner:
                 # Generate flashcards and add them to the flashcard list
                 new_cards = self._generate_flashcards(new_messages)
                 flashcards += new_cards
+                for flashcard in new_cards:
+                    print(flashcard.as_csv())
 
         self._save_flashcards_as_csv(flashcards, csv_path)
 
