@@ -51,7 +51,13 @@ class TestRunner:
     def run_test(self, test_path: str, csv_path: str):
         messages = self._initialize_messages(test_path)
 
-        total_prompt_size = self._calculate_total_prompt_size(messages)
+        # Set language specified in the config file
+        # lang_instruction = self._set_language(os.path.join(self.backend_root_dir, 'system_prompts/lang_instruction.txt'))
+        with open(os.path.join(self.backend_root_dir, 'system_prompts/lang_instruction.txt'), "r") as f:
+            lang_instruction = f.read()
+
+        # Calculate total prompt size
+        total_prompt_size = self._calculate_total_prompt_size(messages, lang_instruction)
         formatted_total_prompt_size = format_num(total_prompt_size)
         write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
@@ -64,6 +70,7 @@ class TestRunner:
         # Run short texts with 4k model
         if total_prompt_size < prompt_limit_4k:
             write_to_log("Using 4k model...\n")
+            messages.insert_text_into_message('text_input', lang_instruction, 0)
             completion_token_limit = 4000 - prompt_limit_4k
             self._run_full_text(test_path, messages, "gpt-3.5-turbo", completion_token_limit)
             flashcards += self._generate_flashcards(messages)
@@ -71,6 +78,7 @@ class TestRunner:
         # Run medium-sized texts with 16k model
         elif total_prompt_size < prompt_limit_16k:
             write_to_log("Using 16k model...\n")
+            messages.insert_text_into_message('text_input', lang_instruction, 0)
             completion_token_limit = 16000 - prompt_limit_16k
             self._run_full_text(test_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
             flashcards += self._generate_flashcards(messages)
@@ -80,7 +88,7 @@ class TestRunner:
             write_to_log(f"Using text splitting with the {self.config['model']['name']}...\n")
 
             # Split the text into fragments
-            base_prompt_size = self._calculate_base_prompt_size(messages)
+            base_prompt_size = self._calculate_base_prompt_size(messages, lang_instruction)
             try:
                 fragment_list = text_split.split_text(
                     messages.text_input,
@@ -109,12 +117,7 @@ class TestRunner:
                 write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
 
                 # Add language instructions to the text_input to enable language recognition
-                new_messages.insert_text_into_message(
-                    'text_input',
-                    os.path.join(self.backend_root_dir, 'system_prompts/lang_instruction.txt'),
-                    0
-                )
-
+                new_messages.insert_text_into_message('text_input', lang_instruction, 0)
                 # Generate flashcards and add them to the flashcard list
                 new_cards = self._generate_flashcards(new_messages)
                 flashcards += new_cards
@@ -123,23 +126,31 @@ class TestRunner:
 
         self._save_flashcards_as_csv(flashcards, csv_path)
 
-    def _calculate_total_prompt_size(self, messages: Messages) -> int:
+    def _calculate_total_prompt_size(self, messages: Messages, *additional_strings) -> int:
         """Calculates the total prompt size based on the message content."""
         encoding = tiktoken.encoding_for_model(self.config['model']['name'])
         # There are 18 additional tokens in the prompt due to the list format
-        return 18 + sum(
+        base_count =  18 + sum(
             [len(encoding.encode(message['content'])) + len(encoding.encode(message['role'])) for message in
              messages]
         )
 
-    def _calculate_base_prompt_size(self, messages: Messages) -> int:
+        # Calculate the tokens for additional strings
+        additional_count = sum([len(encoding.encode(s)) for s in additional_strings])
+        return base_count + additional_count
+
+    def _calculate_base_prompt_size(self, messages: Messages, *additional_strings) -> int:
         encoding = tiktoken.encoding_for_model(self.config['model']['name'])
         # There are 18 additional tokens in the prompt due to the list format
         message_list = messages.as_message_list()  # Call the as_message_list method to get the list of messages
-        return 18 + sum(
+        base_count =  18 + sum(
             [len(encoding.encode(message['content'])) + len(encoding.encode(message['role']))
              for message in message_list[:-1]]  # Slice to skip the last message
         )
+
+        # Calculate the tokens for additional strings
+        additional_count = sum([len(encoding.encode(s)) for s in additional_strings])
+        return base_count + additional_count
 
     def _run_full_text(self, base_path: str, messages: Messages, model_name: str, completion_token_limit: int):
         """Runs the test using a specific model."""
@@ -172,6 +183,16 @@ class TestRunner:
         """Saves the generated flashcards as a CSV file."""
         deck = FlashcardDeck(flashcards)
         deck.save_as_csv(csv_path)
+
+    def _set_language(self, lang_instruction_path: str) -> str:
+        # Read the original text file with raw language instruction
+        with open(lang_instruction_path, "r") as f:
+            lang_instruction = f.read()
+
+        # Replace placeholders
+        lang = self.config["flashcard_generation"]["lang"]
+        return lang_instruction.replace("${language}", lang.upper())
+
 
 # todo: Check run_config for specified export format and add conditional statement
 # todo: Write Anki Exporter to optionally export the csv flashcards directly to the users Anki workspace, if connected

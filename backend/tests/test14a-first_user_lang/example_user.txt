@@ -1,0 +1,45 @@
+Identify the language of the main content in the following text and create flashcards based on its content, keeping all flashcards in the same language as the main content of the text:
+
+Genetics 12
+General properties of cancer
+Cancers are defined by uncontrolled cell growth and
+division. Solid tumours become especially deadly
+after they metastasize, gaining the ability to grow in
+many different parts of the body.
+Cancer is not a single disease
+Different cancer types have a huge range of prognoses. Some types have
+relatively straight forwarded and effective treatments whereas other types are
+extremely difficult to treat. Even within cancer types, there are wide ranges of
+sub-types that can greatly influence the disease progression and treatment
+options. There is generally a higher survival rate with cancer in tissues that are
+not necessary for survival e.g., testicular cancer.
+Hallmarks* of cancer
+There are certain hallmarks of cancer that are extremely
+common across many cancer types. These changes are often
+necessary for continued growth. Not a single mutation can do all
+changes. Many mutations are acquired with time.
+Cancers must prevent apoptosis and evade the immune system
+In addition to continuing to divide, cancer cells must also find
+ways to prevent death. When cells accumulate large amounts of
+DNA damage, they ordinarily undergo programmed cell death, or apoptosis. Some of the most
+common cancer mutations prevent apoptosis from occuring. In addition, the immune system targets
+cells with certain types of DNA damage. Cancer cells must therefore also evade* detection by the
+immune system.
+Cell cycle checkpoints ordinarily prevent unregulated proliferation
+Although the metazoan-specific checkpoint pathways
+are more specific for preventing cancer, some of the
+universal checkpoint pathways also contain many
+oncogenes and tumor surpressors. Why would
+unicellular eukaryotes such as yeast that cannot get
+cancer still have tumor surpressors?
+Cancer and cell cycle entry
+Cell cycle progression is controlled by cyclins, which activate cyclin
+dependent kinases (CDKs). CDKs phosphorylate many substrates
+throughout the cell cycle to trigger events related to DNA
+replicatoin and mitosis. Cyclins E and D are the ones that are most
+relevant to cancer, as they are required for cell cycle entry, which is
+often referred to as the “restriction point”.
+Types of mutations in cancer
+Genome instability is a hallmark of cancer
+The simplest way to get many mutations is to increase the rate at which mutations
+accumulate. This increase in mutation rate is called genetic instability.

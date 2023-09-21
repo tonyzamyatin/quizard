@@ -11,9 +11,9 @@ model:
 tokens:
   # Short text config for 4k model
   4k_model:
-    prompt_limit: 3500
+    prompt_limit: 3000
     base_prompt_limit: 2000
-    completion_limit: 500
+    completion_limit: 800
   # Medium text config for 16k model
   16k_model:
     prompt_limit: 13000
@@ -35,7 +35,8 @@ tokens:
 
 
 flashcard_generation:
-  mode: "open_ended"
+  mode: "autogen"
+  lang: "German"
 
 
 export:

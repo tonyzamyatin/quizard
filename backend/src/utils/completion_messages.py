@@ -28,13 +28,13 @@ class Messages:
     def as_message_list(self):
         return self._messages
 
-    def insert_text_into_message(self, attribute_name, insert_file_path, position):
+    def insert_text_into_message(self, attribute_name, insert_str: str, position):
         """
         Inserts the content of a text file into one of the object's string attributes at a specified position.
 
         Parameters:
             self: The instance of the Messages class.
-            insert_file_path (str): The path of the text file containing the text to insert.
+            insert_str (str): The string to insert at the specified position of the specified string attribute.
             attribute_name (str): The name of the attribute you want to modify (e.g., "example_user_prompt").
             position (int): The position at which to insert the text in the selected attribute.
 
@@ -47,10 +47,6 @@ class Messages:
             print(f"The object has no attribute named '{attribute_name}'.")
             return
 
-        # Read the content of the file to insert
-        with open(insert_file_path, 'r', encoding='utf-8') as file:
-            insert_content = file.read()
-
         # Get old content
         old_content = getattr(self, attribute_name)
 
@@ -60,7 +56,10 @@ class Messages:
             return
 
         # Insert new content
-        new_content = old_content[:position] + insert_content + old_content[position:]
+        if position == -1:
+            new_content = old_content + insert_str
+        else:
+            new_content = old_content[:position] + insert_str + old_content[position:]
 
         # Update the attribute
         setattr(self, attribute_name, new_content)
