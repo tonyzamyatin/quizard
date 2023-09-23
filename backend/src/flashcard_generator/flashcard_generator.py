@@ -28,11 +28,8 @@ def parse_flashcard(number: int, line: str) -> Flashcard:
 def get_flashcard_type(prefix: str, number: int) -> FlashcardType:
     if "term" in prefix:
         return FlashcardType.DEFINITION
-    elif "open-ended" in prefix:
+    elif "concept" or "critical thinking" in prefix:
         return FlashcardType.OPEN_ENDED
-    elif "critical thinking" in prefix:
-        return FlashcardType.CRITICAL_THINKING
-
     raise FlashcardPrefixError(f"Unexpected prefix for flashcard {number}", Flashcard(number, FlashcardType.UNKNOWN, '', ''))
 
 
@@ -94,4 +91,4 @@ def log_completion_metrics(completion):
 
     print("\n".join(metrics))
     with open(os.getenv('LOG_FILE', default='logs/logs.txt'), 'a') as f:
-        f.write("\n".join(metrics))
+        f.write("\n\n".join(metrics))

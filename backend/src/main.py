@@ -19,7 +19,7 @@ def configure_logging():
     logging.basicConfig(
         filename=log_path,
         filemode='a',
-        level=logging.DEBUG,  # Set to DEBUG level
+        level=logging.WARNING,  # Set to DEBUG level when debugging
         format='%(asctime)s %(levelname)s %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )

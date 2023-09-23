@@ -1,0 +1,13 @@
+[Concept] What are the defining characteristic of all cancers?; The defining characteristic of all cancers is uncontrolled cell growth, avoiding programmed cell death (apoptosis) and evading the immune system.
+[Concept] How do cancer types differ in terms of treatment and prognosis?; Cancer types have a wide range of prognoses and treatment options, with some types being more treatable than others.
+[Concept] How do cancer cells typically avoid death?; Cancer cells avoid death by preventing apoptosis and evading detection by the immune system.
+[Concept] What happens when cancers metastasize?; They gain the ability to grow in many different parts of the body, making them especially deadly.
+[Concept] Why do cancer cells need to evade the immune system?; The immune system targets cells with certain types of DNA damage, so cancer cells must avoid detection to survive and proliferate.
+[Concept] What role do cyclins E and D play in relation to cancer?; They are required for cell cycle entry, often referred to as the “restriction point”, making them most relevant to cancer.
+[Term] Metastasize; When solid tumours gain the ability to grow in many different parts of the body.
+[Term] Apoptosis; Programmed cell death.
+[Term] Cell Cycle Checkpoints; Pathways that prevent unregulated proliferation of cells.
+[Term] Cyclins; Proteins that control cell cycle progression by activating cyclin dependent kinases (CDKs).
+[Term] Genetic Instability; An increased rate at which mutations accumulate.
+[Critical Thinking] Considering the various sources of mutations in cancer (e.g., radiation, carcinogens, viruses, DNA replication errors), which source is potentially the most preventable and why?; Errors in DNA replication are a natural process and hard to prevent. However, exposure to carcinogens like cigarette smoke or harmful radiation can be limited or avoided, making them more preventable sources of mutations.
+[Critical Thinking] Why might some tissues have a higher survival rate with cancer than others?; Tissues that are not vital for survival, such as the testes in the case of testicular cancer, might be more amenable to aggressive treatments or removal without severely compromising the overall health of the individual.

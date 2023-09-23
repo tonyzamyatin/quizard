@@ -25,9 +25,9 @@ tokens:
   # The window overlap can be either set relative to the text fragment being processed via relative_window_overlap or set to an absolute token value.
   # Depending on what setting is being used
   text_splitting:
-    window_overlap_type: "absolute"         # needs to be "relative" or "absolute"
+    window_overlap_type: "absolute"         # "relative" or "absolute"
     relative_window_overlap: 0.167
-    absolute_window_overlap: 20
+    absolute_window_overlap: 100
 
   # Optimal parameters:
   # 3.000, 2.400 and 400 when using the 4k model
@@ -35,7 +35,8 @@ tokens:
 
 
 flashcard_generation:
-  mode: "autogen"
+  mode: "autogen"       # "autogen" or "open_ended"
+  detect_lang: False   # True or False, if False flashcards will be generated in the specified language below.
   lang: "German"
 
 

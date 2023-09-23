@@ -50,14 +50,31 @@ class TestRunner:
 
     def run_test(self, test_path: str, csv_path: str):
         messages = self._initialize_messages(test_path)
+        system_prompt_lang_specified = self._set_language(self.config["flashcard_generation"]["lang"], messages.system)
+        messages.system = system_prompt_lang_specified
+        # Get language instructions based on config. Language instructions are added at the top and bottom of the text_inputs to enable language
+        # recognition or explicitly specify the language for flashcard generation.
+        if self.config["flashcard_generation"]["detect_lang"]:
+            with open(os.path.join(self.backend_root_dir, 'system_prompts/autodetect_lang_top.txt'), "r") as f:
+                lang_instr_top = f.read()
+            with open(os.path.join(self.backend_root_dir, 'system_prompts/autodetect_lang_bottom.txt'), "r") as f:
+                lang_instr_bottom = f.read()
+            lang_instr_example = lang_instr_top
 
-        # Set language specified in the config file
-        # lang_instruction = self._set_language(os.path.join(self.backend_root_dir, 'system_prompts/lang_instruction.txt'))
-        with open(os.path.join(self.backend_root_dir, 'system_prompts/lang_instruction.txt'), "r") as f:
-            lang_instruction = f.read()
+        else:
+            with open(os.path.join(self.backend_root_dir, 'system_prompts/specific_lang_top.txt'), "r") as f:
+                lang_instr_top = f.read()
+            with open(os.path.join(self.backend_root_dir, 'system_prompts/specific_lang_bottom.txt'), "r") as f:
+                lang_instr_bottom = f.read()
+            lang = self.config["flashcard_generation"]["lang"]
+            lang_instr_example = self._set_language(lang, lang_instr_top)
+            lang_instr_top = self._set_language(lang, lang_instr_top)
+            lang_instr_bottom = self._set_language(lang, lang_instr_bottom)
 
-        # Calculate total prompt size
-        total_prompt_size = self._calculate_total_prompt_size(messages, lang_instruction)
+        # Add language instructions to example input. Note: language instruction will be added later to the text_input
+        # messages.insert_text_into_message('example_user', lang_instr_example, 0)
+        # Calculate total prompt size, accounting for the lang_instr added later
+        total_prompt_size = self._calculate_total_prompt_size(messages, lang_instr_top, lang_instr_bottom)
         formatted_total_prompt_size = format_num(total_prompt_size)
         write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
@@ -70,7 +87,9 @@ class TestRunner:
         # Run short texts with 4k model
         if total_prompt_size < prompt_limit_4k:
             write_to_log("Using 4k model...\n")
-            messages.insert_text_into_message('text_input', lang_instruction, 0)
+            # Add language instructions to the text inputs
+            messages.insert_text_into_message('text_input', lang_instr_top, 0)
+            messages.insert_text_into_message('text_input', lang_instr_bottom, -1)
             completion_token_limit = 4000 - prompt_limit_4k
             self._run_full_text(test_path, messages, "gpt-3.5-turbo", completion_token_limit)
             flashcards += self._generate_flashcards(messages)
@@ -78,17 +97,19 @@ class TestRunner:
         # Run medium-sized texts with 16k model
         elif total_prompt_size < prompt_limit_16k:
             write_to_log("Using 16k model...\n")
-            messages.insert_text_into_message('text_input', lang_instruction, 0)
+            # Add language instructions to the text inputs
+            messages.insert_text_into_message('text_input', lang_instr_top, 0)
+            messages.insert_text_into_message('text_input', lang_instr_bottom, -1)
             completion_token_limit = 16000 - prompt_limit_16k
             self._run_full_text(test_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
             flashcards += self._generate_flashcards(messages)
 
         # Run long text using test splitting
         else:
-            write_to_log(f"Using text splitting with the {self.config['model']['name']}...\n")
+            write_to_log(f"Using text splitting using {self.config['model']['name']}...\n")
 
             # Split the text into fragments
-            base_prompt_size = self._calculate_base_prompt_size(messages, lang_instruction)
+            base_prompt_size = self._calculate_base_prompt_size(messages, lang_instr_top)
             try:
                 fragment_list = text_split.split_text(
                     messages.text_input,
@@ -101,7 +122,7 @@ class TestRunner:
                 exit(1)
 
             for text_fragment in fragment_list:
-                write_to_log(f'Processing text fragment No {count}')
+                write_to_log(f'\nProcessing text fragment No {count}')
                 count += 1
 
                 # Generate a new Messages for the new shorter text_fragment
@@ -112,17 +133,18 @@ class TestRunner:
                     text_fragment
                 )
 
-                sub_prompt_size = self._calculate_total_prompt_size(new_messages)
+                sub_prompt_size = self._calculate_total_prompt_size(new_messages, lang_instr_top)
                 formatted_sub_prompt_size = format_num(sub_prompt_size)
                 write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
+                # Add lang_instr to the text_input, example_user is reused from messages and already contains the lang_instruct.
+                new_messages.insert_text_into_message('text_input', lang_instr_top, 0)
+                # new_messages.insert_text_into_message('text_input', lang_instr_bottom, -1)
 
-                # Add language instructions to the text_input to enable language recognition
-                new_messages.insert_text_into_message('text_input', lang_instruction, 0)
                 # Generate flashcards and add them to the flashcard list
                 new_cards = self._generate_flashcards(new_messages)
                 flashcards += new_cards
                 for flashcard in new_cards:
-                    print(flashcard.as_csv())
+                    print(flashcard.as_csv(),)
 
         self._save_flashcards_as_csv(flashcards, csv_path)
 
@@ -157,7 +179,7 @@ class TestRunner:
         print(f"Using {model_name} for total prompt size.")
         self.config["model"]["name"] = model_name
         self.config["tokens"]["completion_limit"] = completion_token_limit
-        messages.insert_text_into_message('text_input', os.path.join(base_path, 'lang_instruction.txt'), 0)
+        messages.insert_text_into_message('text_input', os.path.join(base_path, 'autodetect_lang_top.txt'), 0)
 
     # Modify this method
     def _generate_flashcards(self, messages: Messages) -> List[Flashcard]:
@@ -184,13 +206,9 @@ class TestRunner:
         deck = FlashcardDeck(flashcards)
         deck.save_as_csv(csv_path)
 
-    def _set_language(self, lang_instruction_path: str) -> str:
-        # Read the original text file with raw language instruction
-        with open(lang_instruction_path, "r") as f:
-            lang_instruction = f.read()
-
+    @staticmethod
+    def _set_language(lang: str, lang_instruction: str) -> str:
         # Replace placeholders
-        lang = self.config["flashcard_generation"]["lang"]
         return lang_instruction.replace("${language}", lang.upper())
 
 

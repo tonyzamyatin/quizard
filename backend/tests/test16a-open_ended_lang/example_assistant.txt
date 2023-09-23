@@ -1,0 +1,7 @@
+What is the defining characteristic of all cancers?;The defining characteristic of all cancers is uncontrolled cell growth.
+How do cancer types differ in terms of treatment and prognosis?;Cancer types have a wide range of prognoses and treatment options, with some types being more treatable than others.
+What are the common hallmarks of cancer?;Common hallmarks of cancer include avoiding programmed cell death (apoptosis) and evading the immune system.
+How do cancer cells typically avoid death?;Cancer cells avoid death by preventing apoptosis and evading detection by the immune system.
+How do the mutations in cancer cells occur?;Mutations in cancer cells are acquired over time and are not the result of a single mutation.
+Connect the dots between apoptosis and cancer's ability to evade the immune system. How are these related?;Apoptosis and immune system evasion are related because they both involve the cell's ability to avoid death. Averting apoptosis allows the cancer cell to survive despite internal damage, while evading the immune system helps it go undetected, allowing continued growth.
+What could be the implications of a higher survival rate in cancers affecting non-vital tissues, such as testicular cancer?;A higher survival rate in cancers affecting non-vital tissues could indicate that these tissues are not essential for survival, making it easier to remove or treat the cancer without severe life-threatening consequences.

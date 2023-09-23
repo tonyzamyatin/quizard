@@ -6,8 +6,7 @@ class FlashcardType(Enum):
     UNKNOWN = 0
     DEFINITION = 1
     OPEN_ENDED = 2
-    CRITICAL_THINKING = 3
-    QUIZ = 4
+    MULTIPLE_CHOICE = 3
     CLOZE = 5
 
 

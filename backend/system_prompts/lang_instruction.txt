@@ -1,1 +1,0 @@
-Identify the language of the main content in the following text and create flashcards based on its content, keeping all flashcards in the same language as the main content of the text:
