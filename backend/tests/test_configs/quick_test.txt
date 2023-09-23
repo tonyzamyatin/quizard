@@ -1,1 +1,1 @@
-test19a-translated_whole_prompt
+test22a-ugly_format

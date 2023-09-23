@@ -38,7 +38,7 @@ def parse_flashcards(content: str, generation_mode: str) -> List[Flashcard]:
     lines = content.replace('\n\n', '\n').split('\n')
     for cnt, line in enumerate(lines, start=1):
         try:
-            if generation_mode == 'autogen':  # For autogen mode, expect prefixes
+            if generation_mode == 'practice':  # For practice mode, expect prefixes (mixed format)
                 flashcard = parse_flashcard(cnt, line)
             else:  # For static modes, assume the flashcard type from the mode
                 flashcard = Flashcard(cnt, FlashcardType[generation_mode.upper()], line.split(";")[0], line.split(";")[1])
@@ -61,6 +61,8 @@ def parse_flashcards(content: str, generation_mode: str) -> List[Flashcard]:
 
 
 class FlashcardGenerator:
+    
+    GENERATION_MODE = ['practice', 'definitions', 'quiz', 'cloze']
     def __init__(self, api_key: str, messages: list, config: dict, generation_mode: str):
         self.api_key = api_key
         self.messages = messages

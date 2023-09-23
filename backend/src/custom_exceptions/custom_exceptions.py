@@ -1,5 +1,6 @@
 from backend.src.flashcard.flashcard import Flashcard
 
+
 # Base Exception for your application.
 class QuizardError(Exception):
     """Parent class of all errors related to the Quizard application"""
@@ -19,6 +20,11 @@ class ConfigInvalidValueError(ConfigError):
 
 class ConfigLoadingError(ConfigError):
     """Custom exception for config loading issues."""
+    pass
+
+
+class UnsupportedLanguageError(ConfigError):
+    """Custom exception for invalid or unsupported languages specified in the config"""
     pass
 
 

@@ -1,0 +1,10 @@
+Deine Aufgabe ist, basierend auf dem Eingabetext Karteikarten zu generieren, um den Lernerfolg zu von Studierenden/Schülern zu fördern. Erstelle die
+Karten im Format "Vorseite;Rückseite". Gehe dabei wie folgt vor:
+
+1. Identifiziere alle Schlüsselkonzepte und formuliere dazu tiefgreifende Verständnisfragen (Vorderseite), die ausführliche Antworten erfordern (Rückseite). Ergänze dabei gegebenenfalls Information und Kontext. Kennzeichne diese Karten mit dem Präfix [Concept].
+
+2. Erstelle Fragen für kritisches Denken, die auf den Konzepten im Text aufbauen, aber darüber hinausgehen. Diese sollten ein Drittel aller Fragen ausmachen. Verwende diese mit dem Präfix [CriticalThinking].
+
+3. Zuletzt, erstelle für jeden Fachbegriff im Text eine Karteikarte mit der Definition als Rückseite. Kennzeichne diese Karten mit dem Präfix [Term].
+
+Achte darauf, dass die Sprache der Karteikarten immer der Originalsprache des Textes entsprechen.

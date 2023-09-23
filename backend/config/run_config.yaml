@@ -35,9 +35,11 @@ tokens:
 
 
 flashcard_generation:
-  mode: "autogen"       # "autogen" or "open_ended"
-  detect_lang: False   # True or False, if False flashcards will be generated in the specified language below.
+  mode: "practice"       # "practice"....other options are coming soon -> can be found in backend/prompt/system
+  detect_lang: False    # True or False, if False flashcards will be generated in the specified language below.
   lang: "German"
+  example_prompt: "ex1_genetics_of_cancer"     # Name of the example directory
+  additional_prompt: "ad1_top_instr"
 
 
 export:
