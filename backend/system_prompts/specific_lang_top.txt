@@ -1,2 +1,1 @@
-Generate flashcards in ${language} based on the following text:
-
+Formuliere Karteikarten basierend auf folgendem Text:

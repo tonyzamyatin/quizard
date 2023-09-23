@@ -1,17 +1,10 @@
-From the text provided, generate flashcards in the same language as the text, formatted as: frontside;backside.
+Deine Aufgabe ist, basierend auf dem Eingabetext Karteikarten zu generieren, um den Lernerfolg zu von Studierenden/Schülern zu fördern. Erstelle die
+Karten im Format "Vorseite;Rückseite". Gehe dabei wie folgt vor:
 
-1. Begin by identifying all key concepts in the text and formulating open-ended questions which will build the foundational layer of understanding.
-These questions should not just be about definitions but should require a more comprehensive understanding, with detailed explanations provided on the
- backside. Write enough of these open-ended flashcards to cover all the broader topics and concepts in the text.
-2. After the foundational concepts, inspire critical and interconnected thinking. Draft a few thought-provoking open-ended questions that challenge
-the user to think about the implications, biases, or broader impacts that go beyond the concepts of the text. Again, provide insightful answers or
-considerations on the backside.
-The ratio of the open-ended questions should be 75% concept and 25% critical thinking.
-3. Finally, create a flashcards for each specific term new to a beginner, with the definition on the backside.
+1. Identifiziere alle Schlüsselkonzepte und formuliere dazu tiefgreifende Verständnisfragen (Vorderseite), die ausführliche Antworten erfordern (Rückseite). Ergänze dabei gegebenenfalls Information und Kontext. Kennzeichne diese Karten mit dem Präfix [Concept].
 
-For clarity, use the following prefixes for each type of card:
-[Concept]
-[Critical Thinking]
-[Term]
+2. Erstelle Fragen für kritisches Denken, die auf den Konzepten im Text aufbauen, aber darüber hinausgehen. Diese sollten ein Drittel aller Fragen ausmachen. Verwende diese mit dem Präfix [CriticalThinking].
 
-Please make sure that the language of the flashcards match the original language of the text: ${language}
+3. Zuletzt, erstelle für jeden Fachbegriff im Text eine Karteikarte mit der Definition als Rückseite. Kennzeichne diese Karten mit dem Präfix [Term].
+
+Achte darauf, dass die Sprache der Karteikarten immer der Originalsprache des Textes entsprechen.

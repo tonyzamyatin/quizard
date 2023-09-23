@@ -1356,3 +1356,140 @@ Total size: 3.987 tokens
 
 Processing text fragment No 2
 Calculated prompt size: 3.200 tokens
+Using quick_test.txt as test configuration...
+Using the following test folders: ['test19a-translated_whole_prompt']
+
+Total message length (calculated): 21.003 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 15.001 tokens
+Using quick_test.txt as test configuration...
+Using the following test folders: ['test19a-translated_whole_prompt']
+
+Total message length (calculated): 21.003 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 15.001 tokens
+Using quick_test.txt as test configuration...
+Using the following test folders: ['test19a-translated_whole_prompt']
+
+Using quick_test.txt as test configuration...
+Using the following test folders: ['test19a-translated_whole_prompt']
+
+Total message length (calculated): 21.003 tokens
+Using text splitting using gpt-3.5-turbo-16k...
+
+
+Processing text fragment No 1
+Calculated prompt size: 15.001 tokens
+Response time: 9.130 ms
+
+Completion size: 365 tokens
+
+Total size: 15.347 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 8.163 tokens
+Response time: 15.471 ms
+
+Completion size: 672 tokens
+
+Total size: 8.816 tokens
+Using quick_test.txt as test configuration...
+Using the following test folders: ['test19a-translated_whole_prompt']
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 26.734 ms
+
+Completion size: 629 tokens
+
+Total size: 3.811 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Response time: 28.210 ms
+
+Completion size: 695 tokens
+
+Total size: 3.877 tokens
+
+Processing text fragment No 3
+Calculated prompt size: 3.201 tokens
+Response time: 24.469 ms
+
+Completion size: 649 tokens
+
+Total size: 3.831 tokens
+
+Processing text fragment No 4
+Calculated prompt size: 3.201 tokens
+Response time: 30.908 ms
+
+Completion size: 774 tokens
+
+Total size: 3.956 tokens
+
+Processing text fragment No 5
+Calculated prompt size: 3.201 tokens
+Response time: 36.224 ms
+
+Completion size: 895 tokens
+
+Total size: 4.077 tokens
+
+Processing text fragment No 6
+Calculated prompt size: 3.201 tokens
+Response time: 24.187 ms
+
+Completion size: 626 tokens
+
+Total size: 3.808 tokens
+
+Processing text fragment No 7
+Calculated prompt size: 3.201 tokens
+Response time: 27.509 ms
+
+Completion size: 713 tokens
+
+Total size: 3.895 tokens
+
+Processing text fragment No 8
+Calculated prompt size: 3.201 tokens
+Response time: 29.761 ms
+
+Completion size: 730 tokens
+
+Total size: 3.912 tokens
+
+Processing text fragment No 9
+Calculated prompt size: 3.201 tokens
+Response time: 30.004 ms
+
+Completion size: 762 tokens
+
+Total size: 3.944 tokens
+
+Processing text fragment No 10
+Calculated prompt size: 3.201 tokens
+Response time: 22.254 ms
+
+Completion size: 549 tokens
+
+Total size: 3.731 tokens
+
+Processing text fragment No 11
+Calculated prompt size: 2.716 tokens
+Response time: 38.815 ms
+
+Completion size: 939 tokens
+
+Total size: 3.636 tokens

@@ -1,1 +1,1 @@
-test18a-use_translated_examples
+test19a-translated_whole_prompt

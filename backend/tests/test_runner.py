@@ -50,8 +50,8 @@ class TestRunner:
 
     def run_test(self, test_path: str, csv_path: str):
         messages = self._initialize_messages(test_path)
-        system_prompt_lang_specified = self._set_language(self.config["flashcard_generation"]["lang"], messages.system)
-        messages.system = system_prompt_lang_specified
+        # TODO: Based on the language specified in the config, use the respective prompts:
+
         # Get language instructions based on config. Language instructions are added at the top and bottom of the text_inputs to enable language
         # recognition or explicitly specify the language for flashcard generation.
         if self.config["flashcard_generation"]["detect_lang"]:
@@ -72,9 +72,8 @@ class TestRunner:
             lang_instr_bottom = self._set_language(lang, lang_instr_bottom)
 
         # Add language instructions to example input. Note: language instruction will be added later to the text_input
-        # messages.insert_text_into_message('example_user', lang_instr_example, 0)
         # Calculate total prompt size, accounting for the lang_instr added later
-        total_prompt_size = self._calculate_total_prompt_size(messages, lang_instr_top, lang_instr_bottom)
+        total_prompt_size = self._calculate_total_prompt_size(messages, lang_instr_top)
         formatted_total_prompt_size = format_num(total_prompt_size)
         write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
@@ -89,7 +88,6 @@ class TestRunner:
             write_to_log("Using 4k model...\n")
             # Add language instructions to the text inputs
             messages.insert_text_into_message('text_input', lang_instr_top, 0)
-            messages.insert_text_into_message('text_input', lang_instr_bottom, -1)
             completion_token_limit = 4000 - prompt_limit_4k
             self._run_full_text(test_path, messages, "gpt-3.5-turbo", completion_token_limit)
             flashcards += self._generate_flashcards(messages)
@@ -99,7 +97,6 @@ class TestRunner:
             write_to_log("Using 16k model...\n")
             # Add language instructions to the text inputs
             messages.insert_text_into_message('text_input', lang_instr_top, 0)
-            messages.insert_text_into_message('text_input', lang_instr_bottom, -1)
             completion_token_limit = 16000 - prompt_limit_16k
             self._run_full_text(test_path, messages, "gpt-3.5-turbo-16k", completion_token_limit)
             flashcards += self._generate_flashcards(messages)
@@ -110,6 +107,7 @@ class TestRunner:
 
             # Split the text into fragments
             base_prompt_size = self._calculate_base_prompt_size(messages, lang_instr_top)
+            print(f"Base prompt size: {base_prompt_size}")
             try:
                 fragment_list = text_split.split_text(
                     messages.text_input,
@@ -138,7 +136,6 @@ class TestRunner:
                 write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
                 # Add lang_instr to the text_input, example_user is reused from messages and already contains the lang_instruct.
                 new_messages.insert_text_into_message('text_input', lang_instr_top, 0)
-                # new_messages.insert_text_into_message('text_input', lang_instr_bottom, -1)
 
                 # Generate flashcards and add them to the flashcard list
                 new_cards = self._generate_flashcards(new_messages)
