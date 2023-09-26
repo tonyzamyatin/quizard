@@ -5,6 +5,7 @@ from typing import List
 from backend.src.flashcard.flashcard import Flashcard, FlashcardType
 from backend.src.custom_exceptions.custom_exceptions import FlashcardInvalidFormatError
 from backend.src.custom_exceptions.custom_exceptions import FlashcardPrefixError
+from backend.src.utils.completion_messages import Messages
 from backend.src.utils.global_helpers import format_num
 import openai
 
@@ -63,22 +64,21 @@ def parse_flashcards(content: str, generation_mode: str) -> List[Flashcard]:
 class FlashcardGenerator:
     
     GENERATION_MODE = ['practice', 'definitions', 'quiz', 'cloze']
-    def __init__(self, api_key: str, messages: list, config: dict, generation_mode: str):
+    def __init__(self, api_key: str, model_config: dict, generation_mode: str):
         self.api_key = api_key
-        self.messages = messages
-        self.config = config
+        self.model_config = model_config
         self.generation_mode = generation_mode
 
-    def generate_flashcards(self) -> List[Flashcard]:
+    def generate_flashcards(self, model: str, messages: Messages, max_tokens: int) -> List[Flashcard]:
         openai.api_key = self.api_key
         completion = openai.ChatCompletion.create(
-            model=self.config["model"].get("name"),
-            messages=self.messages,
-            max_tokens=self.config["tokens"].get("completion_limit"),
-            temperature=self.config["model"].get("temperature", 0.7),
-            top_p=self.config["model"].get("top_p", 1.0),
-            frequency_penalty=self.config["model"].get("frequency_penalty", 0.0),
-            presence_penalty=self.config["model"].get("presence_penalty", 0.0)
+            model=model,
+            messages=messages.as_message_list(),
+            max_tokens=max_tokens,
+            temperature=self.model_config.get("temperature", 0.7),
+            top_p=self.model_config.get("top_p", 1.0),
+            frequency_penalty=self.model_config.get("frequency_penalty", 0.0),
+            presence_penalty=self.model_config.get("presence_penalty", 0.0)
         )
         log_completion_metrics(completion)
         return parse_flashcards(completion.choices[0].message.content, self.generation_mode)

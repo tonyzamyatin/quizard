@@ -16,11 +16,11 @@ def calculate_window_size(base_prompt_size, config):
 
 def split_text(text: str, base_prompt_size: int, config: dict):
     window_size = calculate_window_size(base_prompt_size, config)
-    overlap_type = config['tokens']['text_splitting']['window_overlap_type']
+    overlap_type = config['window_overlap_type']
     if overlap_type == 'absolute':
-        window_overlap = config['tokens']['text_splitting']['absolute_window_overlap']
+        window_overlap = config['absolute_window_overlap']
     elif overlap_type == 'relative':
-        window_overlap = window_size * config['tokens']['text_splitting']['relative_window_overlap']
+        window_overlap = window_size * config['relative_window_overlap']
     else:
         raise ConfigInvalidValueError(f"The window_overlap_type specified in the run_config must be either 'absolute' or 'relative' but it was '{overlap_type}'")
     encoding = tiktoken.encoding_for_model('gpt-3.5-turbo')

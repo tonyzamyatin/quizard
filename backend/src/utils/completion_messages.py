@@ -28,6 +28,7 @@ class Messages:
     def as_message_list(self):
         return self._messages
 
+    # Legacy: This method will be deleted soon
     def insert_text_into_message(self, attribute_name, insert_str: str, position):
         """
         Inserts the content of a text file into one of the object's string attributes at a specified position.

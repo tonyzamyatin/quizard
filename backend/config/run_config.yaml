@@ -1,11 +1,11 @@
 # TODO: Add parameters, optimize and test!
 
 model:
-  name: "gpt-3.5-turbo"   # Base model to use for text splitting: gpt-3.5-turbo or gpt-3.5-turbo-16k
   temperature: 0.8
   top_p: 1.0
   frequency_penalty: 0.0
   presence_penalty: 0.0
+  max_tokens: 800   # Default is 800, but this value is dynamically adapted within the program depending on the prompt size
 
 
 tokens:
@@ -13,12 +13,10 @@ tokens:
   4k_model:
     prompt_limit: 3000
     base_prompt_limit: 2000
-    completion_limit: 800
   # Medium text config for 16k model
   16k_model:
     prompt_limit: 13000
     base_prompt_limit: 4000
-    completion_limit: 1000
 
   # For texts longer than 12k tokens text splitting is used
   # Window size will be calculated by the program automatically depending on the size of the base prompt (i.e. system prompt + example)
@@ -39,7 +37,8 @@ flashcard_generation:
   detect_lang: False    # True or False, if False flashcards will be generated in the specified language below.
   lang: "German"
   example_prompt: "ex1_genetics_of_cancer"     # Name of the example directory
-  additional_prompt: "ad1_top_instr"
+  additional_prompt: "ad1_top_instr"           # Change this field to a list of (position, prompt) to add multiple additional lines of prompt to text_input
+
 
 
 export:
