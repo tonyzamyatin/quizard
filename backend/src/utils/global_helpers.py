@@ -46,7 +46,7 @@ def start_log(log_dir):
         f.write('\n-----------------------------------------------------------------------------------------------------------\n')
 
 
-def write_to_log(message: str):
+def write_to_log_and_print(message: str):
     """Write to the logs and also print the message."""
     with open(os.getenv('LOG_FILE', default='logs/logs.txt'), 'a') as f:
         f.write(message + '\n')
@@ -67,7 +67,6 @@ def read_file(file_path: str) -> str:
     except Exception as e:
         logging.error(f"An error occurred while reading the file {file_path}: {str(e)}")
         raise Exception(f"An error occurred while reading the file {file_path}: {str(e)}")
-
 
 
 def format_num(number: int) -> str:

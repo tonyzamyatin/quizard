@@ -8,7 +8,7 @@ from backend.src.utils.completion_messages import Messages
 from backend.src.flashcard.flashcard import Flashcard
 from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
 from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
-from backend.src.utils.global_helpers import format_num, write_to_log
+from backend.src.utils.global_helpers import format_num, write_to_log_and_print
 from backend.src.text_splitting import text_split
 
 # Import custom exceptions
@@ -63,7 +63,7 @@ class TestRunner:
         # Calculate total prompt size, accounting for the lang_instr added later
         total_prompt_size = self._calculate_total_prompt_size(messages, self.additional_prompt)
         formatted_total_prompt_size = format_num(total_prompt_size)
-        write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
+        write_to_log_and_print(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
         flashcards = []  # List to collect flashcards from each run
         count = 1  # Counter for debug print statements
@@ -73,7 +73,7 @@ class TestRunner:
 
         # Run short texts with 4k model
         if total_prompt_size < prompt_limit_4k:
-            write_to_log("Using 4k model...\n")
+            write_to_log_and_print("Using 4k model...\n")
             # Add language instructions to the text inputs
             messages.insert_text_into_message('text_input', self.additional_prompt, 0)
             completion_token_limit = 4000 - prompt_limit_4k
@@ -96,7 +96,7 @@ class TestRunner:
 
         # Run long text using test splitting
         else:
-            write_to_log(f"Using text splitting using {self.config['model']['name']}...\n")
+            write_to_log_and_print(f"Using text splitting using {self.config['model']['name']}...\n")
 
             # Split the text into fragments
             base_prompt_size = self._calculate_base_prompt_size(messages, self.additional_prompt)
@@ -113,7 +113,7 @@ class TestRunner:
                 exit(1)
 
             for text_fragment in fragment_list:
-                write_to_log(f'\nProcessing text fragment No {count}')
+                write_to_log_and_print(f'\nProcessing text fragment No {count}')
                 count += 1
 
                 # Generate a new Messages for the new shorter text_fragment
@@ -126,7 +126,7 @@ class TestRunner:
 
                 sub_prompt_size = self._calculate_total_prompt_size(new_messages, self.additional_prompt)
                 formatted_sub_prompt_size = format_num(sub_prompt_size)
-                write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
+                write_to_log_and_print(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
                 # Add lang_instr to the text_input, example_user is reused from messages and already contains the lang_instruct.
                 new_messages.insert_text_into_message('text_input', self.additional_prompt, 0)
 

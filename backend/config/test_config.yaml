@@ -1,2 +1,2 @@
-"text_input": ""
-"test_name": "test23a-app.py"
+"text_input": "bullet_point_summary/political_communication_GER.txt"    # path starting from input e.g. bullet_point_summary/...
+"test_name": "test23a-separate_test_and_app_modules"

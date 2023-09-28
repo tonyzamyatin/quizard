@@ -13,10 +13,12 @@ tokens:
   4k_model:
     prompt_limit: 3000
     base_prompt_limit: 2000
+    completion_limit: 800
   # Medium text config for 16k model
   16k_model:
     prompt_limit: 13000
     base_prompt_limit: 4000
+    completion_limit: 10000
 
   # For texts longer than 12k tokens text splitting is used
   # Window size will be calculated by the program automatically depending on the size of the base prompt (i.e. system prompt + example)

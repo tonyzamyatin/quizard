@@ -1,0 +1,189 @@
+Running test23a-separate_test_and_app_modules
+
+Running test23a-separate_test_and_app_modules
+
+Running test23a-separate_test_and_app_modules
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 1.344 tokens
+Using 4k model...
+
+Response time: 35.883 ms
+
+Completion size: 699 tokens
+
+Total size: 2.040 tokens
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 1.344 tokens
+Using 4k model...
+
+Response time: 34.638 ms
+
+Completion size: 696 tokens
+
+Total size: 2.037 tokens
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 1.344 tokens
+Using 4k model...
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 40.009 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Response time: 37.201 ms
+
+Completion size: 745 tokens
+
+Total size: 3.943 tokens
+
+Processing text fragment No 3
+Calculated prompt size: 3.201 tokens
+Response time: 37.976 ms
+
+Completion size: 749 tokens
+
+Total size: 3.947 tokens
+
+Processing text fragment No 4
+Calculated prompt size: 3.201 tokens
+Response time: 39.575 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 5
+Calculated prompt size: 3.201 tokens
+Running test23a-separate_test_and_app_modules
+
+Total message length (calculated): 20.286 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 31.346 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Response time: 20.702 ms
+
+Completion size: 544 tokens
+
+Total size: 3.742 tokens
+
+Processing text fragment No 3
+Calculated prompt size: 3.201 tokens
+Response time: 21.341 ms
+
+Completion size: 559 tokens
+
+Total size: 3.757 tokens
+
+Processing text fragment No 4
+Calculated prompt size: 3.201 tokens
+Response time: 25.491 ms
+
+Completion size: 671 tokens
+
+Total size: 3.869 tokens
+
+Processing text fragment No 5
+Calculated prompt size: 3.201 tokens
+Response time: 22.678 ms
+
+Completion size: 569 tokens
+
+Total size: 3.767 tokens
+
+Processing text fragment No 6
+Calculated prompt size: 3.201 tokens
+Response time: 13.522 ms
+
+Completion size: 375 tokens
+
+Total size: 3.573 tokens
+
+Processing text fragment No 7
+Calculated prompt size: 3.200 tokens
+Response time: 27.859 ms
+
+Completion size: 717 tokens
+
+Total size: 3.914 tokens
+
+Processing text fragment No 8
+Calculated prompt size: 3.201 tokens
+Response time: 27.524 ms
+
+Completion size: 724 tokens
+
+Total size: 3.922 tokens
+
+Processing text fragment No 9
+Calculated prompt size: 3.201 tokens
+Response time: 17.770 ms
+
+Completion size: 469 tokens
+
+Total size: 3.667 tokens
+
+Processing text fragment No 10
+Calculated prompt size: 3.201 tokens
+Response time: 27.988 ms
+
+Completion size: 720 tokens
+
+Total size: 3.918 tokens
+
+Processing text fragment No 11
+Calculated prompt size: 2.716 tokens
+Response time: 35.431 ms
+
+Completion size: 903 tokens
+
+Total size: 3.616 tokens

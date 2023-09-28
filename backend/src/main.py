@@ -2,7 +2,7 @@ import os
 import openai
 from dotenv import load_dotenv
 from backend.src.app.app import FlashcardApp
-from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log, load_yaml_config
+from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config
 
 # This assumes that main.py is in backend/src/
 backend_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

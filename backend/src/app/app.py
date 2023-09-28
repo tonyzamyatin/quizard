@@ -8,7 +8,7 @@ from backend.src.utils.completion_messages import Messages
 from backend.src.flashcard.flashcard import Flashcard
 from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
 from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
-from backend.src.utils.global_helpers import format_num, write_to_log
+from backend.src.utils.global_helpers import format_num, write_to_log_and_print
 from backend.src.text_splitting import text_split
 
 # Import custom exceptions
@@ -24,7 +24,7 @@ from backend.src.utils.completion_messages import Messages
 from backend.src.flashcard.flashcard import Flashcard
 from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
 from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
-from backend.src.utils.global_helpers import format_num, write_to_log, inset_into_string, read_file
+from backend.src.utils.global_helpers import format_num, write_to_log_and_print, inset_into_string, read_file
 from backend.src.text_splitting import text_split
 
 # Import custom exceptions
@@ -36,6 +36,7 @@ class FlashcardApp:
         self.config = config
         self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+        self.model_name = "gpt-3.5-turbo"    # Default, may be changed by the program, depending on the input size.
         self.generation_mode = self.config['flashcard_generation']['mode']
         if self.generation_mode not in FlashcardGenerator.GENERATION_MODE:
             raise ConfigLoadingError(f"Invalid flashcard type: {self.generation_mode}. Expected one of {FlashcardGenerator.GENERATION_MODE}.")
@@ -59,9 +60,8 @@ class FlashcardApp:
                          self.lang,
                          "example_assistant.txt"))
         self.additional_prompt = read_file(
-            os.path.join(self.backend_root_dir, "prompt/example/", self.config['flashcard_generation']['additional_prompt'],
-                         self.lang,
-                         "example_assistant.txt"))
+            os.path.join(self.backend_root_dir, "prompt/additional/", self.config['flashcard_generation']['additional_prompt'],
+                         f"{self.lang}.txt"))
 
     def run(self, text_input: str):
         # TODO: Add language detection
@@ -84,11 +84,11 @@ class FlashcardApp:
         # Calculate total prompt size
         total_prompt_size = self._calculate_total_prompt_size(messages)
         formatted_total_prompt_size = format_num(total_prompt_size)
-        write_to_log(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
+        write_to_log_and_print(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
         # Run short texts with 4k model
         if total_prompt_size < prompt_limit_4k:
-            write_to_log("Using 4k model...\n")
+            write_to_log_and_print("Using 4k model...\n")
             # Add language instructions to the text inputs
             print(f"Using gpt-3.5-turbo for total prompt size.")
             max_tokens = 4000 - prompt_limit_4k
@@ -108,13 +108,13 @@ class FlashcardApp:
 
         # Run long text using test splitting
         else:
-            write_to_log(f"Using text splitting using {self.config['model']['name']}...\n")
+            write_to_log_and_print(f"Using text splitting using {self.model_name}...\n")
 
             # Split the text into fragments
-            base_prompt_size = self._calculate_base_prompt_size(messages, text_input, self.additional_prompt)
+            base_prompt_size = self._calculate_base_prompt_size(messages, self.additional_prompt)
             print(f"Base prompt size: {base_prompt_size}")
             try:
-                fragment_list = text_split.split_text(text_input, base_prompt_size, self.config["tokens"]["text_splitting"])
+                fragment_list = text_split.split_text(self.model_name, text_input, base_prompt_size, self.config["tokens"])
             except PromptSizeError as e:
                 logging.error(f"Prompt size error occurred: {str(e)}")
                 print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
@@ -122,7 +122,7 @@ class FlashcardApp:
 
             count = 1  # Counter for debug print statements
             for text_fragment in fragment_list:
-                write_to_log(f'\nProcessing text fragment No {count}')
+                write_to_log_and_print(f'\nProcessing text fragment No {count}')
                 count += 1
 
                 # Generate a new Messages for the new shorter text_fragment
@@ -135,7 +135,7 @@ class FlashcardApp:
 
                 sub_prompt_size = self._calculate_total_prompt_size(new_messages)
                 formatted_sub_prompt_size = format_num(sub_prompt_size)
-                write_to_log(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
+                write_to_log_and_print(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
                 max_tokens = 4000 - sub_prompt_size
 
                 # Generate flashcards and add them to the flashcard list
@@ -149,7 +149,7 @@ class FlashcardApp:
 
     def _calculate_total_prompt_size(self, messages: Messages, *additional_strings) -> int:
         """Calculates the total prompt size based on the message content."""
-        encoding = tiktoken.encoding_for_model(self.config['model']['name'])
+        encoding = tiktoken.encoding_for_model(self.model_name)
         # There are 18 additional tokens in the prompt due to the list format
         base_count = 18 + sum(
             [len(encoding.encode(message['content'])) + len(encoding.encode(message['role'])) for message in
@@ -161,12 +161,12 @@ class FlashcardApp:
         return base_count + additional_count
 
     def _calculate_base_prompt_size(self, messages: Messages, *additional_strings) -> int:
-        encoding = tiktoken.encoding_for_model(self.config['model']['name'])
+        encoding = tiktoken.encoding_for_model(self.model_name)
         # There are 18 additional tokens in the prompt due to the list format
         message_list = messages.as_message_list()  # Call the as_message_list method to get the list of messages
         base_count = 18 + sum(
             [len(encoding.encode(message['content'])) + len(encoding.encode(message['role']))
-             for message in message_list[:-1]]  # Slice to skip the last message
+             for message in message_list[:-1]]  # Slice to skip the last message containing the text_input
         )
 
         # Calculate the tokens for additional strings
