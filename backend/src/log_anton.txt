@@ -187,3 +187,104 @@ Response time: 35.431 ms
 Completion size: 903 tokens
 
 Total size: 3.616 tokens
+Running test24a-long_text_bio
+
+Total message length (calculated): 22.030 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 19.446 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Response time: 19.562 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 3
+Calculated prompt size: 3.201 tokens
+Response time: 17.512 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 4
+Calculated prompt size: 3.201 tokens
+Response time: 16.637 ms
+
+Completion size: 678 tokens
+
+Total size: 3.876 tokens
+
+Processing text fragment No 5
+Calculated prompt size: 3.201 tokens
+Response time: 14.205 ms
+
+Completion size: 769 tokens
+
+Total size: 3.967 tokens
+
+Processing text fragment No 6
+Calculated prompt size: 3.201 tokens
+Response time: 11.092 ms
+
+Completion size: 588 tokens
+
+Total size: 3.786 tokens
+
+Processing text fragment No 7
+Calculated prompt size: 3.201 tokens
+Response time: 13.512 ms
+
+Completion size: 732 tokens
+
+Total size: 3.930 tokens
+
+Processing text fragment No 8
+Calculated prompt size: 3.201 tokens
+Response time: 15.313 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 9
+Calculated prompt size: 3.201 tokens
+Response time: 15.747 ms
+
+Completion size: 705 tokens
+
+Total size: 3.903 tokens
+
+Processing text fragment No 10
+Calculated prompt size: 3.201 tokens
+Response time: 14.530 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 11
+Calculated prompt size: 3.201 tokens
+Response time: 15.703 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 12
+Calculated prompt size: 2.703 tokens
+Response time: 17.956 ms
+
+Completion size: 862 tokens
+
+Total size: 3.562 tokens
