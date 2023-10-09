@@ -1,5 +1,7 @@
 import React, {useState} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactDOM from 'react-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFileArrowUp } from '@fortawesome/free-solid-svg-icons'
 import './Slider.css';
 import './CTAButton.css'
 import './UploadContainer.css';
@@ -59,7 +61,7 @@ function PDFUploadField ({ }) {
         <div className="PDF-upload-field">
             <div className="PDF-placeholder">
                 <p>Document uploading coming soon...</p>
-                <FontAwesomeIcon icon="fa-solid fa-file-arrow-up" style={{color: "#6a6870",}} />
+                <FontAwesomeIcon icon={faFileArrowUp} size="2xl" style={{color: "#6a6870",}} />
             </div>
         </div>
     );
