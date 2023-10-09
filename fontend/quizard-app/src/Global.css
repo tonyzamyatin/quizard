@@ -1,0 +1,73 @@
+/* Reset some basic browser default styling */
+* {
+    /*border: 1px solid magenta !important;*/
+}
+
+html, body, div, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* Set a default background color */
+body {
+    background-color: white;
+}
+
+/* Typography */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+}
+
+/* Layout sizes */
+.container {
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+}
+
+/* Navbar styling */
+.navbar {
+    height: 60px;
+    background-color: white;
+    color: #333;
+}
+
+/* Sections */
+.section {
+    min-height: 1080px;
+    width: 100%;
+}
+
+/* Footer */
+.footer {
+    height: 220px;
+    background-color: #333;
+    color: white;
+}
+
+/* Utilities */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+.mb-10 {
+    margin-bottom: 10px;
+}
+.ml-10 {
+    margin-left: 10px;
+}
+.mr-10 {
+    margin-right: 10px;
+}
