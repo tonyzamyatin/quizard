@@ -1,7 +1,8 @@
 /* UploadContainer.css */
 .upload-container {
     margin: auto;
-    width: 1044px;
+    max-width: 1044px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

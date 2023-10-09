@@ -1,0 +1,14 @@
+.generator-section {
+    width: 100vw;  /* Cover the whole screen width */
+    height: 100vh; /* Cover the whole screen height */
+    margin: 0 20px 20px 0; /* To account for the scroll bars when making the tab smaller.
+    display: flex;
+    flex-direction: column; /* Align children vertically */
+    align-items: center; /* Center children horizontally */
+}
+
+.description {
+    text-align: center;
+    margin-top: 50px;  /* Margin from the top */
+    margin-bottom: 30px; /* Margin from the bottom, separating it from the UploadContainer */
+}
