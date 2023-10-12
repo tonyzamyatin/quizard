@@ -1,23 +1,4 @@
-/* UploadContainer.css */
-.upload-container {
-    margin: auto;
-    max-width: 1044px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.upload-container h2 {
-    margin: 0 0 10px 0;
-}
-
-.input-area {
-    width: 100%;
-    height: 446px;
-    border-radius: 10px;
-    margin: 10px 0 0 0;
-}
+/* TextUploadField.css */
 
 .PDF-upload-field {
     height: 100%;
@@ -47,10 +28,4 @@
     padding: 20px;
 }
 
-.button-area {
-    margin: 10px 0 0 0;
-    align-self: end;
-    display: flex;
-    justify-content: flex-end;
-}
 

@@ -1,6 +1,7 @@
 .generator-section {
-    width: 100vw;  /* Cover the whole screen width */
-    height: 100vh; /* Cover the whole screen height */
+    box-sizing: border-box;
+    width: 100%;  /* Cover the whole screen width */
+    /*height: 100vh; !* Cover the whole screen height *!*/
     margin: 0 20px 20px 0; /* To account for the scroll bars when making the tab smaller.
     display: flex;
     flex-direction: column; /* Align children vertically */
@@ -12,3 +13,33 @@
     margin-top: 50px;  /* Margin from the top */
     margin-bottom: 30px; /* Margin from the bottom, separating it from the UploadContainer */
 }
+
+.generation-section-container {
+    margin: auto;
+    max-width: 1044px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.generation-section-container h2 {
+    margin: 0 0 10px 0;
+}
+
+.generation-section-box {
+    width: 100%;
+    height: 446px;
+    border-radius: 10px;
+    margin: 10px 0 0 0;
+}
+
+.button-area {
+    margin: 10px 0 0 0;
+    align-self: end;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+
+

@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faFileArrowUp} from '@fortawesome/free-solid-svg-icons'
 import './Slider.css';
 import './CTAButton.css'
-import './UploadContainer.css';
+import './TextUploadField.css';
 import './GeneratorSection.css'
 import './Global.css'
 
@@ -69,6 +69,8 @@ function PDFUploadField({}) {
     );
 }
 
+
+
 function CTAButton({buttonName}) {
     return <button className={`CTA-button ${buttonName.replace(' ', '-').toLowerCase()}`}>{buttonName}</button>;
 }
@@ -89,21 +91,47 @@ function UploadContainer() {
     };
 
     return (
-        <div className="upload-container">
+        <div className="generation-section-container">
             <h2>Enter your Notes</h2>
             <Slider fields={["Text", "PDF"]} selectedField={selectedField} onFieldClick={handleFieldClick}/>
-            <div className="input-area">
+            <div className="generation-section-box">
                 {renderInputField()}
-            </div>
-            <div className="button-area">
-                <CTAButton buttonName="Go back"/>
-                <CTAButton buttonName="Generate"/>
             </div>
         </div>
     );
 }
 
+
 function GeneratorSection() {
+    const [currentStep, setCurrentStep] = useState("TextUpload")
+
+    const renderContent = () => {
+        switch (currentStep) {
+            case "TextUpload":
+                return < UploadContainer />;
+        }
+    }
+
+    const renderButton = () => {
+        switch (currentStep) {
+            case "Configuration":
+                return (
+                    <div className="button-area">
+                        <CTAButton buttonName="Next"/>
+                    </div>
+                );
+            case "TextUpload":
+                return (
+                    <div className="button-area">
+                        <CTAButton buttonName="Go back"/>
+                        <CTAButton buttonName="Generate"/>
+                    </div>
+                );
+            case "Generation":
+                return;
+        }
+    }
+
     return (
         <div className="generator-section">
             <div className="description">
@@ -112,7 +140,8 @@ function GeneratorSection() {
                     power of artificial intelligence. Simply upload your materials and let our AI create your flashcards
                     in seconds.</p>
             </div>
-            <UploadContainer />
+            {renderContent()}
+            {renderButton()}
         </div>
     );
 }
