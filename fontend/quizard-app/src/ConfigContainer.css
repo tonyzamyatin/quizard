@@ -1,0 +1,70 @@
+.config-container {
+    max-width: 522px;
+}
+
+
+.config-menu {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    background-color: #F4F5FF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Label and Select Grouping */
+.config-menu div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Space between each label-select pair */
+}
+
+/* New or Modified Classes */
+.config-menu label {
+    margin-bottom: 8px; /* Space between label and select */
+    font-weight: bold;
+    display: block;
+}
+
+.config-menu select {
+    width: 196px;
+    height: 40px;
+    border: none;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+}
+
+/* For option styling */
+.config-menu option {
+    font-size: 16px; /* Matching Font Size */
+    padding: 8px 10px;
+}
+
+/* Smooth transition for dropdown */
+.config-menu select {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Larger dropdown arrow */
+.config-menu select::-ms-expand {
+    font-size: 16px;
+}
+
+/* To apply the same styles for Firefox */
+@-moz-document url-prefix() {
+    .config-menu select {
+        text-indent: 0.01px;
+        text-overflow: '';
+        width: 100%;
+    }
+}
