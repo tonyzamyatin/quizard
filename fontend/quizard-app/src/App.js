@@ -18,7 +18,7 @@ function GeneratorSection() {
         GENERATION: 'Generation'
     });
 
-    const [currentStep, setCurrentStep] = useState(Steps.CONFIGURATION)
+    const [currentStep, setCurrentStep] = useState(Steps.TEXT_UPLOAD)
 
     const renderContent = () => {
         switch (currentStep) {
@@ -26,6 +26,8 @@ function GeneratorSection() {
                 return  <ConfigContainer />;
             case Steps.TEXT_UPLOAD:
                 return <UploadContainer/>;
+            case Steps.GENERATION:
+                return <></>
         }
     }
 
