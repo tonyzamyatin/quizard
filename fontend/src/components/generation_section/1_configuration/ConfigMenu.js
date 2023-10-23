@@ -1,5 +1,5 @@
 import React from "react";
-import Dropdown from "../global_components/Dropdown";
+import Dropdown from "../../global/Dropdown";
 
 function ConfigMenu() {
 

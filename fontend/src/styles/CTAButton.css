@@ -14,13 +14,13 @@
 }
 
 .CTA-button:hover {
-    transform: scale(1.03) translateY(-2px); /* Scales the button up a bit */
+    transform: scale(1.01) translateY(-1px); /* Scales the button up a bit */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .CTA-button:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transform: scale(1.03) translateY(0px); /* Remains scaled but moves back down */
+    transform: scale(1.01) translateY(1px); /* Remains scaled but moves back down */
 }
 
 .CTA-button.go-back {

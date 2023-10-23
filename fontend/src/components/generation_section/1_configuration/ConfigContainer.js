@@ -1,8 +1,13 @@
 import React, {useState} from "react";
-import CTAButton from '../global_components/CTAButton';
+import CTAButton from '../../global/CTAButton';
 import ConfigMenu from "./ConfigMenu";
+import Steps from "../../global/GenerationSteps";
 
-function ConfigContainer() {
+function ConfigContainer({setGenerationStep}) {
+
+    function handleNextClick() {
+        setGenerationStep(Steps.TEXT_UPLOAD);
+    }
 
     return (
         <div className="generation-section-container config-container">
@@ -11,7 +16,7 @@ function ConfigContainer() {
                 <ConfigMenu />
             </div>
             <div className="button-area">
-                <CTAButton buttonName="Next"/>
+                <CTAButton buttonName="Next" onClick={handleNextClick()}/>
             </div>
         </div>
     )
