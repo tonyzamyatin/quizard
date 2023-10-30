@@ -2,6 +2,13 @@
     max-width: 522px;
 }
 
+/* This class is to make the distance between the h2 and box equal between the individual steps in the generation process.
+   The Silder in Step 2 takes up 48px in height and has 10px button and top margin each + 10px regular top margin of the box.
+   However, the big gap between the two components looks ugly, if there's no Slider to fill up the space...
+*/
+.config-container-box {
+    /*margin-top: 78px;*/
+}
 
 .config-menu {
     box-sizing: border-box;

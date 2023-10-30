@@ -1,7 +1,7 @@
-const Steps = Object.freeze({
+const GenerationSteps = Object.freeze({
     TEXT_UPLOAD: 'TextUpload',
     CONFIGURATION: 'Configuration',
     GENERATION: 'Generation'
 });
 
-export default Steps;
+export default GenerationSteps;

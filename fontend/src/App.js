@@ -1,17 +1,15 @@
-import React, {useState} from "react";
-import ReactDOM from 'react-dom'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faFileArrowUp} from '@fortawesome/free-solid-svg-icons'
-import ConfigContainer from './components/generation_section/1_configuration/ConfigContainer';
+import GeneratorSection from "./containers/GeneratorSection";
+// Import general styles first
+import './styles/Global.css'
+import './styles/GeneratorSection.css'
 import './styles/Slider.css';
 import './styles/CTAButton.css'
+// Import specific styles later
 import './styles/UploadContainer.css';
 import './styles/ConfigContainer.css'
-import './styles/GeneratorSection.css'
-import './styles/Global.css'
-import GeneratorSection from "./containers/GeneratorSection";
+import './styles/GenerationProgressContainer.css'
 
-// Get the display language of the browser and display the content in that language (for starters, either "German" or "English").
+// TODO: Get the display language of the browser and display the content in that language (for starters, either "German" or "English").
 function getBrowserLanguage() {
 
 }

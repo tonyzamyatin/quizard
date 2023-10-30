@@ -11,7 +11,7 @@ function Dropdown({ labelText, options }){
     return (
         <div>
             <label>{labelText}</label>
-            <select value={selectedOption} onChange={handleChange} defaultValue="">
+            <select value={selectedOption} onChange={handleChange}>
                 <option value="" disabled>Select...</option>
                 {options.map((optionText, index) => (
                     <option key={index} value={optionText}>

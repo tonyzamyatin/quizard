@@ -2,19 +2,18 @@ import React, {useState} from "react";
 import ConfigContainer from "../components/generation_section/1_configuration/ConfigContainer";
 import UploadContainer from "../components/generation_section/2_text_upload/UploadContainer";
 import GenerationProgressContainer from "../components/generation_section/3_flashcard_generation/GenerationProgressContainer";
-import Steps from "../components/global/GenerationSteps";
+import GenerationSteps from "../components/global/GenerationSteps";
 
 function GeneratorSection() {
 
-    const [currentStep, setCurrentStep] = useState(Steps.TEXT_UPLOAD)
-
-    const renderContent = (currentStep) => {
+    const [currentStep, setCurrentStep] = useState(GenerationSteps.CONFIGURATION)
+    const renderContent = () => {
         switch (currentStep) {
-            case Steps.CONFIGURATION:
+            case GenerationSteps.CONFIGURATION:
                 return <ConfigContainer setGenerationStep={setCurrentStep}/>;
-            case Steps.TEXT_UPLOAD:
+            case GenerationSteps.TEXT_UPLOAD:
                 return <UploadContainer setGenerationStep={setCurrentStep}/>;
-            case Steps.GENERATION:
+            case GenerationSteps.GENERATION:
                 return <GenerationProgressContainer/>
         }
     }

@@ -3,21 +3,21 @@ import CTAButton from "../../global/CTAButton";
 import TextUploadField from "./TextUploadField";
 import PDFUploadField from "./PDFUploadField";
 import Slider from "../../global/Slider";
-import Steps from "../../global/GenerationSteps";
+import GenerationSteps from "../../global/GenerationSteps";
 
 function UploadContainer({setGenerationStep}) {
     const [selectedField, setSelectedField] = useState("Text");
 
-    function handleFieldClick(field) {
+    const handleFieldClick = (field) => {
         setSelectedField(field);
     }
 
-    function handleBackClick() {
-        setGenerationStep(Steps.CONFIGURATION);
+    const handleBackClick = () => {
+        setGenerationStep(GenerationSteps.CONFIGURATION);
     }
 
-    function handleGenerateClick() {
-        setGenerationStep(Steps.GENERATION);
+    const handleGenerateClick  = () => {
+        setGenerationStep(GenerationSteps.GENERATION);
     }
 
     const renderInputField = () => {
@@ -36,8 +36,8 @@ function UploadContainer({setGenerationStep}) {
                 {renderInputField()}
             </div>
             <div className="button-area">
-                <CTAButton buttonName="Go back" handleClick={handleBackClick()}/>
-                <CTAButton buttonName="Generate" handleClick={handleGenerateClick()}/>
+                <CTAButton buttonName="Go back" onButtonClick={handleBackClick}/>
+                <CTAButton buttonName="Generate" onButtonClick={handleGenerateClick}/>
             </div>
         </div>
     );
