@@ -5,21 +5,23 @@
 /* This class is to make the distance between the h2 and box equal between the individual steps in the generation process.
    The Silder in Step 2 takes up 48px in height and has 10px button and top margin each + 10px regular top margin of the box.
    However, the big gap between the two components looks ugly, if there's no Slider to fill up the space...
+   TODO: Find prettier solution once PDF reader is ready and Slider has to activated.
 */
-.config-container-box {
-    /*margin-top: 78px;*/
-}
+
+
 
 .config-menu {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
+    /*margin-top: 78px;*/
     border-radius: inherit;
     background-color: #F4F5FF;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: center;    /* Vertically center children */
+    align-items: center;        /* Horizontally center children */
 }
 
 /* Label and Select Grouping */
@@ -27,14 +29,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px; /* Space between each label-select pair */
+    margin-bottom: 30px; /* Space between each label-select pair */
 }
 
 /* New or Modified Classes */
 .config-menu label {
-    margin-bottom: 8px; /* Space between label and select */
-    font-weight: bold;
+    font-size: 1.2em;
     display: block;
+    margin-bottom: 10px; /* Space between label and select */
 }
 
 .config-menu select {
@@ -47,13 +49,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     appearance: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1em;
     outline: none;
 }
 
 /* For option styling */
 .config-menu option {
-    font-size: 16px; /* Matching Font Size */
+    font-size: 1em; /* Matching Font Size */
     padding: 8px 10px;
 }
 

@@ -1,7 +1,10 @@
 import ProgressBar from "./ProgressBar";
 import TriviaSlideShow from "./TriviaSlideShow";
+import CTAButton from "../../global/CTAButton";
+import React from "react";
+import GenerationSteps from "../../global/GenerationSteps";
 
-function GenerationProgressContainer() {
+function GenerationProgressContainer({setGenerationStep}) {
 
     // The total number of flashcard batches being generated
     const totalUpdates = 0;
@@ -25,11 +28,15 @@ function GenerationProgressContainer() {
         );
     }
 
+    const handleBackClick = () => {
+        setGenerationStep(GenerationSteps.TEXT_UPLOAD);
+    }
+
     return (
-        <div className="generation-section-container">
+        <div className="generation-section-container progress-container">
             <h2>Generating your flashcards.</h2>
             {renderProgressBar()}
-            <div className="generation-section-box">
+            <div className="generation-section-box progress-info-box">
                 <h3>Be patient...this might take a few minutes</h3>
                 <p>
                     Quizard is hard at work to turn your text into high-quality flashcards. Imagine the pain of doing
@@ -37,6 +44,9 @@ function GenerationProgressContainer() {
                     we'll give you a heads-up
                 </p>
                 {renderTriviaSlideShow(totalUpdates, lastUpdate)}
+            </div>
+            <div className="button-area">
+                <CTAButton buttonName="Go back" onButtonClick={handleBackClick}/>
             </div>
         </div>
     );

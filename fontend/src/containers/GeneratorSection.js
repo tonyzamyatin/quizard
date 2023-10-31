@@ -6,7 +6,7 @@ import GenerationSteps from "../components/global/GenerationSteps";
 
 function GeneratorSection() {
 
-    const [currentStep, setCurrentStep] = useState(GenerationSteps.CONFIGURATION)
+    const [currentStep, setCurrentStep] = useState(GenerationSteps.GENERATION)
     const renderContent = () => {
         switch (currentStep) {
             case GenerationSteps.CONFIGURATION:
@@ -14,7 +14,7 @@ function GeneratorSection() {
             case GenerationSteps.TEXT_UPLOAD:
                 return <UploadContainer setGenerationStep={setCurrentStep}/>;
             case GenerationSteps.GENERATION:
-                return <GenerationProgressContainer/>
+                return <GenerationProgressContainer setGenerationStep={setCurrentStep}/>
         }
     }
 

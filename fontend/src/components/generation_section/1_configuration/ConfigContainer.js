@@ -11,7 +11,7 @@ function ConfigContainer({setGenerationStep}) {
     return (
         <div className="generation-section-container config-container">
             <h2>Configure the Flashcard Generator</h2>
-            <div className="generation-section-box config-container-box">
+            <div className="generation-section-box">
                 <ConfigMenu />
             </div>
             <div className="button-area">
