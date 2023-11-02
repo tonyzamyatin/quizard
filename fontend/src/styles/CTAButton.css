@@ -36,7 +36,20 @@
     background-color: #D9D7DA;
 }
 
+.CTA-button.next {
+    background-color: #64FFD1;
+    color: #0D052D;
+    /* This ensures the "next" button, when it's the only button, moves to the right */
+    margin-left: auto;
+}
 
+.CTA-button.next:hover {
+    background-color: #64FFD1;
+}
+
+.CTA-button.next:active {
+    background-color: #64FFD1;
+}
 
 .CTA-button.generate {
     background-color: #64FFD1;
@@ -48,18 +61,5 @@
 }
 
 .CTA-button.generate:active {
-    background-color: #64FFD1;
-}
-
-.CTA-button.next {
-    background-color: #64FFD1;
-    color: #0D052D;
-}
-
-.CTA-button.next:hover {
-    background-color: #64FFD1;
-}
-
-.CTA-button.next:active {
     background-color: #64FFD1;
 }

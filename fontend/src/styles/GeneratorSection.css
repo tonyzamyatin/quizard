@@ -35,10 +35,11 @@
 }
 
 .button-area {
+    width: 100%;
     margin: 10px 0 0 0;
     align-self: end;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;  /* Pushes child elements to the ends */
 }
 
 .button-area button {
@@ -46,11 +47,11 @@
     margin-right: 10px;
 }
 
-.button-area button:first-child {
+.button-area > :first-child {
     margin-left: 0;
 }
 
-.button-area button:last-child {
+.button-area > :last-child {
     margin-right: 0;
 }
 

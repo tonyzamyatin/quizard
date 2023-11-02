@@ -8,6 +8,7 @@ import './styles/CTAButton.css'
 import './styles/UploadContainer.css';
 import './styles/ConfigContainer.css'
 import './styles/GenerationProgressContainer.css'
+import './styles/ProgressBar.css'
 
 // TODO: Get the display language of the browser and display the content in that language (for starters, either "German" or "English").
 function getBrowserLanguage() {

@@ -2,8 +2,6 @@ import React from "react";
 
 function SliderField({ fieldName, isSelected, onClick }) {
 
-
-
     return (
         <div
             className={`slider-field ${isSelected ? "selected" : ""}`}

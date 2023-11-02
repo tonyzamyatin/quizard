@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import CTAButton from "../../global/CTAButton";
 import TextUploadField from "./TextUploadField";
 import PDFUploadField from "./PDFUploadField";
-import Slider from "../../global/Slider";
 import GenerationSteps from "../../global/GenerationSteps";
 
 function UploadContainer({setGenerationStep}) {
