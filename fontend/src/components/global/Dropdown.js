@@ -1,17 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
-function Dropdown({ labelText, options }){
-
-    const [selectedOption, setSelectedOption] = useState("");
-
-    const handleChange = (event) => {
-        setSelectedOption(event.target.value);
-    }
-
+function Dropdown({ labelText, selected, options, onChange }) {
     return (
         <div>
             <label>{labelText}</label>
-            <select value={selectedOption} onChange={handleChange}>
+            <select value={selected} onChange={onChange}>
                 <option value="" disabled>Select...</option>
                 {options.map((optionText, index) => (
                     <option key={index} value={optionText}>
@@ -22,5 +15,6 @@ function Dropdown({ labelText, options }){
         </div>
     );
 }
+
 
 export default Dropdown;

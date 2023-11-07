@@ -4,21 +4,20 @@ import TriviaSlideShow from "./TriviaSlideShow";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function GenerationProgressContainer({setGenerationStep}) {
+function GenerationProgressContainer({setGenerationStep, totalBatches, currentBatch}) {
 
     // The number of the last flashcard batch that was generated
     const [currentUpdate, setCurrentUpdate] = useState(60);
 
-    // The total number of flashcard batches being generated
-    const totalUpdates = 100;
-
+    // Progress of flashcard generation process in percent
+    const progress = currentBatch / totalBatches * 100
 
     // Receives information about the current flashcard batch being generated
     function receiveUpdate() {
 
     }
     const renderProgressBar = () => {
-        return <ProgressBar totalUpdates={totalUpdates} currentUpdate={currentUpdate}/>;
+        return <ProgressBar progress={progress}/>;
     }
 
     // Slide show to display trivia and fun facts while user waits during flashcard generation
@@ -50,7 +49,7 @@ function GenerationProgressContainer({setGenerationStep}) {
                 </div>
             </div>
             <div className="button-area">
-                <CTAButton buttonName="Go back" onButtonClick={handleBackClick}/>
+                <CTAButton buttonName="Go back" onButtonClick={handleBackClick} active={true}/>
             </div>
         </div>
     );

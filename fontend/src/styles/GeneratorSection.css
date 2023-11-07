@@ -1,14 +1,12 @@
 .generator-section {
     box-sizing: border-box;
     width: 100%;  /* Cover the whole screen width */
-    /* TODO: height: 1 viewport height (is is 100vh?)*/
     margin: 0 20px 20px 0; /* To account for the scroll bars when making the tab smaller.
     display: flex;
     flex-direction: column; /* Align children vertically */
     align-items: center; /* Center children horizontally */
 }
 
-/* TODO: Move the max-width to*/
 .description {
     text-align: center;
     margin: 50px auto 30px auto;
@@ -53,6 +51,12 @@
 
 .button-area > :last-child {
     margin-right: 0;
+}
+
+@media only screen and (max-height: 840px) {
+    .description {
+        margin: 0px auto 20px auto;
+    }
 }
 
 

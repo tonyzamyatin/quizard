@@ -8,10 +8,32 @@
     box-sizing: border-box;
     height: 100%;
     width: 100%;
+    border: none;
     border-radius: inherit;
     background-color: #F4F5FF;
-    color: grey;
     padding: 20px;
+}
+
+.text-upload-field textarea {
+    width: 100%;
+    height: 100%;
+    color: #0D052D;
+    font-family: inherit;
+    font-size: 16px; /* Adjust the font size as needed */
+    text-align: start; /* Aligns text to the left */
+    line-height: 1.5; /* Adjust the line height to control vertical spacing */
+    border: none;
+    outline: none; /* Removes the focus outline */
+    background-color: transparent;
+    resize: none;
+}
+
+.text-upload-field textarea::placeholder {
+    color: grey;
+}
+
+.text-upload-field textarea:not(:placeholder-shown) {
+    color: #0D052D; /* Sets the user input text color */
 }
 
 .PDF-upload-field {
