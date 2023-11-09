@@ -7,9 +7,9 @@ name = "pypi"
 openai = "*"
 python-dotenv = "*"
 tiktoken = "*"
+flask = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
-python_full_version = "3.11.3"
+python_version = "3.12"

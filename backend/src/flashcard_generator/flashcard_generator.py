@@ -50,7 +50,7 @@ def parse_flashcards(content: str, generation_mode: str) -> List[Flashcard]:
                 cards.append(e.flashcard)
             else:
                 logging.error(e)
-        except (IndexError) as e:
+        except IndexError as e:
             logging.error("Model output not in expected flashcard format: 'question;answer")
             print(f"""
             Model output not in expected flashcard format: 'question;answer:
@@ -62,8 +62,8 @@ def parse_flashcards(content: str, generation_mode: str) -> List[Flashcard]:
 
 
 class FlashcardGenerator:
-    
     GENERATION_MODE = ['practice', 'definitions', 'quiz', 'cloze']
+
     def __init__(self, api_key: str, model_config: dict, generation_mode: str):
         self.api_key = api_key
         self.model_config = model_config
