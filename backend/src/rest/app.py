@@ -1,4 +1,6 @@
-from flask import Flask, request, jsonify
+import json
+
+from flask import Flask, request, jsonify, Response
 from flask_restful import Resource, Api
 from flask_cors import CORS
 
@@ -18,8 +20,12 @@ class FlashCardGenerator(Resource):
         input_text = json_data['inputText']
         print('mode: {}'.format(mode))
         print('input text: {}'.format(input_text))
-        return {'flashCards': []}
-        # this is just example output
+        example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
+        # todo call the generator with mode and input text and assign the results to the flashcards array
+        flashcards = [example_flashcard]
+        flashcards_as_dict = [{'id': card.id, 'type': card.type, 'frontSide': card.frontside, 'backSide': card.backside} for card in flashcards]
+        return jsonify({'flashCards': flashcards_as_dict})
+
 
 api.add_resource(FlashCardGenerator, '/api/v1/flashcard/generate')
 

@@ -3,11 +3,11 @@ from enum import Enum
 
 
 class FlashcardType(str, Enum): # define enum as subclass of string so it can be serialized
-    UNKNOWN = 0
-    DEFINITION = 1
-    OPEN_ENDED = 2
-    MULTIPLE_CHOICE = 3
-    CLOZE = 5
+    UNKNOWN = 'UNKNOWN'
+    DEFINITION = 'DEFINITION'
+    OPEN_ENDED = 'OPEN_ENDED'
+    MULTIPLE_CHOICE = 'MULTIPLE_CHOICE'
+    CLOZE = 'CLOZE'
 
 
 class Flashcard:
@@ -24,3 +24,6 @@ class Flashcard:
 
     def as_csv(self) -> str:
         return self.frontside + ';' + self.backside
+
+    def to_json(self):
+        return json.dumps(self, default=lambda obj: obj.__dict__)
