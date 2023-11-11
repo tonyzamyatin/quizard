@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-openai = "0.28"
+openai = "*"
 python-dotenv = "*"
 tiktoken = "*"
 flask = "*"
