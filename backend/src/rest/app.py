@@ -1,7 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+from flask_cors import CORS
+
+from backend.src.flashcard.flashcard import Flashcard, FlashcardType
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 class FlashCardGenerator(Resource):
@@ -14,8 +18,8 @@ class FlashCardGenerator(Resource):
         input_text = json_data['inputText']
         print('mode: {}'.format(mode))
         print('input text: {}'.format(input_text))
-        return {'hello': 'world'}
-
+        return {'flashCards': []}
+        # this is just example output
 
 api.add_resource(FlashCardGenerator, '/api/v1/flashcard/generate')
 

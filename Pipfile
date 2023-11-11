@@ -10,6 +10,7 @@ tiktoken = "*"
 flask = "*"
 pyyaml = "*"
 flask-restful = "*"
+flask-cors = "*"
 
 [dev-packages]
 
