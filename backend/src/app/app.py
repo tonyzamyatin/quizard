@@ -1,4 +1,3 @@
-import yaml
 import os
 import logging
 import tiktoken
@@ -14,7 +13,7 @@ from backend.src.text_splitting import text_split
 # Import custom exceptions
 from backend.src.custom_exceptions.custom_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
 
-import yaml
+
 import os
 import logging
 import tiktoken

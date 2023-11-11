@@ -4,10 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-openai = "*"
+openai = "0.28"
 python-dotenv = "*"
 tiktoken = "*"
 flask = "*"
+pyyaml = "*"
+flask-restful = "*"
 
 [dev-packages]
 
