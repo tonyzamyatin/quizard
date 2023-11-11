@@ -8,6 +8,7 @@ openai = "*"
 python-dotenv = "*"
 tiktoken = "*"
 flask = "*"
+pyyaml = "*"
 
 [dev-packages]
 
