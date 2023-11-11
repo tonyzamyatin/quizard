@@ -48,7 +48,7 @@ def start_log(log_dir):
 
 def write_to_log_and_print(message: str):
     """Write to the logs and also print the message."""
-    with open(os.getenv('LOG_FILE', default='logs/logs.txt'), 'a') as f:
+    with open(os.getenv('LOG_FILE', default='../logs/logs.txt'), 'a') as f:
         f.write(message + '\n')
     print(message)
 

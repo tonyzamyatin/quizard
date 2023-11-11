@@ -2,7 +2,7 @@ import json
 from enum import Enum
 
 
-class FlashcardType(Enum):
+class FlashcardType(str, Enum): # define enum as subclass of string so it can be serialized
     UNKNOWN = 0
     DEFINITION = 1
     OPEN_ENDED = 2
