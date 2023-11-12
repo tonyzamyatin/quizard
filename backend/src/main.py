@@ -1,5 +1,5 @@
 import os
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 from backend.src.app.app import FlashcardApp
 from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config
@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     # TODO: Login and user authentication
 
-    openai.api_key = os.getenv('OPENAI_API_KEY')
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     run_config = load_yaml_config(config_dir, "run_config")
 
     # Use Flask app to get text input from user, either as a .txt or as a pdf.
@@ -24,8 +24,8 @@ if __name__ == '__main__':
     text_input = ""
 
     # Initialize and run app with the text_input
-    app = FlashcardApp(run_config)
+    app = FlashcardApp(run_config, client)
     flashcard_deck = app.run(text_input)
 
     # Return the flashcard deck as a downloadable .csv file using Flask
-    # TODO: Find a way to export the flashcards directly to their Anki account
+    # TODO: Return as downloadable Anki Deck. Eventually create a flashcard studying tool on the website and export to the user's Anki account.

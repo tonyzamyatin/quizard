@@ -1,5 +1,5 @@
 import os
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 from backend.src.app.app import FlashcardApp
 from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config, read_file
@@ -11,25 +11,26 @@ config_dir = os.path.join(backend_root_dir, 'config')
 log_dir = os.path.join(backend_root_dir, 'logs')
 
 
-# if __name__ == '__test__'
 # Configure logging and load environment variables
 configure_logging(log_dir)
 load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
 run_config = load_yaml_config(config_dir, "run_config")
 test_config = load_yaml_config(config_dir, "test_config")
 print(test_config)
 
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 start_log(log_dir)
 
-# TODO: Make log class with global variable log_dir, lest it creates a log file in src each time.
+# TODO: Make log class with global variable log_dir, else it creates a log file in src each time.
+# TODO: Fix logging (logging is fucked up) and add timestamps to each log.
 write_to_log_and_print(f"Running {test_config['test_name']}\n")
 
 text_input = read_file(os.path.join(backend_root_dir, "input", test_config["text_input"]))
 
 # Initialize and run app with the text_input
-app = FlashcardApp(run_config)
+app = FlashcardApp(run_config, client)
 flashcard_deck = app.run(text_input)
 
 # Save the output as csv file

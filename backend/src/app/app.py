@@ -1,5 +1,6 @@
 import logging
 import os
+from openai import OpenAI
 from typing import List
 
 import tiktoken
@@ -15,11 +16,12 @@ from backend.src.utils.global_helpers import format_num, write_to_log_and_print,
 
 
 class FlashcardApp:
-    def __init__(self, config: dict):
+    def __init__(self, config: dict, client: OpenAI):
         self.config = config
+        self.client = client
         self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-        self.model_name = "gpt-3.5-turbo"    # Default, may be changed by the program, depending on the input size.
+        self.model_name = "gpt-3.5-turbo-1106"
         self.generation_mode = self.config['flashcard_generation']['mode']
         if self.generation_mode not in FlashcardGenerator.GENERATION_MODE:
             raise ConfigLoadingError(f"Invalid flashcard type: {self.generation_mode}. Expected one of {FlashcardGenerator.GENERATION_MODE}.")
@@ -50,10 +52,11 @@ class FlashcardApp:
         # TODO: Add language detection
 
         # Initialize flashcard generator
-        flashcard_generator = FlashcardGenerator(os.getenv('OPENAI_API_KEY'), self.config["model"], self.generation_mode)
+        flashcard_generator = FlashcardGenerator(self.client, self.config["model"], self.generation_mode)
 
         flashcards: List[Flashcard] = []  # List to collect flashcards from each run
 
+        # TODO: Update code to use gpt-3.5-turbo-1106 exclusively
         prompt_limit_4k = self.config["tokens"]["4k_model"]["prompt_limit"]
         prompt_limit_16k = self.config["tokens"]["16k_model"]["prompt_limit"]
 
@@ -69,29 +72,19 @@ class FlashcardApp:
         formatted_total_prompt_size = format_num(total_prompt_size)
         write_to_log_and_print(f"Total message length (calculated): {formatted_total_prompt_size} tokens")
 
-        # Run short texts with 4k model
+        # Run short texts as a single prompt.
+        # NOTE: gpt-3.5-turbo-1106 has a context window of 16,385. We only use 4.096 tokens, like the legacy modell
+        # since a smaller context window has proved to generate a larger number of flashcards that at the same time
+        # gp more in depth.
         if total_prompt_size < prompt_limit_4k:
             write_to_log_and_print("Using 4k model...\n")
             # Add language instructions to the text inputs
-            print(f"Using gpt-3.5-turbo for total prompt size.")
-            max_tokens = 4000 - prompt_limit_4k
+            print(f"Generating flashcards in one go using {self.model_name}...\n")
+            max_tokens = 4096 - prompt_limit_4k
             flashcards += flashcard_generator.generate_flashcards("gpt-3.5-turbo", messages, max_tokens)
 
-        # TODO: Optimize parameters, plus the 16k code is buggy -.-
-        # Run medium-sized texts with 16k model
-        # elif total_prompt_size < prompt_limit_16k:
-        #     write_to_log("Using 16k model...\n")
-        #     # Add language instructions to the text inputs
-        #     messages.insert_text_into_message('text_input', self.additional_prompt, 0)
-        #     completion_token_limit = 16000 - prompt_limit_16k
-        #     print(f"Using gpt-3.5-turbo-16k for total prompt size.")
-        #     self.config["model"]["name"] = "gpt-3.5-turbo-16k"
-        #     self.config["tokens"]["completion_limit"] = completion_token_limit
-        #     flashcards += self._generate_flashcards(messages)
-
-        # Run long text using test splitting
         else:
-            write_to_log_and_print(f"Using text splitting using {self.model_name}...\n")
+            write_to_log_and_print(f"Generating flashcards by text splitting using {self.model_name}...\n")
 
             # Split the text into fragments
             base_prompt_size = self._calculate_base_prompt_size(messages, self.additional_prompt)
@@ -102,24 +95,25 @@ class FlashcardApp:
                 logging.error(f"Prompt size error occurred: {str(e)}")
                 print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
                 exit(1)
-
+            write_to_log_and_print(f"Text was split into {len(fragment_list)} fragments.\n")
+            # TODO: Route number of total batches and number of current batch to frontend for progress bar
             count = 1  # Counter for debug print statements
-            for text_fragment in fragment_list:
+            for fragment in fragment_list:
                 write_to_log_and_print(f'\nProcessing text fragment No {count}')
                 count += 1
 
-                # Generate a new Messages for the new shorter text_fragment
+                # Generate a new Messages for the new shorter fragment
                 new_messages = Messages(
                     messages.system,
                     messages.example_user,
                     messages.example_assistant,
-                    inset_into_string(self.additional_prompt, text_fragment, 0)
+                    inset_into_string(self.additional_prompt, fragment, 0)
                 )
 
                 sub_prompt_size = self._calculate_total_prompt_size(new_messages)
                 formatted_sub_prompt_size = format_num(sub_prompt_size)
                 write_to_log_and_print(f"Calculated prompt size: {formatted_sub_prompt_size} tokens")
-                max_tokens = 4000 - sub_prompt_size
+                max_tokens = 4096 - sub_prompt_size
 
                 # Generate flashcards and add them to the flashcard list
                 new_cards = flashcard_generator.generate_flashcards("gpt-3.5-turbo", new_messages, max_tokens)
