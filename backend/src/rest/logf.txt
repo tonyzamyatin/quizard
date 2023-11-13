@@ -1,0 +1,81 @@
+Total message length (calculated): 1.348 tokens
+Using 4k model...
+
+Response time: 12.169 ms
+
+Completion size: 128 tokens
+
+Total size: 1.473 tokens
+Total message length (calculated): 20.296 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 120.943 ms
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Total message length (calculated): 20.296 tokens
+Using text splitting using gpt-3.5-turbo...
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Total message length (calculated): 20.296 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 11 fragments.
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 64 sec
+
+Completion size: 802 tokens
+
+Total size: 4.000 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Response time: 70 sec
+
+Completion size: 487 tokens
+
+Total size: 3.685 tokens
+
+Processing text fragment No 3
+Calculated prompt size: 3.201 tokens
+Total message length (calculated): 5.640 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 3 fragments.
+
+
+Processing text fragment No 1
+Calculated prompt size: 3.201 tokens
+Response time: 118 sec
+
+Completion size: 895 tokens
+
+Total size: 4.093 tokens
+
+Processing text fragment No 2
+Calculated prompt size: 3.201 tokens
+Response time: 83 sec
+
+Completion size: 627 tokens
+
+Total size: 3.825 tokens
+
+Processing text fragment No 3
+Calculated prompt size: 2.126 tokens
+Response time: 160 sec
+
+Completion size: 1.149 tokens
+
+Total size: 3.272 tokens

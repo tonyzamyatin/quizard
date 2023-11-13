@@ -1,0 +1,3 @@
+Total message length (calculated): 1.348 tokens
+Using 4k model...
+

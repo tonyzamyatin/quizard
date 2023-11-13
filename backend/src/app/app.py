@@ -48,11 +48,14 @@ class FlashcardApp:
             os.path.join(self.backend_root_dir, "prompt/additional/", self.config['flashcard_generation']['additional_prompt'],
                          f"{self.lang}.txt"))
 
-    def run(self, text_input: str):
+    def run(self, text_input: str, generation_mode: str = None):
         # TODO: Add language detection
-
+        # if no mode is specified use default mode
+        if generation_mode is None:
+            generation_mode = self.generation_mode
+        # todo remove generation mode from config?
         # Initialize flashcard generator
-        flashcard_generator = FlashcardGenerator(self.client, self.config["model"], self.generation_mode)
+        flashcard_generator = FlashcardGenerator(self.client, self.config["model"], generation_mode)
 
         flashcards: List[Flashcard] = []  # List to collect flashcards from each run
 
