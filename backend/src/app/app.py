@@ -19,6 +19,8 @@ class FlashcardApp:
     def __init__(self, config: dict, client: OpenAI):
         self.config = config
         self.client = client
+        self.batches = 0
+        self.batch_no = 0
         self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
         self.model_name = "gpt-3.5-turbo-1106"
@@ -94,16 +96,17 @@ class FlashcardApp:
             print(f"Base prompt size: {base_prompt_size}")
             try:
                 fragment_list = text_split.split_text(self.model_name, text_input, base_prompt_size, self.config["tokens"])
+                self.batches = len(fragment_list)
             except PromptSizeError as e:
                 logging.error(f"Prompt size error occurred: {str(e)}")
                 print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
                 exit(1)
             write_to_log_and_print(f"Text was split into {len(fragment_list)} fragments.\n")
             # TODO: Route number of total batches and number of current batch to frontend for progress bar
-            count = 1  # Counter for debug print statements
+            # Counter for debug print statements
             for fragment in fragment_list:
-                write_to_log_and_print(f'\nProcessing text fragment No {count}')
-                count += 1
+                write_to_log_and_print(f'\nProcessing batch No {self.batch_no + 1}/{self.batches} batches')
+                self.batch_no +=1
 
                 # Generate a new Messages for the new shorter fragment
                 new_messages = Messages(

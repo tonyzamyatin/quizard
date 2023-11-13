@@ -28,4 +28,9 @@ if __name__ == '__main__':
     flashcard_deck = app.run(text_input)
 
     # Return the flashcard deck as a downloadable .csv file using Flask
-    # TODO: Return as downloadable Anki Deck. Eventually create a flashcard studying tool on the website and export to the user's Anki account.
+    # TODO: Return as downloadable Anki Deck.
+
+    # TODO: Enable users to connect their Anki Account and export their flashcards directly there.
+    # https://foosoft.net/projects/anki-connect/
+
+    #  TODO: Eventually create a flashcard studying tool on the website.

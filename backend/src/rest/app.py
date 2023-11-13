@@ -4,7 +4,6 @@ from flask import Flask, request, jsonify, Response
 from flask_restful import Resource, Api
 from flask_cors import CORS
 import os
-import openai
 from dotenv import load_dotenv
 from backend.src.app.app import FlashcardApp
 from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config
@@ -42,9 +41,10 @@ class FlashCardGenerator(Resource):
         input_text = json_data['inputText']
         print('mode: {}'.format(mode))
         print('input text: {}'.format(input_text))
+        example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
+        # TODO: call the generator with mode and input text and assign the results to the flashcards array
         flashcard_deck = self.app.run(input_text)
         #example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
-        # todo call the generator with mode and input text and assign the results to the flashcards array
         flashcards = flashcard_deck.flashcards
         flashcards_as_dict = [{'id': card.id, 'type': card.type, 'frontSide': card.frontside, 'backSide': card.backside} for card in flashcards]
         return jsonify({'flashCards': flashcards_as_dict})
