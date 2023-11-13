@@ -18,6 +18,22 @@ function GeneratorSection() {
     const  [totalBatches, setTotalBatches] = useState(100)
     const [currentBatch, setCurrentBatch] = useState(60);
 
+    // Generated flashcards
+    const [flashcards, setFlashcards] = useState([]);
+
+    // Method to generate flashcards with specified mode and text
+    const generateFlashcards = async() => {
+        const response = await fetch('http://localhost:5000/api/v1/flashcard/generate',{
+            method: 'POST',
+            body: JSON.stringify({
+                'mode': mode,
+                'inputText': text
+                // todo add language to api call
+            })
+        });
+        setFlashcards(await response.json());
+    }
+
     // TODO: Add const to make API call to backend:
     // "Generate" -> sends the data from the configuration and the text to the backend and initiates generation, as well
     // as the updates of ProgressBar
@@ -30,9 +46,9 @@ function GeneratorSection() {
             case GenerationSteps.CONFIGURATION:
                 return <ConfigContainer setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode}/>;
             case GenerationSteps.TEXT_UPLOAD:
-                return <UploadContainer setGenerationStep={setCurrentStep} text={text} setText={setText}/>;
+                return <UploadContainer setGenerationStep={setCurrentStep} text={text} setText={setText} generateFlashcards={generateFlashcards}/>;
             case GenerationSteps.GENERATION:
-                return <GenerationProgressContainer setGenerationStep={setCurrentStep} totalBatches={totalBatches} currentBatch={currentBatch}/>
+                return <GenerationProgressContainer setGenerationStep={setCurrentStep} totalBatches={totalBatches} currentBatch={currentBatch} flashcards={flashcards}/>
         }
     }
 

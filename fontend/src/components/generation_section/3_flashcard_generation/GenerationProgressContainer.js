@@ -4,7 +4,7 @@ import TriviaSlideShow from "./TriviaSlideShow";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function GenerationProgressContainer({setGenerationStep, totalBatches, currentBatch}) {
+function GenerationProgressContainer({setGenerationStep, totalBatches, currentBatch, flashcards}) {
 
     // The number of the last flashcard batch that was generated
     const [currentUpdate, setCurrentUpdate] = useState(60);
