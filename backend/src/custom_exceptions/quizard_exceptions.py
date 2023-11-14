@@ -1,7 +1,6 @@
 from backend.src.flashcard.flashcard import Flashcard
 
-
-# Base Exception for your application.
+# Base Exception for the Quizard application.
 class QuizardError(Exception):
     """Parent class of all errors related to the Quizard application"""
     pass
