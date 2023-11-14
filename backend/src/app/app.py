@@ -6,7 +6,7 @@ from typing import List
 import tiktoken
 
 # Import custom exceptions
-from backend.src.custom_exceptions.custom_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
+from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
 from backend.src.flashcard.flashcard import Flashcard
 from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
 from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
@@ -22,8 +22,8 @@ class FlashcardApp:
         self.model_name = model_name
         self.generation_mode = mode
         self.lang = lang
-        self.batches = 0
-        self.batch_no = 0
+        self.total_batches = 0
+        self.processed_batches = 0
         self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         # TODO: Introduce logic to check whether given model is part of OpenAIs available models. Desirably, hardcoded and regularly synced with OpenAI's
         # list of available models, which is supported by us for the given task.
@@ -47,14 +47,11 @@ class FlashcardApp:
             os.path.join(self.backend_root_dir, "prompt/additional/", self.config['flashcard_generation']['additional_prompt'],
                          f"{self.lang}.txt"))
 
-    def run(self, text_input: str, generation_mode: str = None):
+    def run(self, text_input: str):
         # TODO: Add language detection
-        # if no mode is specified use default mode
-        if generation_mode is None:
-            generation_mode = self.generation_mode
-        # todo remove generation mode from config?
+
         # Initialize flashcard generator
-        flashcard_generator = FlashcardGenerator(self.client, self.config["model"], generation_mode)
+        flashcard_generator = FlashcardGenerator(self.client, self.config["model"], self.generation_mode)
 
         flashcards: List[Flashcard] = []  # List to collect flashcards from each run
 
@@ -93,17 +90,16 @@ class FlashcardApp:
             print(f"Base prompt size: {base_prompt_size}")
             try:
                 fragment_list = text_split.split_text(self.model_name, text_input, base_prompt_size, self.config["tokens"])
-                self.batches = len(fragment_list)
+                self.total_batches = len(fragment_list)
             except PromptSizeError as e:
                 logging.error(f"Prompt size error occurred: {str(e)}")
                 print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
                 exit(1)
             write_to_log_and_print(f"Text was split into {len(fragment_list)} fragments.\n")
-            # TODO: Route number of total batches and number of current batch to frontend for progress bar
-            # Counter for debug print statements
+
             for fragment in fragment_list:
-                write_to_log_and_print(f'\nProcessing batch No {self.batch_no + 1}/{self.batches} batches')
-                self.batch_no +=1
+                write_to_log_and_print(f'\nProcessing batch No {self.processed_batches + 1}/{self.total_batches} batches')
+                self.processed_batches += 1
 
                 # Generate a new Messages for the new shorter fragment
                 new_messages = Messages(

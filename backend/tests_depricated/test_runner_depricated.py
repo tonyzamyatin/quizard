@@ -12,7 +12,7 @@ from backend.src.utils.global_helpers import format_num, write_to_log_and_print
 from backend.src.text_splitting import text_split
 
 # Import custom exceptions
-from backend.src.custom_exceptions.custom_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
+from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
 
 
 def load_config(config_path='config.yaml') -> dict:

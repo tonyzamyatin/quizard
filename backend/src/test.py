@@ -3,6 +3,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from backend.src.app.app import FlashcardApp
 from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config, read_file
+from backend.src.custom_exceptions.env_exceptions import EnvironmentLoadingError, InvalidEnvironmentVariableError
+from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
 
 # Define backend This assumes that test.py is in backend/src/
 backend_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

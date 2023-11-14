@@ -1,7 +1,7 @@
 import os
 import logging
 import yaml
-from backend.src.custom_exceptions.custom_exceptions import ConfigLoadingError
+from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
 
 
 def configure_logging(log_dir):

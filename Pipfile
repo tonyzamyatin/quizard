@@ -11,6 +11,7 @@ flask = "*"
 pyyaml = "*"
 flask-restful = "*"
 flask-cors = "*"
+celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
 

@@ -1,5 +1,5 @@
 import tiktoken
-from backend.src.custom_exceptions.custom_exceptions import PromptSizeError, ConfigInvalidValueError
+from backend.src.custom_exceptions.quizard_exceptions import PromptSizeError, ConfigInvalidValueError
 
 
 def calculate_window_size(base_prompt_size: int, config: dict):

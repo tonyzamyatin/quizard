@@ -1,5 +1,5 @@
-import json
-
+# External packages
+import time
 import openai
 from openai import OpenAI
 from flask import Flask, request, jsonify, Response
@@ -7,61 +7,148 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
-from backend.src.app.app import FlashcardApp
+# Setup
 from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config
+from celery_config import init_celery
+from tasks import generate_flashcards_task
+# Exceptions
+from backend.src.custom_exceptions.env_exceptions import EnvironmentLoadingError, InvalidEnvironmentVariableError
+from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
+from backend.src.custom_exceptions.api_exceptions import APIAuthenticationError
 
 # This assumes that main.py is in backend/src/
 backend_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config_dir = os.path.join(backend_root_dir, '..', 'config')
 log_dir = os.path.join(backend_root_dir, '..', 'logs')
 
-from backend.src.flashcard.flashcard import Flashcard, FlashcardType
+# Global variables
+env_openai_api_key = "OPENAI_API_KEY"
+config_name = "run_config"
+# Get urls of Redis server from .env
+env_celery_broker_url = "CELERY_BROKER_URL"
+env_celery_result_backend = "CELERY_RESULT_BACKEND"
 
+# TODO: Setup Redis server and add the actual urls in .env
+# Redis is an open-source, in-memory data structure store, used as a database, cache, and message broker. It supports various data structures such as
+# strings, hashes, lists, sets, and more. Redis has a high performance due to its in-memory nature, making it very suitable for tasks that require
+# quick read/write operations.
+# Since Redis stores all data in memory, make sure your server has enough RAM to handle your workload.
+# Use tools like Flower for Celery to monitor task queues and workers.
+
+# Set up Flask and Celery
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+try:
+    load_dotenv()
+except:
+    raise EnvironmentLoadingError("There was a problem loading .env.")
 
-class FlashCardGenerator(Resource):
+try:
+    celery_broker_url = os.getenv(env_celery_broker_url)
+except:
+    raise InvalidEnvironmentVariableError(f"Environment variable '{env_celery_broker_url}' not found.")
+try:
+    celery_result_backend = os.getenv(env_celery_result_backend)
+except:
+    raise InvalidEnvironmentVariableError(f"Environment variable '{env_celery_result_backend}' not found.")
+
+# Update the config
+app.config.update(
+    CELERY_BROKER_URL=celery_broker_url,
+    CELERY_RESULT_BACKEND=celery_result_backend
+)
+
+# Make celery after updating the config
+celery = init_celery(app)
+
+
+class FlashcardGenerator(Resource):
     def __init__(self):
         configure_logging(log_dir)
-        load_dotenv()
 
-        # TODO: Login and user authentication
+        try:
+            load_dotenv()
+        except:
+            raise EnvironmentLoadingError("There was a problem loading .env.")
 
-        openai.api_key = os.getenv('OPENAI_API_KEY')
-        run_config = load_yaml_config(config_dir, "run_config")
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        # TODO: Login and user authentication at some point
+        try:
+            api_key = os.getenv(env_openai_api_key)
+        except:
+            raise InvalidEnvironmentVariableError(f"Environment variable '{env_openai_api_key}' not found.")
 
-        # Initialize and run app with the text_input
+        try:
+            openai.api_key = api_key
+        except:
+            raise APIAuthenticationError(f"Invalid OpenAI API key.")
+        self.client = OpenAI(api_key=api_key)
 
-        # TODO: Get following arguments from frontend
-        lang = ""
-        mode = ""
-        model_name = ""
-        export_format = ""  # Will be useful later down the line, in case we will support other export formats (which we likely will)
-        self.app = FlashcardApp(client=client, config=run_config, model_name="gpt-3.5-turbo-1106", lang=lang, mode=mode)
+        try:
+            self.run_config = load_yaml_config(config_dir, config_name)
+        except:
+            raise ConfigLoadingError(f"Unable to fing '{config_name} in directory '{config_dir}'.")
 
     def post(self):
+        # TODO: Log request + answer
         json_data = request.get_json(force=True)
-        print(json_data)  # print the received data
-        # parse mode
-        mode = json_data['mode']
+
+        # TODO: Get following arguments from frontend
         input_text = json_data['inputText']
-        print('mode: {}'.format(mode))
-        print('input text: {}'.format(input_text))
-        example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
-        # TODO: call the generator with mode and input text and assign the results to the flashcards array
-        flashcard_deck = self.app.run(input_text)
-        # example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
-        flashcards = flashcard_deck.flashcards
-        flashcards_as_dict = [{'id': card.id, 'type': card.type, 'frontSide': card.frontside, 'backSide': card.backside} for card in flashcards]
-        return jsonify({'flashCards': flashcards_as_dict})
+        lang = json_data["lang"]
+        mode = json_data['mode']
+        export_format = json_data["export_format"]
+        model_name = "gpt-3.5-turbo-1106"  # TODO: Implement logic to choose model name based on the users tier (when we have user accounts)
+
+        # Start the Celery task
+        task = generate_flashcards_task.delay(self.client, self.run_config, model_name, lang, mode, input_text)
+
+        # TODO: Look into streaming the flashcards using OpenAIs and Flasks streaming capabilities
+        # TODO: Save flashcards to a database for persistent storage, user history, and service improvement
+        return jsonify({'task_id': task.id}), 202
+
+    def get_status(task_id):
+        task = generate_flashcards_task.AsyncResult(task_id)
+        if task.state == 'PENDING':
+            response = {
+                'state': task.state,
+                'status': 'Pending...'
+            }
+        elif task.state != 'FAILURE':
+            response = {
+                'state': task.state,
+                'status': task.info.get('status', '')
+            }
+            if 'result' in task.info:
+                response['result'] = task.info['result']
+        else:
+            # task failed
+            response = {
+                'state': task.state,
+                'status': str(task.info),  # Exception raised
+            }
+        return jsonify(response)
 
 
-api.add_resource(FlashCardGenerator, '/api/v1/flashcard/generate')
+api.add_resource(FlashcardGenerator, '/api/v1/flashcards/generate')
+
+
+class Progress(Resource):
+    def get(self):
+        # Logic for long polling
+        def check_progress():
+            # TODO: Implement
+            return ""
+
+        response = check_progress()
+        return jsonify(response)
+
+
+api.add_resource(Progress, '/api/v1/flashcards/generate/progress')
 
 if __name__ == '__main__':
+    # TODO: Turn of debug mode and use production-ready server
     app.run(debug=True)
     # use different server for prod -> doesn't really matter since we don't have auth yet
     # https://stackoverflow.com/questions/51025893/flask-at-first-run-do-not-use-the-development-server-in-a-production-environmen
