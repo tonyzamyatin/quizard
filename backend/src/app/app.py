@@ -16,25 +16,22 @@ from backend.src.utils.global_helpers import format_num, write_to_log_and_print,
 
 
 class FlashcardApp:
-    def __init__(self, config: dict, client: OpenAI):
+    def __init__(self, client: OpenAI, config: dict, model_name: str, lang: str, mode: str):
         self.config = config
         self.client = client
+        self.model_name = model_name
+        self.generation_mode = mode
+        self.lang = lang
         self.batches = 0
         self.batch_no = 0
         self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-        self.model_name = "gpt-3.5-turbo-1106"
-        self.generation_mode = self.config['flashcard_generation']['mode']
+        # TODO: Introduce logic to check whether given model is part of OpenAIs available models. Desirably, hardcoded and regularly synced with OpenAI's
+        # list of available models, which is supported by us for the given task.
         if self.generation_mode not in FlashcardGenerator.GENERATION_MODE:
-            raise ConfigLoadingError(f"Invalid flashcard type: {self.generation_mode}. Expected one of {FlashcardGenerator.GENERATION_MODE}.")
+            raise ConfigLoadingError(f"Invalid flashcard generation mode: {self.generation_mode}. Expected one of {FlashcardGenerator.GENERATION_MODE}.")
 
-        # Initialize Language of theis flashcard app
-        if self.config["flashcard_generation"]["lang"] == "English":
-            self.lang = "ENG"
-        elif self.config["flashcard_generation"]["lang"] == "German":
-            self.lang = "GER"
-        else:
-            raise UnsupportedLanguageError(f"The specified language '{self.config['flashcard_generation']['lang']}' is not supported or does not "
+        if lang not in config["system"]["supported_langs"]:
+            raise UnsupportedLanguageError(f"The specified language '{self.lang}' is not supported or does not "
                                            f"exist.")
 
         # Initialize the components of the message send to the OpenAI API
@@ -61,9 +58,8 @@ class FlashcardApp:
 
         flashcards: List[Flashcard] = []  # List to collect flashcards from each run
 
-        # TODO: Update code to use gpt-3.5-turbo-1106 exclusively
+        # TODO: Update code to support new available models: gpt-3.5-turbo-1106 primarily, but also gpt-4-turbo-1106 (premium tier coming soon)
         prompt_limit_4k = self.config["tokens"]["4k_model"]["prompt_limit"]
-        prompt_limit_16k = self.config["tokens"]["16k_model"]["prompt_limit"]
 
         # Initialize messages sent to the OpenAI API
         messages = Messages(
@@ -81,6 +77,7 @@ class FlashcardApp:
         # NOTE: gpt-3.5-turbo-1106 has a context window of 16,385. We only use 4.096 tokens, like the legacy modell
         # since a smaller context window has proved to generate a larger number of flashcards that at the same time
         # gp more in depth.
+        # TODO: Introduce separate logic for generating flashcards using other models and context windows.
         if total_prompt_size < prompt_limit_4k:
             write_to_log_and_print("Using 4k model...\n")
             # Add language instructions to the text inputs

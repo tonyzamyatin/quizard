@@ -24,7 +24,10 @@ if __name__ == '__main__':
     text_input = ""
 
     # Initialize and run app with the text_input
-    app = FlashcardApp(run_config, client)
+    lang = run_config["flashcard_generation"]["lang"]
+    mode = run_config["flashcard_generation"]["mode"]
+    # TODO: Add model as a parameter to config (will be upgradable to gpt4 based on users tier); Code duplicate in test.py
+    app = FlashcardApp(client=client, config=run_config, model_name="gpt-3.5-turbo-1106", lang=run_config["flashcard_generation"]["lang"], mode=mode)
     flashcard_deck = app.run(text_input)
 
     # Return the flashcard deck as a downloadable .csv file using Flask

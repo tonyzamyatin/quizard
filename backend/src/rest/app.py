@@ -1,4 +1,6 @@
 import json
+
+import openai
 from openai import OpenAI
 from flask import Flask, request, jsonify, Response
 from flask_restful import Resource, Api
@@ -19,6 +21,7 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+
 class FlashCardGenerator(Resource):
     def __init__(self):
         configure_logging(log_dir)
@@ -31,7 +34,13 @@ class FlashCardGenerator(Resource):
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
         # Initialize and run app with the text_input
-        self.app = FlashcardApp(run_config, client)
+
+        # TODO: Get following arguments from frontend
+        lang = ""
+        mode = ""
+        model_name = ""
+        export_format = ""  # Will be useful later down the line, in case we will support other export formats (which we likely will)
+        self.app = FlashcardApp(client=client, config=run_config, model_name="gpt-3.5-turbo-1106", lang=lang, mode=mode)
 
     def post(self):
         json_data = request.get_json(force=True)
@@ -44,7 +53,7 @@ class FlashCardGenerator(Resource):
         example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
         # TODO: call the generator with mode and input text and assign the results to the flashcards array
         flashcard_deck = self.app.run(input_text)
-        #example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
+        # example_flashcard = Flashcard(1, FlashcardType.DEFINITION, 'What is a flashcard?', 'A flashcard is...')
         flashcards = flashcard_deck.flashcards
         flashcards_as_dict = [{'id': card.id, 'type': card.type, 'frontSide': card.frontside, 'backSide': card.backside} for card in flashcards]
         return jsonify({'flashCards': flashcards_as_dict})

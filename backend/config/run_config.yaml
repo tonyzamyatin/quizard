@@ -1,4 +1,5 @@
-# TODO: Add parameters, optimize and test!
+# TODO: Restructure config to reflect new OpenAI models.
+# TODO: Delete all unnecessary parameters and optimize and test what is left.
 
 model:
   temperature: 0.8
@@ -37,11 +38,14 @@ tokens:
 flashcard_generation:
   mode: "practice"       # "practice"....other options are coming soon -> can be found in backend/prompt/system
   detect_lang: False    # True or False, if False flashcards will be generated in the specified language below.
-  lang: "German"
+  lang: "GER"
   example_prompt: "ex1_genetics_of_cancer"     # Name of the example directory
   additional_prompt: "ad1_top_instr"           # Change this field to a list of (position, prompt) to add multiple additional lines of prompt to text_input
 
-
+system:
+  supported_langs:
+    - "GER"
+    - "ENG"
 
 export:
   export_type: "csv"

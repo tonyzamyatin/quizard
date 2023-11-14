@@ -28,9 +28,11 @@ start_log(log_dir)
 write_to_log_and_print(f"Running {test_config['test_name']}\n")
 
 text_input = read_file(os.path.join(backend_root_dir, "input", test_config["text_input"]))
+lang = run_config["flashcard_generation"]["lang"]
+mode = run_config["flashcard_generation"]["mode"]
 
 # Initialize and run app with the text_input
-app = FlashcardApp(run_config, client)
+app = FlashcardApp(client=client, config=run_config, model_name="gpt-3.5-turbo-1106", lang=lang, mode=mode)
 flashcard_deck = app.run(text_input)
 
 # Save the output as csv file
