@@ -12,6 +12,7 @@ function GeneratorSection() {
     const [text, setText] = useState('');
     const [lang, setLang] = useState('');
     const [mode, setMode] = useState('');
+    const [exportFormat, setExportFormat] = useState('')
 
     // TODO: Get batch numbers from backend
     // Batches of flashcard generation used to calculate progress and display progress bar
@@ -21,16 +22,35 @@ function GeneratorSection() {
     // Generated flashcards
     const [flashcards, setFlashcards] = useState([]);
 
+
+    // TODO: Implement generateFlashcards() and updateProgress() using tasks (and the correct urls xD)
+    function updateProgress() {
+        fetch('/progress')
+            .then(response => response.json())
+            .then(data => {
+                // Update the progress bar with data.processed_batches
+                console.log('Progress:', data.processed_batches);
+                if (data.processed_batches < totalBatches) {
+                    // Continue polling if the work is not yet done
+                    updateProgress();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+
     // Method to generate flashcards with specified mode and text
     const generateFlashcards = async() => {
         const response = await fetch('http://localhost:5000/api/v1/flashcard/generate',{
             method: 'POST',
             body: JSON.stringify({
+                'lang': lang,
                 'mode': mode,
-                'inputText': text
-                // todo add language to api call
+                'export_format': exportFormat,
+                'inputText': text,
             })
         });
+        updateProgress()
         setFlashcards(await response.json());
     }
 
@@ -44,7 +64,7 @@ function GeneratorSection() {
     const renderContent = () => {
         switch (currentStep) {
             case GenerationSteps.CONFIGURATION:
-                return <ConfigContainer setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode}/>;
+                return <ConfigContainer setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
             case GenerationSteps.TEXT_UPLOAD:
                 return <UploadContainer setGenerationStep={setCurrentStep} text={text} setText={setText} generateFlashcards={generateFlashcards}/>;
             case GenerationSteps.GENERATION:
