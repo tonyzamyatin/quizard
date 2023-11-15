@@ -39,7 +39,7 @@ function UploadContainer({setGenerationStep, text, setText, generateFlashcards})
             </div>
             <div className="button-area">
                 <CTAButton buttonName="Go back" onButtonClick={handleBackClick} active={true}/>
-                <CTAButton buttonName="Generate" onButtonClick={handleGenerateClick} active={text.length > 250}/>
+                <CTAButton buttonName="Generate" onButtonClick={handleGenerateClick} active={text.length > 250 && text.length <= 500000}/>
             </div>
         </div>
     );
