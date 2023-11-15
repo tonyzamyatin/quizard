@@ -28,7 +28,9 @@ config_name = "run_config"
 env_celery_broker_url = "CELERY_BROKER_URL"
 env_celery_result_backend = "CELERY_RESULT_BACKEND"
 
-# TODO: Setup Redis server and add the actual urls in .env
+# TODO: Setup Redis server and add the actual urls in .env OR just use Docker and a docker-compose.yml file in combination with a Docker image of a Red
+# Redis service from Docker Hub. No need to install Redis or set up server manually -> speeds up development
+
 # Redis is an open-source, in-memory data structure store, used as a database, cache, and message broker. It supports various data structures such as
 # strings, hashes, lists, sets, and more. Redis has a high performance due to its in-memory nature, making it very suitable for tasks that require
 # quick read/write operations.
@@ -108,44 +110,27 @@ class FlashcardGenerator(Resource):
         # TODO: Save flashcards to a database for persistent storage, user history, and service improvement
         return jsonify({'task_id': task.id}), 202
 
-    def get_status(task_id):
-        task = generate_flashcards_task.AsyncResult(task_id)
-        if task.state == 'PENDING':
-            response = {
-                'state': task.state,
-                'status': 'Pending...'
-            }
-        elif task.state != 'FAILURE':
-            response = {
-                'state': task.state,
-                'status': task.info.get('status', '')
-            }
-            if 'result' in task.info:
-                response['result'] = task.info['result']
-        else:
-            # task failed
-            response = {
-                'state': task.state,
-                'status': str(task.info),  # Exception raised
-            }
-        return jsonify(response)
+    # TODO: Implement get_status(task_id)
 
 
 api.add_resource(FlashcardGenerator, '/api/v1/flashcards/generate')
 
 
 class Progress(Resource):
-    def get(self):
-        # Logic for long polling
-        def check_progress():
-            # TODO: Implement
-            return ""
-
-        response = check_progress()
+    def get(self, task_id):
+        task = generate_flashcards_task.AsyncResult(task_id)
+        if task.state == 'PROGRESS':
+            response = {
+                'state': task.state,
+                'progress': task.info.get('processed', 0),
+                'total': task.info.get('total', 1),
+            }
+        else:
+            response = {'state': task.state}
         return jsonify(response)
 
 
-api.add_resource(Progress, '/api/v1/flashcards/generate/progress')
+api.add_resource(Progress, '/api/v1/flashcards/generate/progress/<task_id>')
 
 if __name__ == '__main__':
     # TODO: Turn of debug mode and use production-ready server

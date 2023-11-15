@@ -22,8 +22,6 @@ class FlashcardApp:
         self.model_name = model_name
         self.generation_mode = mode
         self.lang = lang
-        self.total_batches = 0
-        self.processed_batches = 0
         self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         # TODO: Introduce logic to check whether given model is part of OpenAIs available models. Desirably, hardcoded and regularly synced with OpenAI's
         # list of available models, which is supported by us for the given task.
@@ -47,7 +45,7 @@ class FlashcardApp:
             os.path.join(self.backend_root_dir, "prompt/additional/", self.config['flashcard_generation']['additional_prompt'],
                          f"{self.lang}.txt"))
 
-    def run(self, text_input: str):
+    def run(self, text_input: str, update_progress=None):
         # TODO: Add language detection
 
         # Initialize flashcard generator
@@ -90,16 +88,15 @@ class FlashcardApp:
             print(f"Base prompt size: {base_prompt_size}")
             try:
                 fragment_list = text_split.split_text(self.model_name, text_input, base_prompt_size, self.config["tokens"])
-                self.total_batches = len(fragment_list)
+                total_batches = len(fragment_list)
             except PromptSizeError as e:
                 logging.error(f"Prompt size error occurred: {str(e)}")
                 print(f"Terminating the program due to the following PromptSizeError: {str(e)}")
                 exit(1)
             write_to_log_and_print(f"Text was split into {len(fragment_list)} fragments.\n")
 
-            for fragment in fragment_list:
-                write_to_log_and_print(f'\nProcessing batch No {self.processed_batches + 1}/{self.total_batches} batches')
-                self.processed_batches += 1
+            for index, fragment in fragment_list:
+                write_to_log_and_print(f'\nProcessing batch No {index + 1}/{total_batches} batches')
 
                 # Generate a new Messages for the new shorter fragment
                 new_messages = Messages(
@@ -117,6 +114,11 @@ class FlashcardApp:
                 # Generate flashcards and add them to the flashcard list
                 new_cards = flashcard_generator.generate_flashcards("gpt-3.5-turbo", new_messages, max_tokens)
                 flashcards += new_cards
+                # Update progress
+                index += 1
+                # Call update_progress to make information about the progress available to other (independent) parts of the system
+                if update_progress:
+                    update_progress(index, len(fragment_list))
                 for flashcard in new_cards:
                     print(flashcard.as_csv())
 

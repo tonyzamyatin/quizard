@@ -16,42 +16,68 @@ function GeneratorSection() {
 
     // TODO: Get batch numbers from backend
     // Batches of flashcard generation used to calculate progress and display progress bar
-    const  [totalBatches, setTotalBatches] = useState(100)
-    const [currentBatch, setCurrentBatch] = useState(60);
+    const  [totalBatches, setTotalBatches] = useState(1)
+    const [currentBatch, setCurrentBatch] = useState(0);
 
     // Generated flashcards
     const [flashcards, setFlashcards] = useState([]);
 
 
-    // TODO: Implement generateFlashcards() and updateProgress() using tasks (and the correct urls xD)
-    function updateProgress() {
-        fetch('/progress')
+    const updateProgress = (taskId) => {
+        fetch(`http://localhost:5000/api/v1/flashcard/generate/progress/${taskId}`)
             .then(response => response.json())
             .then(data => {
-                // Update the progress bar with data.processed_batches
-                console.log('Progress:', data.processed_batches);
-                if (data.processed_batches < totalBatches) {
-                    // Continue polling if the work is not yet done
-                    updateProgress();
+                if (data.state === 'PROGRESS') {
+                    // Update state with the progress
+                    setCurrentBatch(data.progress);
+                    setTotalBatches(data.total);
+                    if (data.progress < data.total) {
+                        // Continue polling if the work is not yet done
+                        setTimeout(() => updateProgress(taskId), 2000); // Poll every 2 seconds
+                    }
+                } else if (data.state === 'SUCCESS') {
+                    // Handle task completion
+                } else if (data.state === 'FAILURE') {
+                    // Handle task failure
                 }
             })
             .catch(error => console.error('Error:', error));
     }
 
 
+    // TODO: Pass generateFlashcards to Generate button and ensure that the program is robust in handling user behaviour.
     // Method to generate flashcards with specified mode and text
-    const generateFlashcards = async() => {
-        const response = await fetch('http://localhost:5000/api/v1/flashcard/generate',{
+    const generateFlashcards = () => {
+        fetch('http://localhost:5000/api/v1/flashcards/generate', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
-                'lang': lang,
-                'mode': mode,
-                'export_format': exportFormat,
-                'inputText': text,
+                lang: lang,
+                mode: mode,
+                exportFormat: exportFormat,
+                inputText: text,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
             })
-        });
-        updateProgress()
-        setFlashcards(await response.json());
+            .then(data => {
+                if (!data.task_id) {
+                    throw new Error('task_id is missing from the response');
+                }
+                const taskId = data.task_id;
+                // Start updating the progress
+                updateProgress(taskId);
+                setFlashcards(data.flashcards);
+            })
+            .catch(error => {
+                console.error('Error during flashcard generation:', error);
+            });
     }
 
     // TODO: Add const to make API call to backend:

@@ -22,7 +22,6 @@ def init_celery(flask_app):
             with flask_app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
 
-
     # Set the Task attribute of the Celery instance to the custom ContextTask class, ensuring that all tasks created by this Celery app use
     # the Flask application context.
     celery.Task = ContextTask
