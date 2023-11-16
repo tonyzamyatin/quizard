@@ -43,7 +43,7 @@ function TextUploadField({ text, setText}) {
     return (
         <div className="text-upload-field">
             <textarea
-                placeholder="Copy and paste your notes here (between 250 and 500,000 characters)"
+                placeholder="Copy and paste your notes here (between 249 and 500,000 characters)"
                 value={text} // Set the value of input to our state
                 onChange={handleChange} // Update state when input changes
             />

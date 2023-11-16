@@ -1,3 +1,13 @@
+:root {
+    --quizard-white: white;
+    --quizard-grey: #c1c1c1;
+    --quizard-light-grey: #eee;
+    --quizard-dark-grey: #6A6870;
+    --quizard-pale-violet: #F4F5FF;
+    --quizard-teal: #64FFD1;
+    --quizard-black: #0D052D;
+}
+
 /* Reset some basic browser default styling */
 * {
     /*border: 1px solid magenta !important;*/
@@ -18,12 +28,13 @@ body {
 body {
     font-family: 'Inter', Arial, sans-serif;
     line-height: 1.6;
-    color: #0D052D;
+    color: var(--quizard-black);
 }
 
 h1, h2, h3 {
     font-weight: bold;
 }
+
 
 /* Layout sizes */
 .container {
@@ -36,7 +47,7 @@ h1, h2, h3 {
 .navbar {
     height: 60px;
     background-color: white;
-    color: #333;
+    color: var(--quizard-black);
 }
 
 /* Sections */

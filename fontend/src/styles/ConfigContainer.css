@@ -16,7 +16,7 @@
     width: 100%;
     /*margin-top: 78px;*/
     border-radius: inherit;
-    background-color: #F4F5FF;
+    background-color: var(--quizard-pale-violet);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -44,7 +44,7 @@
     height: 40px;
     border: none;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     appearance: none;

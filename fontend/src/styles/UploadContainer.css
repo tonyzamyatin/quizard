@@ -5,52 +5,100 @@
 }
 
 .text-upload-field {
+    position: relative;
     box-sizing: border-box;
     height: 100%;
     width: 100%;
     border: none;
     border-radius: inherit;
-    background-color: #F4F5FF;
-    padding: 20px 20px 5px 20px;
+    background-color: var(--quizard-pale-violet);
+    padding: 20px 0px 20px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    /*scrollbar-color: #c1c1c1 red;*/
+    /*ms-overflow-style: none;  !* Internet Explorer 10+ *!*/
+    /*scrollbar-width: none;  !* Firefox *!*/
 }
 
-/* TODO: Style scrollbar */
+
 .text-upload-field textarea {
-    width: 100%;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    width: calc(100% - 10px); /* Adjust width to prevent text from going under scrollbar */
     height: 100%;
-    color: #0D052D;
+    color: var(--quizard-black);
     font-family: inherit;
     font-size: 16px; /* Adjust the font size as needed */
     text-align: start; /* Aligns text to the left */
     line-height: 1.5; /* Adjust the line height to control vertical spacing */
     border: none;
+    border-radius: 10px;
+    padding-right: 10px;
     outline: none; /* Removes the focus outline */
     background-color: transparent;
     resize: none;
 }
 
 .text-upload-field textarea::placeholder {
-    color: grey;
+    color: var(--quizard-dark-grey);
 }
 
 .text-upload-field textarea:not(:placeholder-shown) {
-    color: #0D052D; /* Sets the user input text color */
+    color: var(--quizard-black); /* Sets the user input text color */
+}
+
+/* For Webkit browsers (Safari and Chrome) */
+.text-upload-field textarea::-webkit-scrollbar {
+    /*display: none;*/
+    width: 10px;
+}
+
+.text-upload-field textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.text-upload-field textarea::-webkit-scrollbar-thumb {
+    background: var(--quizard-grey);
+    border-radius: 5px;
+    border: 2px solid transparent; /* Invisible border to push thumb off the edge */
+    background-clip: padding-box; /* Limits background to the content box */
+    transition: all 0.1s ease-in-out;
+}
+
+/* Remove the scrollbar buttons (up and down arrows) */
+.text-upload-field textarea::-webkit-scrollbar-button {
+    display: none;
+}
+
+.text-upload-field textarea::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+    border: 2px solid transparent; /* Invisible border to push thumb off the edge */
+    background-clip: padding-box; /* Limits background to the content box */
+}
+
+.text-upload-field textarea::-webkit-scrollbar-thumb:active {
+    background: #a8a8a8;
+    border: 2px solid transparent; /* Invisible border to push thumb off the edge */
+    background-clip: padding-box; /* Limits background to the content box */
 }
 
 .character-count {
-    color: #908e97;
-    align-self: end;
-    margin: 5px 0 5px 0;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: var(--quizard-light-grey);
+    color: var(--quizard-dark-grey);
+    font-size: 0.75em;
+    border-radius: 15px;
+    padding: 5px 10px;
 }
 
 .PDF-upload-field {
     height: 100%;
     width: 100%;
     border-radius: inherit;
-    background-color: #EDEDED;
+    background-color: var(--quizard-light-grey);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -58,7 +106,7 @@
 }
 
 .PDF-placeholder {
-    color: darkgrey;
+    color: var(--quizard-dark-grey);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,7 +114,7 @@
 
 .PDF-upload-icon {
     font-size: 60px; /* Change the size; 4x the base size */
-    color: #6a6870;
+    color: var(--quizard-dark-grey);
     margin-top: 20px;
 }
 

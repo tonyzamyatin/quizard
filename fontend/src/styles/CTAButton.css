@@ -6,7 +6,7 @@
     width: 196px;
     height: 40px;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     transition: all 0.1s ease-in-out; /* Makes the change gradual */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: scale(1); /* Initial scale */
@@ -34,42 +34,42 @@
 
 
 .CTA-button.go-back {
-    background-color: #D9D7DA;
-    color: #6A6870;
+    background-color: var(--quizard-grey);
+    color: var(--quizard-dark-grey);
 }
 
 .CTA-button.go-back:hover {
-    background-color: #E5E4E6;
+    background-color: var(--quizard-light-grey);
 }
 
 .CTA-button.go-back:active {
-    background-color: #D9D7DA;
+    background-color: var(--quizard-light-grey);
 }
 
 .CTA-button.next {
-    background-color: #64FFD1;
-    color: #0D052D;
+    background-color: var(--quizard-teal);
+    color: var(--quizard-black);
     /* This ensures the "next" button, when it's the only button, moves to the right */
     margin-left: auto;
 }
 
 .CTA-button.next:hover {
-    background-color: #64FFD1;
+    background-color: var(--quizard-teal);;
 }
 
 .CTA-button.next:active {
-    background-color: #64FFD1;
+    background-color: var(--quizard-teal);;
 }
 
 .CTA-button.generate {
-    background-color: #64FFD1;
-    color: #0D052D;
+    background-color: var(--quizard-teal);;
+    color: var(--quizard-black);
 }
 
 .CTA-button.generate:hover {
-    background-color: #64FFD1;
+    background-color: var(--quizard-teal);;
 }
 
 .CTA-button.generate:active {
-    background-color: #64FFD1;
+    background-color: var(--quizard-teal);;
 }
