@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ConfigContainer from "../components/generation_section/1_configuration/ConfigContainer";
 import UploadContainer from "../components/generation_section/2_text_upload/UploadContainer";
 import GenerationProgressContainer from "../components/generation_section/3_flashcard_generation/GenerationProgressContainer";
@@ -7,12 +7,14 @@ import GenerationSteps from "../components/global/GenerationSteps";
 function GeneratorSection() {
 
     // TODO: Send data from configuration and text input to backend and initiates generation when "Generate Button" is used.
-
-    const [currentStep, setCurrentStep] = useState(GenerationSteps.CONFIGURATION);
+    const defaultStep = sessionStorage.getItem('lastGenerationStep') || GenerationSteps.CONFIGURATION;
+    const [currentStep, setCurrentStep] = useState(defaultStep);
     const [text, setText] = useState('');
     const [lang, setLang] = useState('');
     const [mode, setMode] = useState('');
     const [exportFormat, setExportFormat] = useState('')
+    // TODO: Implement config using a map (more compact)
+    // const [config, setConfig] = useState({lang: "", mode: "", exportFormat: ""})
 
     // TODO: Get batch numbers from backend
     // Batches of flashcard generation used to calculate progress and display progress bar
@@ -54,9 +56,9 @@ function GeneratorSection() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                lang: lang,
-                mode: mode,
-                exportFormat: exportFormat,
+                lang: config.lang,
+                mode: config.mode,
+                exportFormat: config.exportFormat,
                 inputText: text,
             }),
         })
@@ -87,6 +89,20 @@ function GeneratorSection() {
     // If the user doesn't change the text or config the generate button should say "Continue generating". If the something is changed
     // (i.e. the data is not the same) flashcards are discarded, and the button says "Generate". Reverting changes so that the
     // data is the same as used for the previous flashcard generation counts as "unchanged".
+
+    useEffect(() => {
+        // Loads the last generation step from sessionStorage when the component mounts
+        const lastGenerationStep = sessionStorage.getItem('lastGenerationStep');
+        if (lastGenerationStep) {
+            setCurrentStep(lastGenerationStep);
+        }
+    }, [setCurrentStep]);
+
+    useEffect(() => {
+        // Save currentStep to sessionStorage when it changes
+        sessionStorage.setItem('lastGenerationStep', currentStep);
+    }, [currentStep]);
+
     const renderContent = () => {
         switch (currentStep) {
             case GenerationSteps.CONFIGURATION:
