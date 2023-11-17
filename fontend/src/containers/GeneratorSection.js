@@ -56,9 +56,9 @@ function GeneratorSection() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                lang: config.lang,
-                mode: config.mode,
-                exportFormat: config.exportFormat,
+                lang: lang,
+                mode: mode,
+                exportFormat: exportFormat,
                 inputText: text,
             }),
         })
