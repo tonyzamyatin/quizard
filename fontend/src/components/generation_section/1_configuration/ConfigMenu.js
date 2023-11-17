@@ -1,4 +1,4 @@
-import React, from "react";
+import React from "react";
 import Dropdown from "../../global/Dropdown";
 
 // TODO: Pep up config menu by using icons and make the configuration process more user friendly
