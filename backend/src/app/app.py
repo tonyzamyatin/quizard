@@ -95,7 +95,7 @@ class FlashcardApp:
                 exit(1)
             write_to_log_and_print(f"Text was split into {len(fragment_list)} fragments.\n")
 
-            for index, fragment in fragment_list:
+            for index in range(total_batches):
                 write_to_log_and_print(f'\nProcessing batch No {index + 1}/{total_batches} batches')
 
                 # Generate a new Messages for the new shorter fragment
@@ -103,7 +103,7 @@ class FlashcardApp:
                     messages.system,
                     messages.example_user,
                     messages.example_assistant,
-                    inset_into_string(self.additional_prompt, fragment, 0)
+                    inset_into_string(self.additional_prompt, fragment_list[index], 0)
                 )
 
                 sub_prompt_size = self._calculate_total_prompt_size(new_messages)

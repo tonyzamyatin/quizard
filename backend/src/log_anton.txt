@@ -480,3 +480,542 @@ Response time: 68 sec
 Completion size: 711 tokens
 
 Total size: 2.643 tokens
+Running test26a-140page pp summary
+
+Total message length (calculated): 111.451 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 63 fragments.
+
+Running test26a-140page pp summary
+
+Total message length (calculated): 111.451 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 63 fragments.
+
+Running test26a-140page pp summary
+
+Total message length (calculated): 111.451 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 63 fragments.
+
+Running test26a-140page pp summary
+
+Total message length (calculated): 111.451 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 63 fragments.
+
+Running test26a-140page pp summary
+
+Total message length (calculated): 111.451 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 63 fragments.
+
+
+Processing batch No 1/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 78 sec
+
+Completion size: 648 tokens
+
+Total size: 3.846 tokens
+
+Processing batch No 2/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 61 sec
+
+Completion size: 870 tokens
+
+Total size: 4.068 tokens
+
+Processing batch No 3/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 50 sec
+
+Completion size: 453 tokens
+
+Total size: 3.651 tokens
+
+Processing batch No 4/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 58 sec
+
+Completion size: 436 tokens
+
+Total size: 3.634 tokens
+
+Processing batch No 5/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 71 sec
+
+Completion size: 600 tokens
+
+Total size: 3.798 tokens
+
+Processing batch No 6/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 48 sec
+
+Completion size: 657 tokens
+
+Total size: 3.855 tokens
+
+Processing batch No 7/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 83 sec
+
+Completion size: 696 tokens
+
+Total size: 3.894 tokens
+
+Processing batch No 8/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 59 sec
+
+Completion size: 516 tokens
+
+Total size: 3.714 tokens
+
+Processing batch No 9/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 86 sec
+
+Completion size: 619 tokens
+
+Total size: 3.817 tokens
+
+Processing batch No 10/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 51 sec
+
+Completion size: 699 tokens
+
+Total size: 3.897 tokens
+
+Processing batch No 11/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 116 sec
+
+Completion size: 895 tokens
+
+Total size: 4.093 tokens
+
+Processing batch No 12/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 57 sec
+
+Completion size: 690 tokens
+
+Total size: 3.888 tokens
+
+Processing batch No 13/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 75 sec
+
+Completion size: 566 tokens
+
+Total size: 3.764 tokens
+
+Processing batch No 14/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 70 sec
+
+Completion size: 568 tokens
+
+Total size: 3.766 tokens
+
+Processing batch No 15/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 69 sec
+
+Completion size: 600 tokens
+
+Total size: 3.798 tokens
+
+Processing batch No 16/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 43 sec
+
+Completion size: 524 tokens
+
+Total size: 3.722 tokens
+
+Processing batch No 17/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 94 sec
+
+Completion size: 738 tokens
+
+Total size: 3.936 tokens
+
+Processing batch No 18/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 43 sec
+
+Completion size: 579 tokens
+
+Total size: 3.777 tokens
+
+Processing batch No 19/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 98 sec
+
+Completion size: 686 tokens
+
+Total size: 3.884 tokens
+
+Processing batch No 20/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 64 sec
+
+Completion size: 583 tokens
+
+Total size: 3.781 tokens
+
+Processing batch No 21/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 29 sec
+
+Completion size: 449 tokens
+
+Total size: 3.647 tokens
+
+Processing batch No 22/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 35 sec
+
+Completion size: 514 tokens
+
+Total size: 3.712 tokens
+
+Processing batch No 23/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 45 sec
+
+Completion size: 619 tokens
+
+Total size: 3.817 tokens
+
+Processing batch No 24/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 48 sec
+
+Completion size: 517 tokens
+
+Total size: 3.715 tokens
+
+Processing batch No 25/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 55 sec
+
+Completion size: 609 tokens
+
+Total size: 3.807 tokens
+
+Processing batch No 26/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 61 sec
+
+Completion size: 687 tokens
+
+Total size: 3.885 tokens
+
+Processing batch No 27/63 batches
+Calculated prompt size: 3.200 tokens
+Response time: 41 sec
+
+Completion size: 638 tokens
+
+Total size: 3.835 tokens
+
+Processing batch No 28/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 96 sec
+
+Completion size: 706 tokens
+
+Total size: 3.904 tokens
+
+Processing batch No 29/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 86 sec
+
+Completion size: 616 tokens
+
+Total size: 3.814 tokens
+
+Processing batch No 30/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 89 sec
+
+Completion size: 664 tokens
+
+Total size: 3.862 tokens
+
+Processing batch No 31/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 103 sec
+
+Completion size: 799 tokens
+
+Total size: 3.997 tokens
+
+Processing batch No 32/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 77 sec
+
+Completion size: 701 tokens
+
+Total size: 3.899 tokens
+
+Processing batch No 33/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 68 sec
+
+Completion size: 589 tokens
+
+Total size: 3.787 tokens
+
+Processing batch No 34/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 120 sec
+
+Completion size: 831 tokens
+
+Total size: 4.029 tokens
+
+Processing batch No 35/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 77 sec
+
+Completion size: 565 tokens
+
+Total size: 3.763 tokens
+
+Processing batch No 36/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 106 sec
+
+Completion size: 819 tokens
+
+Total size: 4.017 tokens
+
+Processing batch No 37/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 93 sec
+
+Completion size: 657 tokens
+
+Total size: 3.855 tokens
+
+Processing batch No 38/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 78 sec
+
+Completion size: 539 tokens
+
+Total size: 3.737 tokens
+
+Processing batch No 39/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 64 sec
+
+Completion size: 790 tokens
+
+Total size: 3.988 tokens
+
+Processing batch No 40/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 117 sec
+
+Completion size: 772 tokens
+
+Total size: 3.970 tokens
+
+Processing batch No 41/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 141 sec
+
+Completion size: 895 tokens
+
+Total size: 4.093 tokens
+
+Processing batch No 42/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 84 sec
+
+Completion size: 486 tokens
+
+Total size: 3.684 tokens
+
+Processing batch No 43/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 81 sec
+
+Completion size: 568 tokens
+
+Total size: 3.766 tokens
+
+Processing batch No 44/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 99 sec
+
+Completion size: 754 tokens
+
+Total size: 3.952 tokens
+
+Processing batch No 45/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 132 sec
+
+Completion size: 808 tokens
+
+Total size: 4.006 tokens
+
+Processing batch No 46/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 117 sec
+
+Completion size: 824 tokens
+
+Total size: 4.022 tokens
+
+Processing batch No 47/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 140 sec
+
+Completion size: 826 tokens
+
+Total size: 4.024 tokens
+
+Processing batch No 48/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 60 sec
+
+Completion size: 594 tokens
+
+Total size: 3.792 tokens
+
+Processing batch No 49/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 86 sec
+
+Completion size: 591 tokens
+
+Total size: 3.789 tokens
+
+Processing batch No 50/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 99 sec
+
+Completion size: 583 tokens
+
+Total size: 3.781 tokens
+
+Processing batch No 51/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 77 sec
+
+Completion size: 519 tokens
+
+Total size: 3.717 tokens
+
+Processing batch No 52/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 119 sec
+
+Completion size: 827 tokens
+
+Total size: 4.025 tokens
+
+Processing batch No 53/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 120 sec
+
+Completion size: 722 tokens
+
+Total size: 3.920 tokens
+
+Processing batch No 54/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 68 sec
+
+Completion size: 418 tokens
+
+Total size: 3.616 tokens
+
+Processing batch No 55/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 115 sec
+
+Completion size: 813 tokens
+
+Total size: 4.011 tokens
+
+Processing batch No 56/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 131 sec
+
+Completion size: 778 tokens
+
+Total size: 3.976 tokens
+
+Processing batch No 57/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 101 sec
+
+Completion size: 786 tokens
+
+Total size: 3.984 tokens
+
+Processing batch No 58/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 133 sec
+
+Completion size: 853 tokens
+
+Total size: 4.051 tokens
+
+Processing batch No 59/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 73 sec
+
+Completion size: 605 tokens
+
+Total size: 3.803 tokens
+
+Processing batch No 60/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 29 sec
+
+Completion size: 471 tokens
+
+Total size: 3.669 tokens
+
+Processing batch No 61/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 103 sec
+
+Completion size: 895 tokens
+
+Total size: 4.093 tokens
+
+Processing batch No 62/63 batches
+Calculated prompt size: 3.201 tokens
+Response time: 45 sec
+
+Completion size: 693 tokens
+
+Total size: 3.891 tokens
+
+Processing batch No 63/63 batches
+Calculated prompt size: 2.517 tokens
+Response time: 35 sec
+
+Completion size: 639 tokens
+
+Total size: 3.153 tokens
