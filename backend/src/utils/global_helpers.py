@@ -1,7 +1,38 @@
 import os
 import logging
 import yaml
+
+from backend.src.custom_exceptions.env_exceptions import InvalidEnvironmentVariableError
 from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
+
+
+def load_yaml_config(config_dir, config_name: str) -> dict:
+    try:
+        with open(os.path.join(config_dir, f"{config_name}.yaml")) as file:
+            try:
+                return yaml.load(file, Loader=yaml.FullLoader)
+            except yaml.YAMLError as e:
+                raise ConfigLoadingError(f"An error occurred while loading the YAML file: {e}")  # Raise custom exception
+    except FileNotFoundError:
+        logging.error("The file was not found.")
+        raise FileNotFoundError("The specified configuration file was not found.")
+    except PermissionError:
+        logging.error("Permission denied.")
+        raise PermissionError("No permission to read the configuration file.")
+    except IsADirectoryError:
+        logging.error("Expected a file, but found a directory.")
+        raise IsADirectoryError("The specified path points to a directory, not a file.")
+    except OSError as e:
+        logging.error(f"An OSError occurred: {e}")
+        raise OSError(f"An unexpected error occurred: {e}")
+
+
+def get_env_variable(name):
+    try:
+        return os.environ[name]
+    except KeyError:
+        error_msg = f"Environment variable '{name}' not found."
+        raise InvalidEnvironmentVariableError(error_msg)
 
 
 def configure_logging(log_dir):
@@ -17,27 +48,6 @@ def configure_logging(log_dir):
         format='%(asctime)s %(levelname)s %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
-
-
-def load_yaml_config(config_dir, config_name: str) -> dict:
-    try:
-        with open(os.path.join(config_dir, f"{config_name}.yaml")) as file:
-            try:
-                return yaml.load(file, Loader=yaml.FullLoader)
-            except yaml.YAMLError as e:
-                raise ConfigLoadingError(f"An error occurred while loading the YAML file: {e}")  # Raise custom exception
-    except FileNotFoundError:
-        logging.error("The file was not found.")
-        raise FileNotFoundError("The specified configuration file was not found.")
-    except PermissionError:
-        logging.error("Permission denied.")
-        raise PermissionError("You do not have permission to read the configuration file.")
-    except IsADirectoryError:
-        logging.error("Expected a file, but found a directory.")
-        raise IsADirectoryError("The specified path points to a directory, not a file.")
-    except OSError as e:
-        logging.error(f"An OSError occurred: {e}")
-        raise OSError(f"An unexpected error occurred: {e}")
 
 
 def start_log(log_dir):

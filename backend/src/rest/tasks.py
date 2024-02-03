@@ -7,6 +7,7 @@ from celery.utils.log import get_task_logger
 # TODO: Setup uniform logging across the whole system (w/o redundancies)
 logger = get_task_logger(__name__)
 
+
 # TODO: Implement robust error handling to manage retries, failures, and unexpected conditions.
 
 @shared_task(bind=True, ignore_result=False)
@@ -14,6 +15,7 @@ def generate_flashcards_task(self, client, config, model_name, lang, mode, input
     def update_progress(processed, total):
         # Update the task's state to a custom 'PROGRESS' state with additional info
         self.update_state(state='PROGRESS', meta={'processed': processed, 'total': total})
+
     # Instantiate FlashcardApp with the necessary parameters
     flashcard_app = FlashcardApp(client=client,
                                  config=config,
