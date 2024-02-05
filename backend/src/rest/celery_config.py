@@ -4,8 +4,8 @@ from flask import Flask
 
 def create_celery_app(flask_app: Flask) -> Celery:
     """
-    This creates and returns a Celery app object. Celery configuration is taken from the CELERY key in the Flask configuration. The Celery app is set
-    as the default, so that it is seen during each request. The Task subclass automatically runs task functions with a Flask app context active, so
+    This creates and returns a Celery flashcard_service object. Celery configuration is taken from the CELERY key in the Flask configuration. The Celery flashcard_service is set
+    as the default, so that it is seen during each request. The Task subclass automatically runs task functions with a Flask flashcard_service context active, so
     that services like your database connections are available.
     For more information on integrating Celery with Flask: https://flask.palletsprojects.com/en/2.3.x/patterns/celery/a
     What is Celery? Here's a quick intro: https://docs.celeryq.dev/en/stable/index.html
@@ -20,7 +20,7 @@ def create_celery_app(flask_app: Flask) -> Celery:
             with flask_app.app_context():
                 return self.run(*args, **kwargs)
 
-    # Set the Task attribute of the Celery instance to the custom FlaskTask class, ensuring that all tasks created by this Celery app use
+    # Set the Task attribute of the Celery instance to the custom FlaskTask class, ensuring that all tasks created by this Celery flashcard_service use
     # the Flask application context.
     celery_app = Celery(flask_app.name, task_cls=FlaskTask)
     celery_app.config_from_object(flask_app.config["CELERY"])

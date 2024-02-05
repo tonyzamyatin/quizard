@@ -1,5 +1,5 @@
 from flask import Flask
-from backend.src.rest.celery_config import create_celery_app
+from .celery_config import create_celery_app
 
 
 def create_flask_app(broker_url: str, result_backend: str) -> Flask:

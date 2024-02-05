@@ -1,10 +1,8 @@
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
-from backend.src.app.app import FlashcardApp
-from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config, read_file
-from backend.src.custom_exceptions.env_exceptions import EnvironmentLoadingError, InvalidEnvironmentVariableError
-from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
+from flashcard_service.app import FlashcardService
+from utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config, read_file
 
 # Define backend This assumes that test.py is in backend/src/
 backend_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,8 +31,8 @@ text_input = read_file(os.path.join(backend_root_dir, "input", test_config["text
 lang = run_config["flashcard_generation"]["lang"]
 mode = run_config["flashcard_generation"]["mode"]
 
-# Initialize and run app with the text_input
-app = FlashcardApp(client=client, config=run_config, model_name="gpt-3.5-turbo-1106", lang=lang, mode=mode)
+# Initialize and run flashcard_service with the text_input
+app = FlashcardService(client=client, config=run_config, model_name="gpt-3.5-turbo-1106", lang=lang, mode=mode)
 flashcard_deck = app.run(text_input)
 
 # Save the output as csv file

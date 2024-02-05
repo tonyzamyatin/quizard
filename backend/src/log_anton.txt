@@ -2081,3 +2081,74 @@ Response time: 57 sec
 Completion size: 856 tokens
 
 Total size: 2.920 tokens
+Running test32a-38p_DOE_bp_summary_with_a_few_images.csv
+
+Total message length (calculated): 14.366 tokens
+Generating flashcards by text splitting using gpt-3.5-turbo-1106...
+
+Text was split into 8 fragments.
+
+
+Processing batch No 1/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 40 sec
+
+Completion size: 879 tokens
+
+Total size: 4.077 tokens
+
+Processing batch No 2/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 43 sec
+
+Completion size: 895 tokens
+
+Total size: 4.093 tokens
+
+Processing batch No 3/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 30 sec
+
+Completion size: 633 tokens
+
+Total size: 3.831 tokens
+
+Processing batch No 4/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 31 sec
+
+Completion size: 673 tokens
+
+Total size: 3.871 tokens
+
+Processing batch No 5/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 40 sec
+
+Completion size: 895 tokens
+
+Total size: 4.093 tokens
+
+Processing batch No 6/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 29 sec
+
+Completion size: 654 tokens
+
+Total size: 3.852 tokens
+
+Processing batch No 7/8 batches
+Calculated prompt size: 3.201 tokens
+Response time: 31 sec
+
+Completion size: 651 tokens
+
+Total size: 3.849 tokens
+
+Processing batch No 8/8 batches
+Calculated prompt size: 2.067 tokens
+Response time: 45 sec
+
+Completion size: 1.067 tokens
+
+Total size: 3.131 tokens

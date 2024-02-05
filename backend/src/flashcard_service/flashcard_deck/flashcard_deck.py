@@ -2,8 +2,7 @@ import json
 import os
 import zipfile
 from typing import List
-
-from backend.src.flashcard.flashcard import Flashcard
+from ..flashcard.flashcard import Flashcard
 
 
 class FlashcardDeck:

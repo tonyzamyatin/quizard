@@ -3,11 +3,11 @@ import re
 import logging
 import time
 from typing import List
-from backend.src.flashcard.flashcard import Flashcard, FlashcardType
-from backend.src.custom_exceptions.quizard_exceptions import FlashcardInvalidFormatError
-from backend.src.custom_exceptions.quizard_exceptions import FlashcardPrefixError
-from backend.src.utils.completion_messages import Messages
-from backend.src.utils.global_helpers import format_num
+from ..flashcard.flashcard import Flashcard, FlashcardType
+from ...custom_exceptions.quizard_exceptions import FlashcardInvalidFormatError
+from ...custom_exceptions.quizard_exceptions import FlashcardPrefixError
+from ...utils.completion_messages import Messages
+from ...utils.global_helpers import format_num
 from openai import OpenAI
 
 

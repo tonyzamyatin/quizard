@@ -1,4 +1,4 @@
-from backend.src.flashcard.flashcard import Flashcard
+from ..flashcard_service.flashcard.flashcard import Flashcard
 
 # Base Exception for the Quizard application.
 class QuizardError(Exception):

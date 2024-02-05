@@ -5,9 +5,9 @@ import tiktoken
 from typing import List
 
 from backend.src.utils.completion_messages import Messages
-from backend.src.flashcard.flashcard import Flashcard
-from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
-from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
+from backend.src.flashcard_service.flashcard.flashcard import Flashcard
+from backend.src.flashcard_service.flashcard_deck.flashcard_deck import FlashcardDeck
+from backend.src.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator
 from backend.src.utils.global_helpers import format_num, write_to_log_and_print
 from backend.src.text_splitting import text_split
 

@@ -1,6 +1,4 @@
 # External packages
-
-import openai
 from openai import OpenAI
 from flask import request, jsonify
 from flask_restful import Resource, Api
@@ -8,16 +6,13 @@ from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 import redis
-
-from backend.src.rest.flask_factory import create_flask_app
 # Setup
-from backend.src.utils.global_helpers import configure_logging, start_log, write_to_log_and_print, load_yaml_config, get_env_variable
-from celery_config import create_celery_app
-from tasks import generate_flashcards_task
+from ..utils.global_helpers import configure_logging, load_yaml_config, get_env_variable
+from .celery_config import create_celery_app
+from .tasks import generate_flashcards_task
+from .flask_factory import create_flask_app
 # Exceptions
-from backend.src.custom_exceptions.env_exceptions import EnvironmentLoadingError, InvalidEnvironmentVariableError
-from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
-from backend.src.custom_exceptions.api_exceptions import APIAuthenticationError
+from ..custom_exceptions.env_exceptions import EnvironmentLoadingError
 
 # Configure logging -- This assumes that main.py is in backend/src/
 backend_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,10 +25,10 @@ try:
     load_dotenv()
 except:
     raise EnvironmentLoadingError("There was a problem loading .env.")
-rabbit_user = get_env_variable("RABBIT_USERNAME")
-rabbit_password = get_env_variable("RABBIT_PASSWORD")
-rabbit_port = get_env_variable("RABBIT_PORT")
-rabbit_host = get_env_variable("RABBIT_HOST")
+rabbit_user = get_env_variable("RABBITMQ_DEFAULT_USER")
+rabbit_password = get_env_variable("RABBITMQ_DEFAULT_PASS")
+rabbit_port = get_env_variable("RABBITMQ_PORT")
+rabbit_host = get_env_variable("RABBITMQ_HOST")
 redis_password = get_env_variable("REDIS_PASSWORD")
 redis_host = get_env_variable("REDIS_HOST")
 redis_port = get_env_variable("REDIS_PORT")

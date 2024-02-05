@@ -1,8 +1,8 @@
-from backend.src.app.app import FlashcardApp
+from ..flashcard_service.app import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
 
-# Ensure that tasks are called only after celery_app has been configured in app.py
+# Ensure that tasks are called only after celery_app has been configured in flashcard_service.py
 
 # TODO: Setup uniform logging across the whole system (w/o redundancies)
 logger = get_task_logger(__name__)
@@ -17,11 +17,11 @@ def generate_flashcards_task(self, client, config, model_name, lang, mode, input
         self.update_state(state='PROGRESS', meta={'processed': processed, 'total': total})
 
     # Instantiate FlashcardApp with the necessary parameters
-    flashcard_app = FlashcardApp(client=client,
-                                 config=config,
-                                 model_name=model_name,
-                                 lang=lang,
-                                 mode=mode)
+    flashcard_app = FlashcardService(client=client,
+                                     config=config,
+                                     model_name=model_name,
+                                     lang=lang,
+                                     mode=mode)
 
     # Pass update_progress() to run() as a call back function
     flashcards = flashcard_app.run(input_text, update_progress).flashcards

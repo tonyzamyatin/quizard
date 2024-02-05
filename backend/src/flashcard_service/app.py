@@ -6,23 +6,23 @@ from typing import List
 import tiktoken
 
 # Import custom exceptions
-from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
-from backend.src.flashcard.flashcard import Flashcard
-from backend.src.flashcard_deck.flashcard_deck import FlashcardDeck
-from backend.src.flashcard_generator.flashcard_generator import FlashcardGenerator
-from backend.src.text_splitting import text_split
-from backend.src.utils.completion_messages import Messages
-from backend.src.utils.global_helpers import format_num, write_to_log_and_print, inset_into_string, read_file
+from ..custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError
+from ..flashcard_service.flashcard.flashcard import Flashcard
+from ..flashcard_service.flashcard_deck.flashcard_deck import FlashcardDeck
+from ..flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator
+from ..text_splitting import text_split
+from ..utils.completion_messages import Messages
+from ..utils.global_helpers import format_num, write_to_log_and_print, inset_into_string, read_file
 
 
-class FlashcardApp:
+class FlashcardService:
     def __init__(self, client: OpenAI, config: dict, model_name: str, lang: str, mode: str):
         self.config = config
         self.client = client
         self.model_name = model_name
         self.generation_mode = mode
         self.lang = lang
-        self.backend_root_dir = backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        self.backend_root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         # TODO: Introduce logic to check whether given model is part of OpenAIs available models. Desirably, hardcoded and regularly synced with OpenAI's
         # list of available models, which is supported by us for the given task.
         if self.generation_mode not in FlashcardGenerator.GENERATION_MODE:

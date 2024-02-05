@@ -2,8 +2,8 @@ import os
 import logging
 import yaml
 
-from backend.src.custom_exceptions.env_exceptions import InvalidEnvironmentVariableError
-from backend.src.custom_exceptions.quizard_exceptions import ConfigLoadingError
+from ..custom_exceptions.env_exceptions import InvalidEnvironmentVariableError
+from ..custom_exceptions.quizard_exceptions import ConfigLoadingError
 
 
 def load_yaml_config(config_dir, config_name: str) -> dict:
