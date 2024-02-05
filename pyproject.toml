@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "quizard"
+version = "0.1.0"
+description = ""
+authors = ["tonyzamyatin <anton.zamyatin14@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openai = "*"
+python-dotenv = "*"
+tiktoken = "*"
+flask = "*"
+pyyaml = "*"
+flask-restful = "*"
+flask-cors = "*"
+celery = {extras = ["redis"], version = "*"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+## Exclude development dependecise for build
+#[tool.poetry.group.dev]
+## no development dependecies yet
+#optional = true
