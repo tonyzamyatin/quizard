@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "quizard"
+version = "0.1.0"
+description = ""
+authors = ["tonyzamyatin <anton.zamyatin14@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openai = "*"
+python-dotenv = "*"
+tiktoken = "*"
+flask = "*"
+pyyaml = "*"
+flask-restful = "*"
+flask-cors = "*"
+celery = {extras = ["redis"], version = "*"}
+structlog = "^24.1.0"
+
+[tool.poetry.dev-dependencies]
+pylint = "^3.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

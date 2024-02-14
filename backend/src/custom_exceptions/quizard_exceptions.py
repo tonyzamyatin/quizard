@@ -1,4 +1,5 @@
-from ..flashcard_service.flashcard.flashcard import Flashcard
+from src.flashcard_service.flashcard.flashcard import Flashcard
+
 
 # Base Exception for the Quizard application.
 class QuizardError(Exception):
@@ -48,5 +49,5 @@ class FlashcardPrefixError(FlashcardInvalidFormatError):
 
 # Exceptions related to other issues
 class PromptSizeError(QuizardError):
-    """Custom exception for prompt size issues."""
+    """Custom exception for prompts size issues."""
     pass

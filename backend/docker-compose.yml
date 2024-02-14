@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    image: quizard:latest
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env  # Use environment variables defined in the .env file
+    volumes:
+      - ./src:/app/src  # Mount the backend directory to the app directory in the container
+    command: poetry run python -m src.rest.app
+    depends_on:
+      - rabbitmq
+      - redis
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    image: quizard:latest
+    depends_on:
+      - web
+      - redis
+      - rabbitmq
+    command: poetry run celery -A src.celery worker --loglevel=info
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "8080:15672"  # Management interface
+      - "5672:5672"   # RabbitMQ server
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+#    environment:
+#      - REDIS_PASSWORD=${REDIS_PASSWORD}

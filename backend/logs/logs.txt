@@ -1,4 +1,4 @@
-Total message length (calculated): 1.344 tokens
+otal message length (calculated): 1.344 tokens
 Using 4k model...
 
 Total message length (calculated): 1.344 tokens

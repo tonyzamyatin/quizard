@@ -1,51 +1,15 @@
-# TODO: Restructure config to reflect new OpenAI models.
-# TODO: Delete all unnecessary parameters and optimize and test what is left.
-
-model:
-  temperature: 0.8
-  top_p: 1.0
-  frequency_penalty: 0.0
-  presence_penalty: 0.0
-  max_tokens: 800   # Default is 800, but this value is dynamically adapted within the program depending on the prompt size
+text_input: "bullet_point_summary/DOE_GER.txt"    # path from within the input folder e.g. text_summary/...
+run_name: "run33a-backend_cleanup.csv"
+model_name: "gpt-3.5-turbo"              # TODO: Test gpt-3.5-turbo-0125 vs. gpt-3.5-turbo-instruct
+lang: "de"
+mode: "practice"
 
 
-tokens:
-  # Short text config for 4k model
-  4k_model:
-    prompt_limit: 3000
-    base_prompt_limit: 2000
-    completion_limit: 800
-  # Medium text config for 16k model
-  16k_model:
-    prompt_limit: 13000
-    base_prompt_limit: 4000
-    completion_limit: 10000
 
-  # For texts longer than 12k tokens text splitting is used
-  # Window size will be calculated by the program automatically depending on the size of the base prompt (i.e. system prompt + example)
-  # The window overlap can be either set relative to the text fragment being processed via relative_window_overlap or set to an absolute token value.
-  # Depending on what setting is being used
-  text_splitting:
-    window_overlap_type: "absolute"         # "relative" or "absolute"
-    relative_window_overlap: 0.167
-    absolute_window_overlap: 100
-
-  # Optimal parameters:
-  # 3.000, 2.400 and 400 when using the 4k model
-  # _____, 10.000 and 10.400 when using the 16k model
-
-
-flashcard_generation:
-  mode: "practice"       # "practice"....other options are coming soon -> can be found in backend/prompt/system
-  detect_lang: False    # True or False, if False flashcards will be generated in the specified language below.
-  lang: "GER"
-  example_prompt: "ex1_genetics_of_cancer"     # Name of the example directory
-  additional_prompt: "ad1_top_instr"           # Change this field to a list of (position, prompt) to add multiple additional lines of prompt to text_input
-
-system:
-  supported_langs:
-    - "GER"
-    - "ENG"
-
-export:
-  export_type: "csv"
+# 07.02.2024 Model overview:
+# gpt-3.5-turbo-instruct:       context:    4K;   input: $0.0015 / 1K tokens;   output: $0.0020 / 1K tokens
+# gpt-3.5-turbo-0125:           context:   16K;   input: $0.0005 / 1K tokens;   output: $0.0015 / 1K tokens
+# gpt-4-0125-preview	        context:  128K;   input: $0.0005 / 1K tokens;   output: $0.0015 / 1K tokens
+# gpt-4-0125-vision-preview	    context:  128K;   input: $0.0005 / 1K tokens;   output: $0.0015 / 1K tokens (additional overhead for vision)
+# gpt-4 	                    context:   16K;   input: $0.0300 / 1K tokens;   output: $0.0600 / 1K tokens
+# gpt-4-32k         	        context:   32K;   input: $0.0600 / 1K tokens;   output: $0.1200 / 1K tokens
