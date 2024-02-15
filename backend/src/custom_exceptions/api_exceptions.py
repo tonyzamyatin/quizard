@@ -10,6 +10,11 @@ class APIRequestError(FlaskAPIError):
     pass
 
 
+class TaskNotFoundError(APIRequestError):
+    """Exception raised if task is not found"""
+    pass
+
+
 class APIDataValidationError(FlaskAPIError):
     """Exception raised for errors due to invalid data provided to the API."""
     pass

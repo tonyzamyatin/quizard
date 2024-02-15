@@ -2,6 +2,7 @@ import json
 import os
 
 import structlog
+from celery.exceptions import TaskError
 from flask import request, jsonify, make_response
 from flask_restful import Resource, Api
 from flask_cors import CORS
@@ -9,7 +10,7 @@ from openai import OpenAI, OpenAIError
 from werkzeug.exceptions import HTTPException
 
 from src.celery.celery import setup_applications
-from src.custom_exceptions.api_exceptions import HealthCheckError
+from src.custom_exceptions.api_exceptions import HealthCheckError, TaskNotFoundError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
 from config.logging_config import setup_logging
 from src.utils.global_helpers import load_yaml_config, get_env_variable
@@ -154,11 +155,13 @@ class Progress(Resource):
         logger.info("Get request received")
         try:
             task = generate_flashcards_task.AsyncResult(task_id)
+            if task is None:
+                raise TaskNotFoundError(f"Unable to retrieve task with taskId: {task_id}")
             data = self._get_task_response_dict(task)
-            logger.info(f"Retried task data: {data}")
+            logger.info(f"Retrieved task data: {data}")
             response = jsonify(data)
             logger.info(f"Response: {response}")
-            if task.state == 'PROGRESS' or task.state == 'PENDING':
+            if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
                 response.status_code = 202
             elif task.state == 'SUCCESS':
                 response.status_code = 200
@@ -173,6 +176,8 @@ class Progress(Resource):
         except QuizardError as e:
             logger.error("Quizard-specific error", error=e, exc_info=True)
             return jsonify({'error': str(e)}), 500
+        except TaskError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             logger.error(f"Unexpected error", error=e, exc_info=True)
             return jsonify({'error': str(e)}), 500
@@ -181,7 +186,7 @@ class Progress(Resource):
     def _get_task_response_dict(task):
         """Constructs a response dict based on the task state."""
         data = {'state': task.state}
-        if task.state == 'PROGRESS':
+        if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
             data.update({
                 'progress': task.info.get('processed', 0),
                 'total': task.info.get('total', 1),  # Avoid division by zero

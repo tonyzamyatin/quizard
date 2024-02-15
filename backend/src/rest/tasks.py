@@ -56,8 +56,8 @@ def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
     The 'PROGRESS' state includes metadata with 'progress' and 'total' fields indicating the progress of generation.
     """
 
-    def update_progress(progress, total):
-        self.update_state(state='PROGRESS', meta={'progress': progress, 'total': total})
+    def update_progress(progress: int, total: int):
+        self.update_state(state='PROCESSING', meta={'progress': progress, 'total': total})
 
     try:
         client = OpenAI(api_key=get_env_variable("OPENAI_API_KEY"))

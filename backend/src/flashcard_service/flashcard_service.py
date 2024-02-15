@@ -293,10 +293,9 @@ class FlashcardService:
                 )
                 # Append new flashcards and update
                 flashcards += new_cards
-                batch += 1
                 # Call update_progress to make information about the progress available to other (independent) parts of the system
                 if update_progress:
-                    update_progress(batch, len(fragment_list))
+                    update_progress(batch + 1, len(fragment_list))
 
         # Log end time
         end_time = time.time()
