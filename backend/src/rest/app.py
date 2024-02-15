@@ -188,11 +188,13 @@ class Progress(Resource):
         data = {'state': task.state}
         if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
             data.update({
-                'progress': task.info.get('processed', 0),
+                'progress': task.info.get('progress', 0),
                 'total': task.info.get('total', 1),  # Avoid division by zero
             })
         elif task.state == 'SUCCESS':
             data['flashcards'] = task.get(timeout=1)
+            data['progress'] = 1
+            data['total'] = 1
         elif task.state == 'FAILURE':
             logger.error("Task failed", error=task.error, exc_info=True)
             data['error'] = str(task.error)  # Assuming task.error contains error

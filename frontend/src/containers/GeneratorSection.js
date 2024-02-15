@@ -75,9 +75,9 @@ function GeneratorSection() {
                 console.warn('Response missing task_id:', data);
                 throw new Error('task_id is missing from the response');
             } else {
+                isPollingActiveRef.current = true;
                 setTaskId(data.task_id);
                 console.log(`Task started! Task Id: ${taskId}`)
-                isPollingActiveRef.current = true;
                 updateFlashcardGenerationProgress(data.task_id);
                 setFlashcards(data.flashcards);
             }
@@ -94,7 +94,7 @@ function GeneratorSection() {
     }
 
 
-    const updateFlashcardGenerationProgress = (taskId, retryDelay = 20000) => {
+    const updateFlashcardGenerationProgress = (taskId, waitDelay = 20000, updateDelay = 10000) => {
         if (!isPollingActiveRef.current) return;
 
         const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`;
@@ -111,24 +111,22 @@ function GeneratorSection() {
                 return response.json();
             })
             .then(data => {
-                console.log('Data received:', data);
-                if (['PROCESSING', 'STARTED', 'PENDING'].includes(data.state)) {
-                    setCurrentBatch(data.progress);
-                    setTotalBatches(data.total);
-                    let timeout = data.state === 'PROCESSING' ? 30000 : 50000;
-                    setTimeout(() => updateFlashcardGenerationProgress(taskId), timeout);
-                } else if (data.state === 'SUCCESS') {
-                    console.log(`Task successful, current batch: ${currentBatch}, total batches: ${totalBatches}`);
-                    setCurrentBatch(totalBatches);
-                } else if (['FAILURE', 'CANCELLED'].includes(data.state)) {
+                console.log('Data received:', data); if (data.state === 'FAILURE') {
                     console.error(`Task ${data.state.toLowerCase()}: ${data.error}`);
                 } else {
-                    console.log('Did not enter conditional block');
+                    setCurrentBatch(data.progress);
+                    setTotalBatches(data.total);
+                    if (['PROCESSING', 'STARTED', 'PENDING'].includes(data.state)) {
+                        let timeout = data.state === 'PROCESSING' ? updateDelay : waitDelay;
+                        setTimeout(() => updateFlashcardGenerationProgress(taskId), timeout);
+                    } else {
+                        isPollingActiveRef.current = false;
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                setTimeout(() => updateFlashcardGenerationProgress(taskId), retryDelay);
+                setTimeout(() => updateFlashcardGenerationProgress(taskId), waitDelay);
             })
             .finally(() => {
                 console.groupEnd();
@@ -168,7 +166,7 @@ function GeneratorSection() {
         let timeoutId = null;
 
         if (taskId && isPollingActiveRef.current) {
-            timeoutId = setTimeout(() => updateFlashcardGenerationProgress(taskId), 5000);
+            timeoutId = setTimeout(() => updateFlashcardGenerationProgress(taskId), 40000);
         }
 
         // Clean up the timeout when taskId changes or component unmounts
