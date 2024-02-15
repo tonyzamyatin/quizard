@@ -48,8 +48,9 @@ def create_celery_app(flask_app: Flask) -> Celery:
     try:
         celery_app = Celery(flask_app.name, task_cls=FlaskTask)
         celery_app.config_from_object(flask_app.config["CELERY"])
-        celery_app
         celery_app.autodiscover_tasks(['src.rest.tasks'])
+        celery_app.conf.task_track_started = True
+        celery_app.conf.task_ignore_result = False
         celery_app.set_default()
         flask_app.extensions["celery"] = celery_app
     except KeyError as e:

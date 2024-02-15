@@ -151,18 +151,31 @@ class Progress(Resource):
         """
         Get the current progress or result of the flashcard generation task.
         """
+        logger.info("Get request received")
         try:
             task = generate_flashcards_task.AsyncResult(task_id)
             data = self._get_task_response_dict(task)
+            logger.info(f"Retried task data: {data}")
             response = jsonify(data)
-            response.status_code = 202
+            logger.info(f"Response: {response}")
+            if task.state == 'PROGRESS' or task.state == 'PENDING':
+                response.status_code = 202
+            elif task.state == 'SUCCESS':
+                response.status_code = 200
+            elif task.state == 'CANCELLED':
+                response.status_code = 502
+            elif task.state == 'FAILURE':
+                response.status_code = 500  # or another appropriate 4xx or 5xx code
             return response
-        except OpenAIError:
-            raise
-        except QuizardError:
-            raise
-        except Exception:
-            raise
+        except OpenAIError as e:
+            logger.error("OpenAI-specific error", error=e, exc_info=True)
+            return jsonify({'error': str(e)}), 502
+        except QuizardError as e:
+            logger.error("Quizard-specific error", error=e, exc_info=True)
+            return jsonify({'error': str(e)}), 500
+        except Exception as e:
+            logger.error(f"Unexpected error", error=e, exc_info=True)
+            return jsonify({'error': str(e)}), 500
 
     @staticmethod
     def _get_task_response_dict(task):

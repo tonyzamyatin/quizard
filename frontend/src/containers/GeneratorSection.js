@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ConfigContainer from "../components/generation_section/1_configuration/ConfigContainer";
 import UploadContainer from "../components/generation_section/2_text_upload/UploadContainer";
 import GenerationProgressContainer from "../components/generation_section/3_flashcard_generation/GenerationProgressContainer";
@@ -14,8 +14,8 @@ function GeneratorSection() {
     const [lang, setLang] = useState('');
     const [mode, setMode] = useState('');
     const [exportFormat, setExportFormat] = useState('')
-    const [isPollingActive, setIsPollingActive] = useState(false);
     const [taskId, setTaskId] = useState('');
+    const isPollingActiveRef = useRef(false);
     // Define corresponding backend values
     const backendLanguageOptions = { English: 'en', German: 'de' };
     const backendModeOptions = { Practice: 'practice', Test: 'test', Cloze: 'cloze' };
@@ -77,7 +77,7 @@ function GeneratorSection() {
             } else {
                 setTaskId(data.task_id);
                 console.log(`Task started! Task Id: ${taskId}`)
-                setIsPollingActive(true);
+                isPollingActiveRef.current = true;
                 updateFlashcardGenerationProgress(data.task_id);
                 setFlashcards(data.flashcards);
             }
@@ -94,40 +94,62 @@ function GeneratorSection() {
     }
 
 
-    const updateFlashcardGenerationProgress = (taskId) => {
-        if (!isPollingActive) return;
-        const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`
+    const updateFlashcardGenerationProgress = async (taskId, retryDelay = 5000, maxRetries = 5) => {
+        if (!isPollingActiveRef.current) return;
+
+        const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`;
         console.group('Flashcard Update Request');
         console.log(`Endpoint:${ endpoint }`);
         console.log('Method: GET');
         console.log('Payload:', { taskId });
-        fetch(endpoint)
-            .then(response => response.json())
-            .then(data => {
-                if (data.state === 'PROGRESS') {
-                    // Update state with the progress
-                    setCurrentBatch(data.progress);
-                    if (totalBatches === 1) {setTotalBatches(data.total);}
-                    console.log(`Task in progress, current batch: ${ currentBatch }, total batches: ${ totalBatches }`)
-                    if (data.progress < data.total) {
-                        // Continue polling if the work is not yet done
-                        setTimeout(() => updateFlashcardGenerationProgress(taskId), 5000); // Poll every 2 seconds
-                    }
-                } else if (data.state === 'SUCCESS') {
-                    // Update UI here
-                    console.log(`Task successful, current batch: ${ currentBatch }, total batches: ${ totalBatches }`)
-                    setCurrentBatch(totalBatches);
-                } else if (data.state === 'FAILURE' || data.state === 'CANCELLED') {
-                    // Stop polling and handle cancellation or failure
-                    console.error(`Task ${data.state.toLowerCase()}: ${data.error}`);
+        try {
+            console.log('Making fetch call to endpoint:', endpoint);
+
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Data received:', data);
+            
+            if (data.state === 'PROGRESS') {
+                // Update state with the progress
+                setCurrentBatch(data.progress);
+                if (totalBatches === 1) {setTotalBatches(data.total);}
+                console.log(`Task in progress, current batch: ${ currentBatch }, total batches: ${ totalBatches }`)
+                if (data.progress < data.total) {
+                    // Continue polling if the work is not yet done
+                    setTimeout(() => updateFlashcardGenerationProgress(taskId), retryDelay);
                 }
-            })
-            .catch(error => console.error('Error:', error));
-    }
+            }  else if (data.state === 'STARTED' && maxRetries > 0) {
+                setTimeout(() => updateFlashcardGenerationProgress(taskId), retryDelay);
+            } else if (data.state === 'PENDING' && maxRetries > 0) {
+                // Retry after a delay if the task is still pending
+                setTimeout(() => updateFlashcardGenerationProgress(taskId, retryDelay, maxRetries - 1), retryDelay);
+            } else if (data.state === 'SUCCESS') {
+                // Update UI here
+                console.log(`Task successful, current batch: ${ currentBatch }, total batches: ${ totalBatches }`)
+                setCurrentBatch(totalBatches);
+            } else if (data.state === 'FAILURE' || data.state === 'CANCELLED') {
+                // Stop polling and handle cancellation or failure
+                console.error(`Task ${data.state.toLowerCase()}: ${data.error}`);
+            } else {
+                console.log(`Task state: ${data.state}`);
+            }
+        } catch (error) {
+            if (maxRetries > 0) {
+                console.error(`Error: ${error}. Retrying after ${retryDelay}ms...`);
+                setTimeout(() => updateFlashcardGenerationProgress(taskId, retryDelay, maxRetries - 1), retryDelay);
+            } else {
+                console.error('No more retries left.', error);
+            }
+        }
+    };
 
 
     const cancelFlashcardGenerationTask = ( taskId ) => {
-        setIsPollingActive(false); // Stop polling
+        isPollingActiveRef.current = false; // Stop polling
         const endpoint = `/api/mvp/flashcards/generate/cancel/${taskId}`
         console.group('Flashcard Cancellation Request');
         console.log(`Endpoint:${ endpoint }`);
@@ -156,15 +178,15 @@ function GeneratorSection() {
 
     // useEffect for polling, triggered when taskId changes
     useEffect(() => {
-        if (taskId && isPollingActive) {
+        if (taskId && isPollingActiveRef.current) {
             updateFlashcardGenerationProgress(taskId);
         }
 
         // Cleanup function to stop polling
         return () => {
-            setIsPollingActive(false);
+            isPollingActiveRef.current = false;
         };
-    }, [taskId, isPollingActive]);
+    }, [taskId, isPollingActiveRef]);
 
     // TODO: Add const to make API call to backend:
     // "Generate" -> sends the data from the configuration and the text to the backend and initiates generation, as well

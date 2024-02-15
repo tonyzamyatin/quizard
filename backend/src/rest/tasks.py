@@ -9,7 +9,7 @@ from src.utils.global_helpers import get_env_variable
 logger = get_task_logger(__name__)
 
 
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=False, track_started=True)
 def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
     """
     Generate flashcards based on input text using the FlashcardService.
@@ -53,11 +53,11 @@ def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
     - 'frontSide': The content for the front side of the flashcard.
     - 'backSide': The content for the back side of the flashcard.
 
-    The 'PROGRESS' state includes metadata with 'processed' and 'total' fields indicating the progress of generation.
+    The 'PROGRESS' state includes metadata with 'progress' and 'total' fields indicating the progress of generation.
     """
 
-    def update_progress(processed, total):
-        self.update_state(state='PROGRESS', meta={'progress': processed, 'total': total})
+    def update_progress(progress, total):
+        self.update_state(state='PROGRESS', meta={'progress': progress, 'total': total})
 
     try:
         client = OpenAI(api_key=get_env_variable("OPENAI_API_KEY"))
