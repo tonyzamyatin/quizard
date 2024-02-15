@@ -1,0 +1,18 @@
+Normalverteilung; Die wichtigste theoretische Verteilungsform für stetige Zufallsvariablen, mit zwei Parametern: Lagemaß (µ) und Dispersion (σ).
+Lagemaß; Ein Parameter in der Normalverteilung, der den Mittelwert der Verteilung repräsentiert.
+Dispersion; Ein Parameter in der Normalverteilung, der die Streuung oder Varianz der Verteilung repräsentiert.
+Empirische Schätzungen; Schätzungen des Lagemaßes (Mittelwert) und der Dispersion (Standardabweichung) basierend auf beobachteten Daten.
+Verteilung; Die Verteilung von Datenpunkten in einem Diagramm.
+Standard-Normalverteilung; Eine spezielle Form der Normalverteilung, bei der der Mittelwert 0 und die Standardabweichung 1 beträgt.
+Z-Transformation; Eine Transformation von Messdaten, bei der sie auf einen Mittelwert von 0 und eine Standardabweichung von 1 zentriert werden.
+Zentrale Bedeutung; Die herausragende Bedeutung der Normalverteilung als universelles Wahrscheinlichkeitsmodell.
+Varianzhomogenität; Gleichheit der Varianz zwischen verschiedenen Gruppen oder Variablen.
+Poisson-Verteilung; Eine Verteilung für diskrete Zufallsvariablen, die häufig für seltene Ereignisse verwendet wird.
+Binomial-Verteilung; Eine Verteilung für diskrete Zufallsvariablen mit nur zwei Merkmalsalternativen und einer festen Wahrscheinlichkeit.
+Was sind die Parameter der Normalverteilung?; Die Lagemaß (µ) und Dispersion (σ).
+Was ist die Standard-Normalverteilung?; Eine spezielle Form der Normalverteilung, bei der der Mittelwert 0 und die Standardabweichung 1 beträgt.
+Warum wird die Z-Transformation verwendet?; Um die Skalenabhängigkeit von Messdaten zu eliminieren und die interne Variabilitätsstruktur zu analysieren.
+Welche Bedeutung hat die Normalverteilung in der Biologie?; Sie wird oft als Wahrscheinlichkeitsmodell verwendet, insbesondere bei großen Stichproben und vielen Wiederholungen.
+Warum wird die Normalverteilung oft als Annahme verwendet, obwohl die Daten nicht perfekt normalverteilt sind?; Die Normalverteilung ist ein robustes Modell, das auch bei Abweichungen von der Perfektion gute Näherungen liefern kann. Es erleichtert auch die Anwendung von statistischen Tests und die Interpretation der Ergebnisse.
+Warum ist die Varianzhomogenität wichtig und wie kann sie erreicht werden?; Varianzhomogenität ist wichtig, um Vergleiche zwischen Gruppen oder Variablen zuverlässig durchführen zu können. Sie kann erreicht werden, indem die Varianzunterschiede minimiert oder durch geeignete Transformationen ausgeglichen werden.
+Warum wird die Binomial-Verteilung häufig für Geschlechterverteilungen verwendet?; Die Binomial-Verteilung eignet sich gut, um die Wahrscheinlichkeit von zwei Merkmalsalternativen (z.B. männlich und weiblich) zu modellieren, wenn die Wahrscheinlichkeiten für beide Alternativen bekannt sind. In der Biologie sind Geschlechterverteilungen oft von Interesse.

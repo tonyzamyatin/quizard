@@ -57,7 +57,7 @@ def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
     """
 
     def update_progress(processed, total):
-        self.update_state(state='PROGRESS', meta={'processed': processed, 'total': total})
+        self.update_state(state='PROGRESS', meta={'progress': processed, 'total': total})
 
     try:
         client = OpenAI(api_key=get_env_variable("OPENAI_API_KEY"))

@@ -10,7 +10,6 @@ from werkzeug.exceptions import HTTPException
 
 from src.celery.celery import setup_applications
 from src.custom_exceptions.api_exceptions import HealthCheckError
-from src.utils.app_control import shutdown_application
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
 from config.logging_config import setup_logging
 from src.utils.global_helpers import load_yaml_config, get_env_variable
@@ -47,7 +46,7 @@ def standard_error_response(error_code, error_message, description=None):
 @flask_app.errorhandler(HTTPException)
 def handle_exception(e):
     """Handle all HTTP exceptions."""
-    return standard_error_response(e.code, e.message, e.description)
+    return standard_error_response(e.code, e.name, e.description)
 
 
 @flask_app.errorhandler(OpenAIError)
@@ -140,7 +139,7 @@ class FlashcardGenerator(Resource):
             raise
 
 
-api.add_resource(FlashcardGenerator, '/api/mvp/flashcards/generate')
+api.add_resource(FlashcardGenerator, '/api/mvp/flashcards/generate/start')
 
 
 class Progress(Resource):
@@ -186,10 +185,14 @@ class Progress(Resource):
 api.add_resource(Progress, '/api/mvp/flashcards/generate/progress/<task_id>')
 
 
-@flask_app.route('/api/mvp/flashcards/generate/cancel/<task_id>', methods=['POST'])
+@flask_app.route('/api/mvp/flashcards/generate/cancel/<task_id>')
 def cancel_flashcards(task_id):
-    # TODO: Add exception handling
-    celery_app.revoke(task_id, terminate=True)
+    try:
+        celery_app.control.revoke(task_id, terminate=True)
+        return {"message": "Cancellation successful"}, 200
+    except Exception as e:
+        logger.error(f"Failed to cancel celery task {task_id}", error=str(e), exc_info=True)
+        return {"error": str(e)}, 500
 
 
 @flask_app.route('/api/mvp/health')
