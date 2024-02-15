@@ -1,6 +1,5 @@
 import GeneratorSection from "./containers/GeneratorSection";
-import { HealthCheckProvider, useHealthCheck } from './containers/HealthCheckContext';
-import {useEffect} from "react";
+import { HealthCheckProvider } from './containers/HealthCheckContext';
 // Import general styles first
 import './styles/Global.css'
 import './styles/GeneratorSection.css'

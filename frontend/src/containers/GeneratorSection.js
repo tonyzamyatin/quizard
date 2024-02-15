@@ -14,18 +14,16 @@ function GeneratorSection() {
     const [lang, setLang] = useState('');
     const [mode, setMode] = useState('');
     const [exportFormat, setExportFormat] = useState('')
+    const [isPollingActive, setIsPollingActive] = useState(false);
     const [taskId, setTaskId] = useState('');
-
     // Define corresponding backend values
     const backendLanguageOptions = { English: 'en', German: 'de' };
     const backendModeOptions = { Practice: 'practice', Test: 'test', Cloze: 'cloze' };
     const backendExportOptions = { CSV: 'csv', Anki: 'anki' };
-    // TODO: Implement config using a map (more compact)
-    // const [config, setConfig] = useState({lang: "", mode: "", exportFormat: ""})
 
     // Batches of flashcard generation used to calculate progress and display progress bar
-    const  [totalBatches, setTotalBatches] = useState(0)
     const [currentBatch, setCurrentBatch] = useState(0);
+    const  [totalBatches, setTotalBatches] = useState(1)
 
     // Generated flashcards
     const [flashcards, setFlashcards] = useState([]);
@@ -34,38 +32,17 @@ function GeneratorSection() {
     // TODO: Enhance exception handling and provide more informative feedback to the user
     // TODO: Retry mechanism
     // TODO: Display success message when flashcards are ready
-    const updateFlashcardGenerationProgress = (taskId) => {
-        fetch(`flashcards/generate/progress/${taskId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.state === 'PROGRESS') {
-                    // Update state with the progress
-                    setCurrentBatch(data.progress);
-                    if (totalBatches === 0) {setTotalBatches(data.total);}
-                    if (data.meta < data.total) {
-                        // Continue polling if the work is not yet done
-                        setTimeout(() => updateFlashcardGenerationProgress(taskId), 2000); // Poll every 2 seconds
-                    }
-                } else if (data.state === 'SUCCESS') {
-                    // Update UI here
-                    setCurrentBatch(totalBatches);
-                } else if (data.state === 'FAILURE') {
-                    // Exception handling here
-                    throw new Error(`Task failed: ${data.error}`)
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
+
 
     // Method to generate flashcards with specified mode and text
     // TODO: Add robust error handling
-
     const startFlashcardGenerationTask = () => {
+        const endpoint = '/api/mvp/flashcards/generate/start'
         console.group('Flashcard Generation Request');
-        console.log('Endpoint: /flashcards/generate');
+        console.log(`Endpoint: ${endpoint}`);
         console.log('Method: POST');
         console.log('Payload:', { lang, mode, exportFormat, inputText: text });
-        fetch('/flashcards/generate', {
+        fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,8 +60,8 @@ function GeneratorSection() {
                 if (!response.ok) {
                     if (contentType && contentType.includes('application/json')) {
                         return response.json().then(errorDetails => {
-                            console.error('HTTP Error:', response.status, errorDetails);
-                            throw new Error(`HTTP Error ${response.status}: ${JSON.stringify(errorDetails)}`);
+                            console.error(`HTTP error! status:${response.status}, ${JSON.stringify(errorDetails)}`);
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         });
                     } else {
                         console.error('Non-JSON error from server:', response.statusText);
@@ -97,11 +74,13 @@ function GeneratorSection() {
             if (!data.task_id) {
                 console.warn('Response missing task_id:', data);
                 throw new Error('task_id is missing from the response');
+            } else {
+                setTaskId(data.task_id);
+                console.log(`Task started! Task Id: ${taskId}`)
+                setIsPollingActive(true);
+                updateFlashcardGenerationProgress(data.task_id);
+                setFlashcards(data.flashcards);
             }
-            const taskId = data.task_id;
-            // Start updating the progress
-            updateFlashcardGenerationProgress(taskId);
-            setFlashcards(data.flashcards);
         })
         .catch(error => {
             // The error could be from the fetch itself, or thrown from the .then() block
@@ -114,15 +93,78 @@ function GeneratorSection() {
         });
     }
 
-    const cancelFlashcardGenerationTask = ( taskId ) => {
-        console.group('Flashcard Cancellation Request');
-        console.log(`Endpoint: /flashcards/generate/cancel/${ taskId }`);
-        console.log('Method: POST');
+
+    const updateFlashcardGenerationProgress = (taskId) => {
+        if (!isPollingActive) return;
+        const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`
+        console.group('Flashcard Update Request');
+        console.log(`Endpoint:${ endpoint }`);
+        console.log('Method: GET');
         console.log('Payload:', { taskId });
-        fetch(`flashcards/generate/progress/${taskId}`, {method: 'POST'})
+        fetch(endpoint)
             .then(response => response.json())
+            .then(data => {
+                if (data.state === 'PROGRESS') {
+                    // Update state with the progress
+                    setCurrentBatch(data.progress);
+                    if (totalBatches === 1) {setTotalBatches(data.total);}
+                    console.log(`Task in progress, current batch: ${ currentBatch }, total batches: ${ totalBatches }`)
+                    if (data.progress < data.total) {
+                        // Continue polling if the work is not yet done
+                        setTimeout(() => updateFlashcardGenerationProgress(taskId), 5000); // Poll every 2 seconds
+                    }
+                } else if (data.state === 'SUCCESS') {
+                    // Update UI here
+                    console.log(`Task successful, current batch: ${ currentBatch }, total batches: ${ totalBatches }`)
+                    setCurrentBatch(totalBatches);
+                } else if (data.state === 'FAILURE' || data.state === 'CANCELLED') {
+                    // Stop polling and handle cancellation or failure
+                    console.error(`Task ${data.state.toLowerCase()}: ${data.error}`);
+                }
+            })
             .catch(error => console.error('Error:', error));
     }
+
+
+    const cancelFlashcardGenerationTask = ( taskId ) => {
+        setIsPollingActive(false); // Stop polling
+        const endpoint = `/api/mvp/flashcards/generate/cancel/${taskId}`
+        console.group('Flashcard Cancellation Request');
+        console.log(`Endpoint:${ endpoint }`);
+        console.log('Method: GET');
+        console.log('Payload:', { taskId });
+        fetch(`/api/mvp/flashcards/generate/cancel/${taskId}`, {
+            method: 'GET' // or 'POST' if you have additional data to send
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Cancellation successful:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                console.groupEnd();
+            });
+    };
+
+
+    // useEffect for polling, triggered when taskId changes
+    useEffect(() => {
+        if (taskId && isPollingActive) {
+            updateFlashcardGenerationProgress(taskId);
+        }
+
+        // Cleanup function to stop polling
+        return () => {
+            setIsPollingActive(false);
+        };
+    }, [taskId, isPollingActive]);
 
     // TODO: Add const to make API call to backend:
     // "Generate" -> sends the data from the configuration and the text to the backend and initiates generation, as well
