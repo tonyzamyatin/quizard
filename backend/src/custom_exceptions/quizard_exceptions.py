@@ -23,8 +23,8 @@ class ConfigLoadingError(ConfigError):
     pass
 
 
-class UnsupportedLanguageError(ConfigError):
-    """Custom exception for invalid or unsupported languages specified in the config"""
+class UnsupportedOptionError(ConfigError):
+    """Custom exception for invalid or unsupported options specified in the config"""
     pass
 
 

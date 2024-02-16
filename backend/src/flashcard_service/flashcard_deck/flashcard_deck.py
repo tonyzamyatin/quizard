@@ -1,8 +1,50 @@
+import csv
 import json
 import os
 import zipfile
+from io import StringIO, BytesIO
 from typing import List
 from src.flashcard_service.flashcard.flashcard import Flashcard
+
+
+def _create_note_model_and_note(flashcard: Flashcard):
+    """
+    Creates a note model and note for a given flashcard.
+
+    Parameters
+    ----------
+    flashcard : Flashcard
+        The flashcard to create the model and note for.
+
+    Returns
+    -------
+    tuple
+        A tuple containing the note model and note.
+    """
+    note_model = {
+        "name": "Basic",
+        "fields": [
+            {"name": "Front"},
+            {"name": "Back"}
+        ],
+        "templates": [
+            {
+                "name": "Card 1",
+                "qfmt": "{{Front}}",
+                "afmt": "{{FrontSide}}<hr id=\"answer\">{{Back}}"
+            }
+        ]
+    }
+    note = {
+        "deckName": "My Deck",
+        "modelName": "Basic",
+        "fields": {
+            "Front": flashcard.front_side,
+            "Back": flashcard.back_side
+        },
+        "tags": []
+    }
+    return note_model, note
 
 
 class FlashcardDeck:
@@ -37,6 +79,19 @@ class FlashcardDeck:
 
     def __str__(self):
         return json.dumps(self, indent=4, default=vars)
+
+    def to_csv_zip(self):
+        """
+        Returns a ZIP containing the flashcard deck as CVS file.
+        # TODO: Check whether zipfile.Zipfile() can handle StringIO()
+        """
+        csv_file = StringIO()
+        z = zipfile.ZipFile(file=csv_file, mode='w')
+        for flashcard in self.flashcards:
+            z.write(flashcard.as_csv())
+            z.write('\n')
+        z.close()
+        return csv_file
 
     def save_as_csv(self, filename: str):
         """
@@ -90,49 +145,10 @@ class FlashcardDeck:
                     "notes": []
                 }
                 for flashcard in self.flashcards:
-                    note_model, note = self._create_note_model_and_note(flashcard)
+                    note_model, note = _create_note_model_and_note(flashcard)
                     collection_data["note_models"].append(note_model)
                     collection_data["notes"].append(note)
 
                 zipf.writestr('collection.anki2', json.dumps(collection_data))
         except IOError as e:
             raise IOError(f"Failed to create or write to APKG file {filename}: {e}")
-
-    def _create_note_model_and_note(self, flashcard: Flashcard):
-        """
-        Creates a note model and note for a given flashcard.
-
-        Parameters
-        ----------
-        flashcard : Flashcard
-            The flashcard to create the model and note for.
-
-        Returns
-        -------
-        tuple
-            A tuple containing the note model and note.
-        """
-        note_model = {
-            "name": "Basic",
-            "fields": [
-                {"name": "Front"},
-                {"name": "Back"}
-            ],
-            "templates": [
-                {
-                    "name": "Card 1",
-                    "qfmt": "{{Front}}",
-                    "afmt": "{{FrontSide}}<hr id=\"answer\">{{Back}}"
-                }
-            ]
-        }
-        note = {
-            "deckName": "My Deck",
-            "modelName": "Basic",
-            "fields": {
-                "Front": flashcard.front_side,
-                "Back": flashcard.back_side
-            },
-            "tags": []
-        }
-        return note_model, note

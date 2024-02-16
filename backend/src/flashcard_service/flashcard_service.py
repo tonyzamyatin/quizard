@@ -12,32 +12,32 @@ from src.flashcard_service.flashcard_generator.flashcard_generator import Flashc
 from src.flashcard_service.text_splitting import text_split
 from src.flashcard_service.completion_messages.completion_messages import Messages
 from src.utils.global_helpers import format_num, inset_into_string, read_file
-from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedLanguageError, ConfigInvalidValueError
+from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedOptionError, ConfigInvalidValueError
 
 logger = structlog.getLogger(__name__)
 
 
-def validate_client_params(mode, lang):
+def validate_client_params(mode, lang, export_format):
     """
     Validates the client side parameters against the set of accepted parameters.
 
     Parameters
     ----------
+    export_format : str
+        The export format for the flashcards
     mode : str
         The mode of flashcard generation.
     lang : str
         The language in which the flashcards will be generated.
     Raises
     ------
-    ConfigLoadingError
-        If the generation mode is invalid.
-    UnsupportedLanguageError
-        If the specified language is not supported.
+    UnsupportedOptionError
+        If any of the paramets is invalid.
     """
-    if mode not in FlashcardService.GENERATION_MODE:
-        raise ConfigLoadingError(f"Invalid flashcard generation mode: {mode}. Expected one of {FlashcardService.GENERATION_MODE}.")
-    if lang not in FlashcardService.SUPPORTED_LANGS:
-        raise UnsupportedLanguageError(f"Invalid language: {lang}. Expected one of {FlashcardService.SUPPORTED_LANGS}.")
+    if mode.lower() not in FlashcardService.GENERATION_MODE:
+        raise UnsupportedOptionError(f"Invalid flashcard generation mode: {mode}. Expected one of {FlashcardService.GENERATION_MODE}.")
+    if lang.lower() not in FlashcardService.SUPPORTED_LANGS:
+        raise UnsupportedOptionError(f"Invalid language: {lang}. Expected one of {FlashcardService.SUPPORTED_LANGS}.")
 
 
 def load_message_components(backend_root_dir: str, app_config: dict, generation_mode: str, lang: str) -> (str, str, str, str):
@@ -153,7 +153,7 @@ class FlashcardService:
     GENERATION_MODE = ['practice', 'definitions', 'quiz', 'cloze']
     SUPPORTED_LANGS = ['auto', 'de', 'en']
 
-    def __init__(self, openai: OpenAI, app_config: dict, model_name: str, lang: str, mode: str):
+    def __init__(self, openai: OpenAI, app_config: dict, model_name: str, lang: str, mode: str, export_format: str):
         """
         Initializes the FlashcardService with necessary configurations.
 
@@ -171,9 +171,10 @@ class FlashcardService:
             The mode of flashcard generation.
         """
         self.openai = openai
-        validate_client_params(mode, lang)
+        validate_client_params(mode, lang, export_format)
         self.generation_mode = mode.lower()
         self.lang = lang.lower()
+        self.export_format = export_format.lower()
         self.model_name = model_name
         self.model_config = app_config.get('model', None)  # Use default values if app_config is not defined
         self.text_splitting_config = app_config.get('text_splitting', None)  # Use default values if app_config is not defined
@@ -208,7 +209,8 @@ class FlashcardService:
             flashcards = self.generate_flashcards(user_input, flashcard_generator, update_progress)
         except OpenAIError:
             raise
-        return FlashcardDeck(flashcards)
+        flashcard_deck = FlashcardDeck(flashcards)
+        return flashcard_deck
 
     def generate_flashcards(self, user_input: str, flashcard_generator: FlashcardGenerator,
                             update_progress: Optional[Callable[[int, int], None]]) -> List[Flashcard]:

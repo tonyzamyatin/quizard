@@ -125,6 +125,7 @@ class FlashcardGenerator(Resource):
                 model_name=json_data["model_name"],
                 lang=json_data["lang"],
                 mode=json_data["mode"],
+                export_format=json_data["export_format"],
                 input_text=json_data["input_text"]
             )
             logger.info("Flashcard generation task started", task_id=task.id)
@@ -151,6 +152,7 @@ class Progress(Resource):
     def get(self, task_id):
         """
         Get the current progress or result of the flashcard generation task.
+        # TODO: Send the flashcards in the specified format (JSON for 'list', CSV file for 'csv')
         """
         logger.info("Get request received")
         try:
