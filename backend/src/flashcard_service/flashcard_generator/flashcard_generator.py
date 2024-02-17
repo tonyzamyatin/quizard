@@ -83,6 +83,8 @@ def parse_flashcards(content: str, generation_mode: str, start_id=1, batch_numbe
 
     Parameters
     ----------
+    batch_number :  Optional[int]
+        The number of the batch.
     content : str
         The content to parse into flashcards.
     generation_mode : str

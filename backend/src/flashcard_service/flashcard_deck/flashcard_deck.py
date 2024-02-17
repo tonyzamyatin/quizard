@@ -1,4 +1,3 @@
-import csv
 import json
 import os
 import zipfile
@@ -78,20 +77,28 @@ class FlashcardDeck:
         self.flashcards = flashcards
 
     def __str__(self):
+        return self.to_json()
+
+    def to_json(self) -> str:
         return json.dumps(self, indent=4, default=vars)
 
     def to_csv_zip(self):
         """
         Returns a ZIP containing the flashcard deck as CVS file.
-        # TODO: Check whether zipfile.Zipfile() can handle StringIO()
         """
-        csv_file = StringIO()
-        z = zipfile.ZipFile(file=csv_file, mode='w')
+        buffer = StringIO()
+        z = zipfile.ZipFile(file=buffer.getvalue(), mode='w')
         for flashcard in self.flashcards:
             z.write(flashcard.as_csv())
             z.write('\n')
         z.close()
-        return csv_file
+        return buffer
+
+    def to_dict_list(self):
+        flashcard_dict_list = [{'id': card.id, 'type': card.type,
+                                'frontSide': card.front_side, 'backSide': card.back_side}
+                               for card in self.flashcards]
+        return flashcard_dict_list
 
     def save_as_csv(self, filename: str):
         """

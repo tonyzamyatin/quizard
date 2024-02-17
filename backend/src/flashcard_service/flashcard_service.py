@@ -11,33 +11,10 @@ from src.flashcard_service.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator
 from src.flashcard_service.text_splitting import text_split
 from src.flashcard_service.completion_messages.completion_messages import Messages
-from src.utils.global_helpers import format_num, inset_into_string, read_file
-from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, PromptSizeError, UnsupportedOptionError, ConfigInvalidValueError
+from src.utils.global_helpers import format_num, inset_into_string, read_file, validate_config_params
+from src.custom_exceptions.quizard_exceptions import PromptSizeError, ConfigInvalidValueError
 
 logger = structlog.getLogger(__name__)
-
-
-def validate_client_params(mode, lang, export_format):
-    """
-    Validates the client side parameters against the set of accepted parameters.
-
-    Parameters
-    ----------
-    export_format : str
-        The export format for the flashcards
-    mode : str
-        The mode of flashcard generation.
-    lang : str
-        The language in which the flashcards will be generated.
-    Raises
-    ------
-    UnsupportedOptionError
-        If any of the paramets is invalid.
-    """
-    if mode.lower() not in FlashcardService.GENERATION_MODE:
-        raise UnsupportedOptionError(f"Invalid flashcard generation mode: {mode}. Expected one of {FlashcardService.GENERATION_MODE}.")
-    if lang.lower() not in FlashcardService.SUPPORTED_LANGS:
-        raise UnsupportedOptionError(f"Invalid language: {lang}. Expected one of {FlashcardService.SUPPORTED_LANGS}.")
 
 
 def load_message_components(backend_root_dir: str, app_config: dict, generation_mode: str, lang: str) -> (str, str, str, str):
@@ -152,8 +129,9 @@ class FlashcardService:
 
     GENERATION_MODE = ['practice', 'definitions', 'quiz', 'cloze']
     SUPPORTED_LANGS = ['auto', 'de', 'en']
+    EXPORT_FORMATS = ['csv', 'anki', 'list']
 
-    def __init__(self, openai: OpenAI, app_config: dict, model_name: str, lang: str, mode: str, export_format: str):
+    def __init__(self, openai: OpenAI, app_config: dict, model_name: str, lang: str, mode: str):
         """
         Initializes the FlashcardService with necessary configurations.
 
@@ -171,10 +149,9 @@ class FlashcardService:
             The mode of flashcard generation.
         """
         self.openai = openai
-        validate_client_params(mode, lang, export_format)
+        validate_config_params(mode, lang)
         self.generation_mode = mode.lower()
         self.lang = lang.lower()
-        self.export_format = export_format.lower()
         self.model_name = model_name
         self.model_config = app_config.get('model', None)  # Use default values if app_config is not defined
         self.text_splitting_config = app_config.get('text_splitting', None)  # Use default values if app_config is not defined

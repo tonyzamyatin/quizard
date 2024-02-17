@@ -1,6 +1,5 @@
 from openai import OpenAIError, OpenAI
 from src.custom_exceptions.quizard_exceptions import QuizardError
-from src.flashcard_service.flashcard_export import FlashcardExporter
 from src.flashcard_service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
@@ -11,7 +10,7 @@ logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True, ignore_result=False, track_started=True)
-def generate_flashcards_task(self, config, model_name, lang, mode, export_format, input_text):
+def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
     """
     Generate flashcards based on input text using the FlashcardService.
 
@@ -26,11 +25,11 @@ def generate_flashcards_task(self, config, model_name, lang, mode, export_format
     config : dict
         Configuration settings for the flashcard generation.
     model_name : str
-        Name of the OpenAI model to use for generation.
+        Name of the OpenAI model to use for generation. Must valid and a supported model.
     lang : str
-        Language of the flashcards.
+        Language of the flashcards. Must valid and a supported language.
     mode : str
-        Mode of flashcard generation.
+        Mode of flashcard generation. Must valid and a supported mode.
     input_text : str
         The text input from which flashcards are generated.
 
@@ -63,7 +62,7 @@ def generate_flashcards_task(self, config, model_name, lang, mode, export_format
     try:
         client = OpenAI(api_key=get_env_variable("OPENAI_API_KEY"))
         flashcard_app = FlashcardService(openai=client, app_config=config,
-                                         model_name=model_name, lang=lang, mode=mode, export_format=export_format)
+                                         model_name=model_name, lang=lang, mode=mode)
         flashcard_deck = flashcard_app.run(input_text, update_progress)
     except OpenAIError as e:
         self.update_state(state='FAILURE', meta={'error': str(e)})
@@ -75,7 +74,4 @@ def generate_flashcards_task(self, config, model_name, lang, mode, export_format
         self.update_state(state='FAILURE', meta={'error': str(e)})
         raise RuntimeError(f"Unexpected error in task: {e}")
 
-
-    exporter = FlashcardExporter(export_format=export_format)
-    flashcard_export = exporter.export_flashcard_deck(flashcard_deck)
-    return flashcard_export
+    return flashcard_deck.to_dict_list()     # Result needs to be serializable for Celery to store in results backend

@@ -1,9 +1,12 @@
 import os
+from typing import Optional
+
 import yaml
 from dotenv import load_dotenv
 
 from src.custom_exceptions.env_exceptions import InvalidEnvironmentVariableError, EnvironmentLoadingError
-from src.custom_exceptions.quizard_exceptions import ConfigLoadingError
+from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, UnsupportedOptionError
+from src.flashcard_service.flashcard_service import FlashcardService
 
 
 def load_yaml_config(config_dir: str, config_name: str) -> dict:
@@ -144,3 +147,27 @@ def inset_into_string(insert: str, target: str, position: int) -> str:
     else:
         # Insert the string at the specified position
         return target[:position] + insert + target[position:]
+
+
+def validate_config_params(mode: Optional[str] = None, lang: Optional[str] = None, export_format: Optional[str] = None):
+    """
+    Validates the provided (dynamic) configuration parameters against the set of accepted parameters.
+    Parameters
+    ----------
+    export_format : Optional[str]=None
+        The export format for the flashcards
+    mode : Optional[str]=None
+        The mode of flashcard generation.
+    lang : Optional[str]=None
+        The language in which the flashcards will be generated.
+    Raises
+    ------
+    UnsupportedOptionError
+        If any of the paramets is invalid.
+    """
+    if mode and mode.lower() not in FlashcardService.GENERATION_MODE:
+        raise UnsupportedOptionError(f"Invalid flashcard generation mode: {mode}. Expected one of {FlashcardService.GENERATION_MODE}.")
+    if lang and lang.lower() not in FlashcardService.SUPPORTED_LANGS:
+        raise UnsupportedOptionError(f"Invalid language: {lang}. Expected one of {FlashcardService.SUPPORTED_LANGS}.")
+    if export_format and export_format.lower() not in FlashcardService.EXPORT_FORMATS:
+        raise UnsupportedOptionError(f"Invalid export format: {export_format}. Expected one of {FlashcardService.EXPORT_FORMATS}.")

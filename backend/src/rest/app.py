@@ -13,7 +13,7 @@ from src.celery.celery import setup_applications
 from src.custom_exceptions.api_exceptions import HealthCheckError, TaskNotFoundError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
 from config.logging_config import setup_logging
-from src.utils.global_helpers import load_yaml_config, get_env_variable
+from src.utils.global_helpers import load_yaml_config, get_env_variable, validate_config_params
 from src.rest.tasks import generate_flashcards_task
 
 # Configure logging
@@ -102,7 +102,7 @@ class FlashcardGenerator(Resource):
     def post(self):
         """
         Handle POST requests to initiate a flashcard generation task.
-
+        # TODO: Validate expected JSON format
         Returns
         -------
         Response
@@ -117,15 +117,15 @@ class FlashcardGenerator(Resource):
         Exception
             For any other unforeseen exceptions.
         """
-        logger.info("Post request received")
         try:
             json_data = request.get_json(force=True)
+            # Validate expected json format here and raise custom KeyError
+            validate_config_params(mode=json_data["mode"], lang=json_data["lang"])
             task = generate_flashcards_task.delay(
                 config=self.app_config,
                 model_name=json_data["model_name"],
                 lang=json_data["lang"],
                 mode=json_data["mode"],
-                export_format=json_data["export_format"],
                 input_text=json_data["input_text"]
             )
             logger.info("Flashcard generation task started", task_id=task.id)
@@ -137,6 +137,7 @@ class FlashcardGenerator(Resource):
             raise
         except QuizardError:
             raise
+        # Catch custom key error here and raise an HTTP exception to be caught by Flask's exception handler
         except Exception:
             raise
 
@@ -152,17 +153,13 @@ class Progress(Resource):
     def get(self, task_id):
         """
         Get the current progress or result of the flashcard generation task.
-        # TODO: Send the flashcards in the specified format (JSON for 'list', CSV file for 'csv')
         """
-        logger.info("Get request received")
         try:
             task = generate_flashcards_task.AsyncResult(task_id)
             if task is None:
                 raise TaskNotFoundError(f"Unable to retrieve task with taskId: {task_id}")
             data = self._get_task_response_dict(task)
-            logger.info(f"Retrieved task data: {data}")
             response = jsonify(data)
-            logger.info(f"Response: {response}")
             if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
                 response.status_code = 202
             elif task.state == 'SUCCESS':
