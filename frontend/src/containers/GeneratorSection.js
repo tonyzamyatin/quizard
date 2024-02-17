@@ -26,7 +26,7 @@ function GeneratorSection() {
     const  [totalBatches, setTotalBatches] = useState(1)
 
     // Generated flashcards
-    const [flashcards, setFlashcards] = useState([]);
+    const [flashcards, setFlashcards] = useState(null);     // JSON object
 
     // TODO: Use environment variables to set API URL or reverse proxy for production server
     // TODO: Enhance exception handling and provide more informative feedback to the user
