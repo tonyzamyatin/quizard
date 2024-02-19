@@ -1,13 +1,11 @@
 import os
-from typing import Optional
+from typing import Optional, List
 
 import yaml
 from dotenv import load_dotenv
 
 from src.custom_exceptions.env_exceptions import InvalidEnvironmentVariableError, EnvironmentLoadingError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, UnsupportedOptionError
-from src.flashcard_service.flashcard_service import FlashcardService
-
 
 def load_yaml_config(config_dir: str, config_name: str) -> dict:
     """
@@ -149,25 +147,21 @@ def inset_into_string(insert: str, target: str, position: int) -> str:
         return target[:position] + insert + target[position:]
 
 
-def validate_config_params(mode: Optional[str] = None, lang: Optional[str] = None, export_format: Optional[str] = None):
+def validate_config_param(parameter: str, accepted_params: List[str]):
     """
-    Validates the provided (dynamic) configuration parameters against the set of accepted parameters.
+    Validates a single configuration parameter against a list of accepted values.
+
     Parameters
     ----------
-    export_format : Optional[str]=None
-        The export format for the flashcards
-    mode : Optional[str]=None
-        The mode of flashcard generation.
-    lang : Optional[str]=None
-        The language in which the flashcards will be generated.
+    parameter : str
+        The parameter value to validate.
+    accepted_params : List[str]
+        List of accepted values for the parameter.
+
     Raises
     ------
     UnsupportedOptionError
-        If any of the paramets is invalid.
+        If the parameter value is not in the list of accepted values.
     """
-    if mode and mode.lower() not in FlashcardService.GENERATION_MODE:
-        raise UnsupportedOptionError(f"Invalid flashcard generation mode: {mode}. Expected one of {FlashcardService.GENERATION_MODE}.")
-    if lang and lang.lower() not in FlashcardService.SUPPORTED_LANGS:
-        raise UnsupportedOptionError(f"Invalid language: {lang}. Expected one of {FlashcardService.SUPPORTED_LANGS}.")
-    if export_format and export_format.lower() not in FlashcardService.EXPORT_FORMATS:
-        raise UnsupportedOptionError(f"Invalid export format: {export_format}. Expected one of {FlashcardService.EXPORT_FORMATS}.")
+    if parameter.lower() not in [param.lower() for param in accepted_params]:
+        raise UnsupportedOptionError(f"Invalid parameter: {parameter}. Expected one of {accepted_params}.")

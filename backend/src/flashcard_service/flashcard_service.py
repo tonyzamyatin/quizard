@@ -11,7 +11,7 @@ from src.flashcard_service.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator
 from src.flashcard_service.text_splitting import text_split
 from src.flashcard_service.completion_messages.completion_messages import Messages
-from src.utils.global_helpers import format_num, inset_into_string, read_file, validate_config_params
+from src.utils.global_helpers import format_num, inset_into_string, read_file, validate_config_param
 from src.custom_exceptions.quizard_exceptions import PromptSizeError, ConfigInvalidValueError
 
 logger = structlog.getLogger(__name__)
@@ -149,7 +149,8 @@ class FlashcardService:
             The mode of flashcard generation.
         """
         self.openai = openai
-        validate_config_params(mode, lang)
+        validate_config_param(mode, FlashcardService.GENERATION_MODE)
+        validate_config_param(lang, FlashcardService.SUPPORTED_LANGS)
         self.generation_mode = mode.lower()
         self.lang = lang.lower()
         self.model_name = model_name

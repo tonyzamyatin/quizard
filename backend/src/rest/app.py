@@ -1,4 +1,3 @@
-import json
 import os
 
 import structlog
@@ -13,7 +12,8 @@ from src.celery.celery import setup_applications
 from src.custom_exceptions.api_exceptions import HealthCheckError, TaskNotFoundError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
 from config.logging_config import setup_logging
-from src.utils.global_helpers import load_yaml_config, get_env_variable, validate_config_params
+from src.flashcard_service.flashcard_service import FlashcardService
+from src.utils.global_helpers import load_yaml_config, get_env_variable, validate_config_param
 from src.rest.tasks import generate_flashcards_task
 
 # Configure logging
@@ -120,7 +120,9 @@ class FlashcardGenerator(Resource):
         try:
             json_data = request.get_json(force=True)
             # Validate expected json format here and raise custom KeyError
-            validate_config_params(mode=json_data["mode"], lang=json_data["lang"])
+
+            validate_config_param(json_data["mode"], FlashcardService.GENERATION_MODE)
+            validate_config_param(json_data["lang"], FlashcardService.SUPPORTED_LANGS)
             task = generate_flashcards_task.delay(
                 config=self.app_config,
                 model_name=json_data["model_name"],
