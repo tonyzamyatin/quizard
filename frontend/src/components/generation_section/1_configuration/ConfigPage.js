@@ -2,7 +2,7 @@ import CTAButton from '../../global/CTAButton';
 import ConfigMenu from "./ConfigMenu";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function ConfigContainer({setGenerationStep, lang, setLang, mode, setMode, exportFormat, setExportFormat}) {
+function ConfigPage({setGenerationStep, lang, setLang, mode, setMode, exportFormat, setExportFormat}) {
 
     function handleNextClick() {
         setGenerationStep(GenerationSteps.TEXT_UPLOAD);
@@ -22,6 +22,6 @@ function ConfigContainer({setGenerationStep, lang, setLang, mode, setMode, expor
     )
 }
 
-export default ConfigContainer;
+export default ConfigPage;
 
 

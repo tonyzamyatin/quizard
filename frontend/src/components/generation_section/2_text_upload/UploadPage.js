@@ -4,7 +4,7 @@ import TextUploadField from "./TextUploadField";
 import PDFUploadField from "./PDFUploadField";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function UploadContainer({setGenerationStep, text, setText, generateFlashcards}) {
+function UploadPage({setGenerationStep, text, setText, generateFlashcards}) {
     const [selectedField, setSelectedField] = useState("Text");
 
     const handleFieldClick = (field) => {
@@ -45,4 +45,4 @@ function UploadContainer({setGenerationStep, text, setText, generateFlashcards})
     );
 }
 
-export default UploadContainer;
+export default UploadPage;

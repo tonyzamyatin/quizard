@@ -49,7 +49,7 @@
 .CTA-button.next {
     background-color: var(--quizard-teal);
     color: var(--quizard-black);
-    /* This ensures the "next" button, when it's the only button, moves to the right */
+    /* This ensures that the "next" button moves to the right (when its the only button available) */
     margin-left: auto;
 }
 

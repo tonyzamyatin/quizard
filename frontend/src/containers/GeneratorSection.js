@@ -1,15 +1,16 @@
 import React, {useEffect, useRef, useState} from "react";
-import ConfigContainer from "../components/generation_section/1_configuration/ConfigContainer";
-import UploadContainer from "../components/generation_section/2_text_upload/UploadContainer";
-import GenerationProgressContainer from "../components/generation_section/3_flashcard_generation/GenerationProgressContainer";
+import ConfigPage from "../components/generation_section/1_configuration/ConfigPage";
+import UploadPage from "../components/generation_section/2_text_upload/UploadPage";
+import WaitingPage from "../components/generation_section/3_flashcard_generation/WaitingPage";
+import DownloadPage from "../components/generation_section/4_flashcard_download/DownloadPage";
 import GenerationSteps from "../components/global/GenerationSteps";
 import {useHealthCheck} from "./HealthCheckContext";
 
 function GeneratorSection() {
     // App related hooks
     const modelName = 'gpt-3.5-turbo'
-    const defaultStep = sessionStorage.getItem('lastGenerationStep') || GenerationSteps.CONFIGURATION;
-    const [currentStep, setCurrentStep] = useState(defaultStep);
+    const defaultStep = localStorage.getItem('lastGenerationStep') || GenerationSteps.CONFIGURATION;
+    const [currentStep, setCurrentStep] = useState(GenerationSteps.CONFIGURATION);
     const [text, setText] = useState('');
     const [lang, setLang] = useState('');
     const [mode, setMode] = useState('');
@@ -78,8 +79,7 @@ function GeneratorSection() {
                 isPollingActiveRef.current = true;
                 setTaskId(data.task_id);
                 console.log(`Task started! Task Id: ${taskId}`)
-                updateFlashcardGenerationProgress(data.task_id);
-                setFlashcards(data.flashcards);
+                pollFlashcardGenerationTask(data.task_id);
             }
         })
         .catch(error => {
@@ -94,7 +94,7 @@ function GeneratorSection() {
     }
 
 
-    const updateFlashcardGenerationProgress = (taskId, waitDelay = 20000, updateDelay = 10000) => {
+    const pollFlashcardGenerationTask = (taskId, waitDelay = 3000, updateDelay = 10000) => {
         if (!isPollingActiveRef.current) return;
 
         const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`;
@@ -118,15 +118,19 @@ function GeneratorSection() {
                     setTotalBatches(data.total);
                     if (['PROCESSING', 'STARTED', 'PENDING'].includes(data.state)) {
                         let timeout = data.state === 'PROCESSING' ? updateDelay : waitDelay;
-                        setTimeout(() => updateFlashcardGenerationProgress(taskId), timeout);
+                        setTimeout(() => pollFlashcardGenerationTask(taskId), timeout);
                     } else {
                         isPollingActiveRef.current = false;
+                        if (data.state === 'SUCCESS') {
+                            setFlashcards(data.flashcards);
+                            setCurrentStep(GenerationSteps.DOWNLOAD)
+                        }
                     }
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                setTimeout(() => updateFlashcardGenerationProgress(taskId), waitDelay);
+                setTimeout(() => pollFlashcardGenerationTask(taskId), waitDelay);
             })
             .finally(() => {
                 console.groupEnd();
@@ -166,7 +170,7 @@ function GeneratorSection() {
         let timeoutId = null;
 
         if (taskId && isPollingActiveRef.current) {
-            timeoutId = setTimeout(() => updateFlashcardGenerationProgress(taskId), 40000);
+            timeoutId = setTimeout(() => pollFlashcardGenerationTask(taskId), 40000);
         }
 
         // Clean up the timeout when taskId changes or component unmounts
@@ -183,7 +187,7 @@ function GeneratorSection() {
 
     useEffect(() => {
         // Loads the last generation step from sessionStorage when the component mounts
-        const lastGenerationStep = sessionStorage.getItem('lastGenerationStep');
+        const lastGenerationStep = localStorage.getItem('lastGenerationStep');
         if (lastGenerationStep) {
             setCurrentStep(lastGenerationStep);
         }
@@ -191,19 +195,21 @@ function GeneratorSection() {
 
     useEffect(() => {
         // Save currentStep to sessionStorage when it changes
-        sessionStorage.setItem('lastGenerationStep', currentStep);
+        localStorage.setItem('lastGenerationStep', currentStep);
     }, [currentStep]);
 
     const renderContent = () => {
         switch (currentStep) {
             case GenerationSteps.CONFIGURATION:
-                return <ConfigContainer setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
+                return <ConfigPage setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
             case GenerationSteps.TEXT_UPLOAD:
-                return <UploadContainer setGenerationStep={setCurrentStep} text={text} setText={setText} generateFlashcards={startFlashcardGenerationTask}/>;
+                return <UploadPage setGenerationStep={setCurrentStep} text={text} setText={setText} generateFlashcards={startFlashcardGenerationTask}/>;
             case GenerationSteps.GENERATION:
-                return <GenerationProgressContainer setGenerationStep={setCurrentStep} totalBatches={totalBatches} currentBatch={currentBatch} flashcards={flashcards} cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)} />
+                return <WaitingPage setGenerationStep={setCurrentStep} totalBatches={totalBatches} currentBatch={currentBatch} flashcardsJSON={flashcards} cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)} />
+            case GenerationSteps.DOWNLOAD:
+                return <DownloadPage flashcardsJSON={flashcards} exportFormat={exportFormat}/>
             default:
-                return <ConfigContainer setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
+                return <ConfigPage setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
         }
     }
 

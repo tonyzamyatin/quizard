@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 import ProgressBar from "./ProgressBar";
 import TriviaSlideShow from "./TriviaSlideShow";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function GenerationProgressContainer({setGenerationStep, totalBatches, currentBatch, flashcards, cancelFlashcards}) {
+function WaitingPage({setGenerationStep, totalBatches, currentBatch, flashcards, cancelFlashcards}) {
 
     // Progress of flashcard generation process in percent
     const progress = currentBatch / totalBatches * 100
@@ -49,4 +49,4 @@ function GenerationProgressContainer({setGenerationStep, totalBatches, currentBa
     );
 }
 
-export default GenerationProgressContainer;
+export default WaitingPage;
