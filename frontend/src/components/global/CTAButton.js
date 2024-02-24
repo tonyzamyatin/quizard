@@ -1,6 +1,8 @@
 import React from "react";
 
-function CTAButton({ buttonName, onButtonClick, active }) {
+function CTAButton({ buttonText, buttonType, onButtonClick, active}) {
+
+    const buttonTypes = []
 
     function handleClick() {
         if (active) { // Only call onButtonClick if the button is active
@@ -10,11 +12,11 @@ function CTAButton({ buttonName, onButtonClick, active }) {
 
     return (
         <button
-            className={`CTA-button ${buttonName.replace(' ', '-').toLowerCase()} ${!active ? 'inactive' : ''}`}
+            className={`CTA-button ${buttonType} ${!active ? 'inactive' : ''}`}
             onClick={handleClick}
             disabled={!active} // Disable the button if not active
         >
-            {buttonName}
+            {buttonText}
         </button>
     );
 }

@@ -4,7 +4,7 @@ import TriviaSlideShow from "./TriviaSlideShow";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function WaitingPage({setGenerationStep, totalBatches, currentBatch, flashcards, cancelFlashcards}) {
+function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlashcards}) {
 
     // Progress of flashcard generation process in percent
     const progress = currentBatch / totalBatches * 100
@@ -21,8 +21,8 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, flashcards,
         );
     }
 
-    const handleBackClick = () => {
-        setGenerationStep(GenerationSteps.TEXT_UPLOAD);
+    const handleCancelClick = () => {
+        setGenerationStep(GenerationSteps.CONFIGURATION);
         cancelFlashcards();
     }
 
@@ -43,7 +43,7 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, flashcards,
                 </div>
             </div>
             <div className="button-area">
-                <CTAButton buttonName="Go back" onButtonClick={handleBackClick} active={true}/>
+                <CTAButton buttonText="Cancel" buttonType={'secondary'} onButtonClick={handleCancelClick} active={true}/>
             </div>
         </div>
     );

@@ -11,14 +11,8 @@ function UploadPage({setGenerationStep, text, setText, generateFlashcards}) {
         setSelectedField(field);
     }
 
-    const handleBackClick = () => {
+    function handleNextClick() {
         setGenerationStep(GenerationSteps.CONFIGURATION);
-    }
-
-    const handleGenerateClick  = () => {
-        // start generation of flashcards
-        generateFlashcards();
-        setGenerationStep(GenerationSteps.GENERATION);
     }
 
     const renderInputField = () => {
@@ -38,8 +32,7 @@ function UploadPage({setGenerationStep, text, setText, generateFlashcards}) {
                 {renderInputField()}
             </div>
             <div className="button-area">
-                <CTAButton buttonName="Go back" onButtonClick={handleBackClick} active={true}/>
-                <CTAButton buttonName="Generate" onButtonClick={handleGenerateClick} active={text.length > 250 && text.length <= 500000}/>
+                <CTAButton buttonText="Next" buttonType={'primary'}onButtonClick={handleNextClick} active={text.length > 250 && text.length <= 500000}/>
             </div>
         </div>
     );

@@ -2,15 +2,15 @@ import React, {useEffect, useRef, useState} from "react";
 import ConfigPage from "../components/generation_section/1_configuration/ConfigPage";
 import UploadPage from "../components/generation_section/2_text_upload/UploadPage";
 import WaitingPage from "../components/generation_section/3_flashcard_generation/WaitingPage";
-import DownloadPage from "../components/generation_section/4_flashcard_download/DownloadPage";
+import CompletionPage from "../components/generation_section/4_flashcard_download/CompletionPage";
 import GenerationSteps from "../components/global/GenerationSteps";
 import {useHealthCheck} from "./HealthCheckContext";
 
 function GeneratorSection() {
     // App related hooks
     const modelName = 'gpt-3.5-turbo'
-    const defaultStep = localStorage.getItem('lastGenerationStep') || GenerationSteps.CONFIGURATION;
-    const [currentStep, setCurrentStep] = useState(GenerationSteps.CONFIGURATION);
+    const defaultStep = localStorage.getItem('lastGenerationStep') || GenerationSteps.TEXT_UPLOAD;
+    const [currentStep, setCurrentStep] = useState(defaultStep);
     const [text, setText] = useState('');
     const [lang, setLang] = useState('');
     const [mode, setMode] = useState('');
@@ -124,6 +124,7 @@ function GeneratorSection() {
                         if (data.state === 'SUCCESS') {
                             setFlashcards(data.flashcards);
                             setCurrentStep(GenerationSteps.DOWNLOAD)
+                            downloadFlashcards(data.flashcards, exportFormat)
                         }
                     }
                 }
@@ -164,6 +165,74 @@ function GeneratorSection() {
             });
     };
 
+    function downloadFlashcards(flashcards, exportFormat) {
+        switch (exportFormat) {
+            case "CSV":
+                let csvData = convertToCSV( flashcards );
+                downloadCSV(csvData, 'flashcards.csv')
+        }
+    }
+
+    function convertToCSV(flashcards) {
+        const csvRows = [];
+        const headers = ['frontSide', 'backSide'];
+        // Iterate over the JSON data and extract only the required fields
+        flashcards.forEach(row => {
+            const frontSide = row.frontSide.replace(/"/g, '\\"'); // Escape double quotes
+            const backSide = row.backSide.replace(/"/g, '\\"'); // Escape double quotes
+            csvRows.push(`"${frontSide}";"${backSide}"`); // Create a row with frontSide and backSide
+        });
+        return csvRows.join('\n');
+    }
+
+    const downloadCSV = (csvData, filename) => {
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', filename);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
+
+    const renderContent = () => {
+        switch (currentStep) {
+            case GenerationSteps.TEXT_UPLOAD:
+                return <UploadPage
+                    setGenerationStep={setCurrentStep}
+                    text={text}
+                    setText={setText}
+                />;
+            case GenerationSteps.CONFIGURATION:
+                return <ConfigPage
+                    setGenerationStep={setCurrentStep}
+                    lang={lang}
+                    setLang={setLang}
+                    mode={mode}
+                    setMode={setMode}
+                    exportFormat={exportFormat}
+                    setExportFormat={setExportFormat}
+                    generateFlashcards={startFlashcardGenerationTask}
+                />;
+            case GenerationSteps.GENERATION:
+                return <WaitingPage
+                    setGenerationStep={setCurrentStep}
+                    totalBatches={totalBatches}
+                    currentBatch={currentBatch}
+                    cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)}
+                />
+            case GenerationSteps.DOWNLOAD:
+                return <CompletionPage
+                    setGenerationStep={setCurrentStep}
+                />
+            default:
+                return <ConfigPage setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
+        }
+    }
+
 
     // useEffect for polling, triggered when taskId changes
     useEffect(() => {
@@ -197,21 +266,6 @@ function GeneratorSection() {
         // Save currentStep to sessionStorage when it changes
         localStorage.setItem('lastGenerationStep', currentStep);
     }, [currentStep]);
-
-    const renderContent = () => {
-        switch (currentStep) {
-            case GenerationSteps.CONFIGURATION:
-                return <ConfigPage setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
-            case GenerationSteps.TEXT_UPLOAD:
-                return <UploadPage setGenerationStep={setCurrentStep} text={text} setText={setText} generateFlashcards={startFlashcardGenerationTask}/>;
-            case GenerationSteps.GENERATION:
-                return <WaitingPage setGenerationStep={setCurrentStep} totalBatches={totalBatches} currentBatch={currentBatch} flashcardsJSON={flashcards} cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)} />
-            case GenerationSteps.DOWNLOAD:
-                return <DownloadPage flashcardsJSON={flashcards} exportFormat={exportFormat}/>
-            default:
-                return <ConfigPage setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
-        }
-    }
 
 
     // Check health status of backend and show error message immediately if it is down.

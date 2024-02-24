@@ -33,43 +33,30 @@
 }
 
 
-.CTA-button.go-back {
+.CTA-button.secondary {
     background-color: var(--quizard-grey);
     color: var(--quizard-dark-grey);
 }
 
-.CTA-button.go-back:hover {
+.CTA-button.secondary:hover {
     background-color: var(--quizard-light-grey);
 }
 
-.CTA-button.go-back:active {
+.CTA-button.secondary:active {
     background-color: var(--quizard-light-grey);
 }
 
-.CTA-button.next {
+.CTA-button.primary {
     background-color: var(--quizard-teal);
     color: var(--quizard-black);
-    /* This ensures that the "next" button moves to the right (when its the only button available) */
+    /* This ensures that the button moves to the right (when its the only button available) */
     margin-left: auto;
 }
 
-.CTA-button.next:hover {
+.CTA-button.primary:hover {
     background-color: var(--quizard-teal);;
 }
 
-.CTA-button.next:active {
-    background-color: var(--quizard-teal);;
-}
-
-.CTA-button.generate {
-    background-color: var(--quizard-teal);;
-    color: var(--quizard-black);
-}
-
-.CTA-button.generate:hover {
-    background-color: var(--quizard-teal);;
-}
-
-.CTA-button.generate:active {
+.CTA-button.primary:active {
     background-color: var(--quizard-teal);;
 }

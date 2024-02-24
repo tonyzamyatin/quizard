@@ -1,10 +1,17 @@
 import CTAButton from '../../global/CTAButton';
 import ConfigMenu from "./ConfigMenu";
 import GenerationSteps from "../../global/GenerationSteps";
+import React from "react";
 
-function ConfigPage({setGenerationStep, lang, setLang, mode, setMode, exportFormat, setExportFormat}) {
+function ConfigPage({setGenerationStep, lang, setLang, mode, setMode, exportFormat, setExportFormat, generateFlashcards}) {
 
-    function handleNextClick() {
+    const handleGenerateClick  = () => {
+        // start generation of flashcards
+        generateFlashcards();
+        setGenerationStep(GenerationSteps.GENERATION);
+    }
+
+    function handleBackClick() {
         setGenerationStep(GenerationSteps.TEXT_UPLOAD);
     }
 
@@ -16,7 +23,8 @@ function ConfigPage({setGenerationStep, lang, setLang, mode, setMode, exportForm
             </div>
             <div className="button-area">
                 {/*TODO: Potentially dangerous condition in 'active={...}'. Susceptible to attack?*/}
-                <CTAButton buttonName="Next" onButtonClick={handleNextClick} active={lang.length > 0 && mode.length > 0 && exportFormat.length > 0}/>
+                <CTAButton buttonText="Go back" buttonType={'secondary'} onButtonClick={handleBackClick} active={true}/>
+                <CTAButton buttonText="Generate" buttonType={'primary'} onButtonClick={handleGenerateClick} active={lang.length > 0 && mode.length > 0 && exportFormat.length > 0}/>
             </div>
         </div>
     )

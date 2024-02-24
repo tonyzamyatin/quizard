@@ -1,6 +1,6 @@
 const LangOptions = Object.freeze({
-    ENGLISH: 'English',
-    GERMAN: 'German',
+    en: 'English',
+    de: 'German',
 });
 
 export default LangOptions;
