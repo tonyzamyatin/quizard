@@ -206,7 +206,7 @@ function GeneratorSection() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                setTimeout(() => pollFlashcardGenerationTask(taskId), waitDelay);
+                // setTimeout(() => pollFlashcardGenerationTask(taskId), waitDelay);    // Uncomment me when done with UI design
             })
             .finally(() => {
                 console.groupEnd();

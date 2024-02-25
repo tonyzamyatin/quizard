@@ -33,7 +33,7 @@
     text-align: start; /* Aligns text to the left */
     line-height: 1.5; /* Adjust the line height to control vertical spacing */
     border: none;
-    border-radius: 10px;
+    border-radius: var(--outer-border-radius);
     padding-right: 10px;
     outline: none; /* Removes the focus outline */
     background-color: transparent;
@@ -59,7 +59,7 @@
 }
 
 .text-upload-field textarea::-webkit-scrollbar-thumb {
-    background: var(--quizard-grey);
+    background: var(--quizard-light-grey);
     border-radius: 5px;
     border: 2px solid transparent; /* Invisible border to push thumb off the edge */
     background-clip: padding-box; /* Limits background to the content box */
@@ -87,7 +87,7 @@
     position: absolute;
     right: 10px;
     bottom: 10px;
-    background-color: var(--quizard-light-grey);
+    background-color: var(--quizard-lighter-grey);
     color: var(--quizard-dark-grey);
     font-size: 0.85em;
     border-radius: 15px;
@@ -103,7 +103,7 @@
     height: 100%;
     width: 100%;
     border-radius: inherit;
-    background-color: var(--quizard-light-grey);
+    background-color: var(--quizard-lighter-grey);
     display: flex;
     flex-direction: column;
     justify-content: center;

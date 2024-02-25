@@ -1,24 +1,18 @@
-.progress-bar-container {
-    max-width: 520px;
-    width: 100%;
-    height: 30px;
-}
-
 .progress-bar-outer {
     width: 100%;
-    height: 100%;
-    border-radius: 15px;
-    background-color: var(--quizard-white);
-    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.05);
+    height: 40px;
+    border-radius: 20px;
+    background-color: var(--quizard-lighter-grey);
+    /*box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.05);*/
     display: flex;
     justify-content: center;
 }
 
 .progress-bar-inner {
-    width: calc(100% - 20px);
-    height: 12px;
+    width: calc(100% - 24px);
+    height: 16px;
     margin: auto;
-    border-radius: 6px;
+    border-radius: 8px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15) inset;
     display: flex;
     flex-direction: row;
@@ -29,5 +23,18 @@
     /* width is calculated in the React component and added as inline style*/
     height: 100%;
     border-radius: inherit;
-    background-color: var(--quizard-teal);
+    background-color: var(--quizard-subtle-teal);
+}
+
+@media only screen and (max-width: 800px) {
+    .progress-bar-outer {
+        height: 30px;
+        border-radius: 15px;
+    }
+
+    .progress-bar-inner {
+        width: calc(100% - 20px);
+        height: 12px;
+        border-radius: 6px;
+    }
 }

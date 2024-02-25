@@ -1,7 +1,7 @@
 .generator-section {
     box-sizing: border-box;
     width: 100%;  /* Cover the whole screen width */
-    margin: 0 20px 20px 0; /* To account for the scroll bars when making the tab smaller.
+    margin-right: 20px; /* To account for the scroll bars when making the tab smaller.
     display: flex;
     flex-direction: column; /* Align children vertically */
     align-items: center; /* Center children horizontally */
@@ -9,14 +9,15 @@
 
 .description {
     text-align: center;
-    margin: 50px auto 30px auto;
-    max-width: 1044px;
+    margin: 30px auto 30px auto;
+    max-width: 800px;
+    width: 80%;
 }
 
 .generation-section-container {
     margin: auto;
     max-width: 1044px;
-    width: 100%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +29,7 @@
 .generation-section-box {
     width: 100%;
     height: 520px;
-    border-radius: 25px;
+    border-radius: var(--outer-border-radius);
     margin: 10px 0 0 0;
 }
 

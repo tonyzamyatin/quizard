@@ -2,9 +2,9 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    padding: 40px;
+    padding: 0 40px;
+    margin-bottom: 50px;
     border-radius: inherit;
-    background-color: var(--quizard-pale-violet);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,9 +12,37 @@
 }
 
 .progress-info-container {
-    margin: 10px 0 50px 0;
+    margin-bottom: 10px;
 }
 
 .progress-info-container p {
     margin-top: 10px;
+}
+
+.progress-bar-container {
+    max-width: 80%;
+    width: 100%;
+    height: auto;
+}
+
+.ad-container {
+    width: 100%;
+    height: max-content;
+}
+
+.ad-box {
+    width: 100%;
+    height: 500px;
+    background: black;
+}
+
+@media only screen and (max-width: 800px) {
+
+    .progress-box {
+        padding: 0px;
+    }
+
+    .progress-bar-container {
+        max-width: 100%;
+    }
 }

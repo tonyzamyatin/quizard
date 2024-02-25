@@ -1,12 +1,17 @@
 :root {
     --quizard-white: white;
-    --quizard-grey: #c1c1c1;
-    --quizard-light-grey: #eee;
+    --quizard-black: #0D052D;
+    --quizard-light-grey: #EEEEEE;
+    --quizard-lighter-grey: #F5F5F5;
+    --quizard-grey: #8E8C96;
     --quizard-dark-grey: #6A6870;
     --quizard-darker-grey: #323135;
     --quizard-pale-violet: #F4F5FF;
-    --quizard-teal: #64FFD1;
-    --quizard-black: #0D052D;
+    --quizard-subtle-teal: #74E8C5;
+    --quizard-popping-teal: #6BFFD3;
+    --quizard-light-red: #FAE5E3;
+    --quizard-red: #E06760;
+    --outer-border-radius: 16px;
 }
 
 /* Reset some basic browser default styling */
@@ -69,17 +74,4 @@ h1, h2, h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.mt-10 {
-    margin-top: 10px;
-}
-.mb-10 {
-    margin-bottom: 10px;
-}
-.ml-10 {
-    margin-left: 10px;
-}
-.mr-10 {
-    margin-right: 10px;
 }

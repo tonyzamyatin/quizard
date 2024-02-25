@@ -22,23 +22,31 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
     }
 
     return (
-        <div className="generation-section-container progress-container">
-            <h2>Generating your flashcards</h2>
-            <div className="generation-section-box">
-                <div className="progress-box">
-                    <div className="progress-info-container">
-                        <h3>Be patient...this might take a few minutes</h3>
-                        <p>
-                            Quizard is hard at work to turn your text into high-quality flashcards. Imagine the pain of doing
-                            this manually! Sit tight — the download will start automatically once your flashcards are ready, and
-                            we'll give you a heads-up
-                        </p>
-                    </div>
+        <div className="generation-section-container">
+            <h2>Generating</h2>
+            <div className="progress-box">
+                <div className="progress-info-container">
+                </div>
+
+                <div className="progress-bar-container">
                     {renderProgressBar()}
+                    <div className="button-area">
+                        <CTAButton
+                            buttonText="Cancel"
+                            buttonType={'warn'}
+                            onButtonClick={handleCancelClick}
+                            active={true}
+                            lazy={true}
+                        />
+                    </div>
                 </div>
             </div>
-            <div className="button-area">
-                <CTAButton buttonText="Cancel" buttonType={'tertiary'} onButtonClick={handleCancelClick} active={true}/>
+            <div className={"ad-container"}>
+                <div className={"ad-box"}>
+                    <script async
+                            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6997800913244414"
+                            crossOrigin="anonymous"></script>
+                </div>
             </div>
         </div>
     );

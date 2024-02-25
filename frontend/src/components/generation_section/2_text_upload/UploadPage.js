@@ -26,7 +26,7 @@ function UploadPage({setGenerationStep, text, setText, generateFlashcards}) {
 
     return (
         <div className="generation-section-container upload-container">
-            <h2>Enter your Notes</h2>
+            <h2>Upload your notes</h2>
             {/* Uncomment Slider when PDF reader is ready for deployment.*/}
             {/*<Slider fields={["Text", "PDF"]} selectedField={selectedField} onFieldClick={handleFieldClick}/>*/}
             <div className="generation-section-box">

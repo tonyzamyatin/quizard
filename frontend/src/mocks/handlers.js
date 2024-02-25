@@ -23,6 +23,7 @@ export const handlers = [
 
         // Simulate progress
         task.progress += 1;
+        // return HttpResponse.json('Testing, remove me when done!', { status: 404 })
 
         if (task.progress >= task.total) {
             task.state = 'SUCCESS';

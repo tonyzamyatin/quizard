@@ -9,7 +9,7 @@ import './styles/CTAButton.css'
 import './styles/GeneratorUploadPage.css';
 import './styles/GeneratorConfigPage.css'
 import './styles/GeneratorWaitingPage.css'
-import './styles/GeneratorDownloadPage.css'
+import './styles/GeneratorCompletionPage.css'
 import './styles/ProgressBar.css'
 
 const App = () => {

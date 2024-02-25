@@ -17,13 +17,13 @@ function ConfigPage({setGenerationStep, lang, setLang, mode, setMode, exportForm
 
     return (
         <div className="generation-section-container config-container">
-            <h2>Configure the Flashcard Generator</h2>
+            <h2>Configure your flashcards</h2>
             <div className="generation-section-box">
                 <ConfigMenu lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>
             </div>
             <div className="button-area">
                 {/*TODO: Potentially dangerous condition in 'active={...}'. Susceptible to attack?*/}
-                <CTAButton buttonText="Go back" buttonType={'secondary'} onButtonClick={handleBackClick} active={true}/>
+                <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick} active={true} lazy={true}/>
                 <CTAButton buttonText="Generate" buttonType={'primary'} onButtonClick={handleGenerateClick} active={lang.length > 0 && mode.length > 0 && exportFormat.length > 0}/>
             </div>
         </div>

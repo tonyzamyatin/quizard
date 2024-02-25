@@ -3,73 +3,79 @@
     font-weight: 700;
     text-decoration: none;
     display: inline-block;
-    width: 196px;
+    width: 120px;
     height: 40px;
     border: none;
-    border-radius: 20px;
+    border-radius: 16px;
     transition: all 0.1s ease-in-out; /* Makes the change gradual */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: scale(1); /* Initial scale */
+    background-color: var(--quizard-light-grey);
+    color: var(--quizard-grey);
 }
 
 .CTA-button:not(:disabled) {
     cursor: pointer;
 }
 
+/* Define default hover and active states for all non-disabled buttons */
 .CTA-button:not(:disabled):hover {
-    transform: translateY(-2px); /* Scales the button up a bit */
+    transform: translateY(-1px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .CTA-button:not(:disabled):active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transform: translateY(2px); /* Remains scaled but moves back down */
+    transform: translateY(0px);
+}
+
+/* Use the static class to override the default hover and active states */
+.CTA-button.static:not(:disabled):hover,
+.CTA-button.static:not(:disabled):active {
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .CTA-button:disabled {
     cursor: default;
-    opacity: 0.5; /* Makes the button appear faded */
+    opacity: 0.5;
     transition: none;
 }
 
+/* Set the background and text colors for each button type */
 .CTA-button.primary {
-    background-color: var(--quizard-teal);
+    background-color: var(--quizard-subtle-teal);
     color: var(--quizard-black);
-    /* This ensures that the button moves to the right (when its the only button available) */
-    margin-left: auto;
+    margin-left: auto; /* For the only button available */
 }
 
 .CTA-button.primary:hover {
-    background-color: var(--quizard-teal);;
+    background-color: var(--quizard-popping-teal);
 }
 
 .CTA-button.primary:active {
-    background-color: var(--quizard-teal);;
-}
-
-.CTA-button.secondary {
-    background-color: var(--quizard-grey);
-    color: var(--quizard-darker-grey);
+    background-color: var(--quizard-popping-teal);
 }
 
 .CTA-button.secondary:hover {
-    background-color: var(--quizard-grey);
+    background-color: var(--quizard-lighter-grey);
 }
 
 .CTA-button.secondary:active {
-    background-color: var(--quizard-grey);
+    background-color: var(--quizard-lighter-grey);
 }
 
-
-.CTA-button.tertiary {
-    background-color: var(--quizard-light-grey);
-    color: var(--quizard-dark-grey);
+.CTA-button.warn {
+    width: 90px;
+    height: 30px;
 }
 
-.CTA-button.tertiary:hover {
-    background-color: var(--quizard-light-grey);
+.CTA-button.warn:hover {
+    background-color: var(--quizard-light-red);
+    color: var(--quizard-red);
 }
 
-.CTA-button.tertiary:active {
-    background-color: var(--quizard-light-grey);
+.CTA-button.warn:active {
+    background-color: var(--quizard-light-red);
+    color: var(--quizard-red);
 }

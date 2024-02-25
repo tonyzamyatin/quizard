@@ -12,16 +12,17 @@ function CompletionPage({ setGenerationStep, setText } ) {
     }
 
     return (
-        <div className="generation-section-container progress-container">
+        <div className="generation-section-container">
             <h2>Your flashcards are ready!</h2>
-            <div className="generation-section-box">
-                <div className="progress-box">
-                    <div className="progress-info-container">
-                    </div>
+            <div className={""}>
+                <p>Found Quizard useful? Spread the magic!</p>
+                <div className="button-area">
+                    <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick}
+                               active={true}/>
+                    <CTAButton buttonText="Share" buttonType={'primary'} onButtonClick={() => ({})}
+                               active={true}/>
                 </div>
-            </div>
-            <div className="button-area">
-                <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick} active={true}/>
+
             </div>
         </div>
     );
