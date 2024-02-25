@@ -32,20 +32,6 @@
     transition: none;
 }
 
-
-.CTA-button.secondary {
-    background-color: var(--quizard-grey);
-    color: var(--quizard-dark-grey);
-}
-
-.CTA-button.secondary:hover {
-    background-color: var(--quizard-light-grey);
-}
-
-.CTA-button.secondary:active {
-    background-color: var(--quizard-light-grey);
-}
-
 .CTA-button.primary {
     background-color: var(--quizard-teal);
     color: var(--quizard-black);
@@ -59,4 +45,31 @@
 
 .CTA-button.primary:active {
     background-color: var(--quizard-teal);;
+}
+
+.CTA-button.secondary {
+    background-color: var(--quizard-grey);
+    color: var(--quizard-darker-grey);
+}
+
+.CTA-button.secondary:hover {
+    background-color: var(--quizard-grey);
+}
+
+.CTA-button.secondary:active {
+    background-color: var(--quizard-grey);
+}
+
+
+.CTA-button.tertiary {
+    background-color: var(--quizard-light-grey);
+    color: var(--quizard-dark-grey);
+}
+
+.CTA-button.tertiary:hover {
+    background-color: var(--quizard-light-grey);
+}
+
+.CTA-button.tertiary:active {
+    background-color: var(--quizard-light-grey);
 }

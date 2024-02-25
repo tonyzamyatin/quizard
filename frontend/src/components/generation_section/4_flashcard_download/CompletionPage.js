@@ -2,9 +2,12 @@ import React from "react";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
 
-function CompletionPage({ setGenerationStep } ) {
+function CompletionPage({ setGenerationStep, setText } ) {
 
     const handleBackClick = () => {
+        setText('');
+        localStorage.removeItem('lastText');
+        sessionStorage.removeItem('lastText');
         setGenerationStep(GenerationSteps.TEXT_UPLOAD);
     }
 

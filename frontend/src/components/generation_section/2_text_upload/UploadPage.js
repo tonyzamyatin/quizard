@@ -6,6 +6,7 @@ import GenerationSteps from "../../global/GenerationSteps";
 
 function UploadPage({setGenerationStep, text, setText, generateFlashcards}) {
     const [selectedField, setSelectedField] = useState("Text");
+    const textIsLongEnough = text.length > 250 && text.length <= 500000;
 
     const handleFieldClick = (field) => {
         setSelectedField(field);
@@ -26,13 +27,13 @@ function UploadPage({setGenerationStep, text, setText, generateFlashcards}) {
     return (
         <div className="generation-section-container upload-container">
             <h2>Enter your Notes</h2>
-            {/* TODO: Uncomment Slider when PDF reader is ready for deployment.*/}
+            {/* Uncomment Slider when PDF reader is ready for deployment.*/}
             {/*<Slider fields={["Text", "PDF"]} selectedField={selectedField} onFieldClick={handleFieldClick}/>*/}
             <div className="generation-section-box">
                 {renderInputField()}
             </div>
             <div className="button-area">
-                <CTAButton buttonText="Next" buttonType={'primary'}onButtonClick={handleNextClick} active={text.length > 250 && text.length <= 500000}/>
+                <CTAButton buttonText="Next" buttonType={'primary'}onButtonClick={handleNextClick} active={textIsLongEnough}/>
             </div>
         </div>
     );

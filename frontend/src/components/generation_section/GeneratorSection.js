@@ -1,12 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
-import ConfigPage from "../components/generation_section/1_configuration/ConfigPage";
-import UploadPage from "../components/generation_section/2_text_upload/UploadPage";
-import WaitingPage from "../components/generation_section/3_flashcard_generation/WaitingPage";
-import CompletionPage from "../components/generation_section/4_flashcard_download/CompletionPage";
-import GenerationSteps from "../components/global/GenerationSteps";
+import ConfigPage from "./1_configuration/ConfigPage";
+import UploadPage from "./2_text_upload/UploadPage";
+import WaitingPage from "./3_flashcard_generation/WaitingPage";
+import CompletionPage from "./4_flashcard_download/CompletionPage";
+import GenerationSteps from "../global/GenerationSteps";
 import {useHealthCheck} from "./HealthCheckContext";
 
 function GeneratorSection() {
+    const isDevelopmentMode = process.env.NODE_ENV === 'development';
     // App related hooks
     const modelName = 'gpt-3.5-turbo'
     const defaultStep = localStorage.getItem('lastGenerationStep') || GenerationSteps.TEXT_UPLOAD;
@@ -29,7 +30,79 @@ function GeneratorSection() {
     // Generated flashcards
     const [flashcards, setFlashcards] = useState(null);     // JSON object
 
-    // TODO: Use environment variables to set API URL or reverse proxy for production server
+
+    useEffect(() => {
+        // useEffect for polling, triggered when taskId changes
+        let timeoutId = null;
+
+        if (taskId && isPollingActiveRef.current) {
+            timeoutId = setTimeout(() => pollFlashcardGenerationTask(taskId), 40000);
+        }
+
+        // Clean up the timeout when taskId changes or component unmounts
+        return () => clearTimeout(timeoutId);
+    }, [taskId]);
+
+
+    useEffect(() => {
+        // Loads the last generation step from sessionStorage when the component mounts
+        const lastGenerationStep = localStorage.getItem('lastGenerationStep');
+        if (lastGenerationStep) {
+            setCurrentStep(lastGenerationStep);
+        }
+    }, [setCurrentStep]);
+
+    useEffect(() => {
+        // Save currentStep to sessionStorage when it changes
+        localStorage.setItem('lastGenerationStep', currentStep);
+    }, [currentStep]);
+
+
+    const renderContent = () => {
+        switch (currentStep) {
+            case GenerationSteps.TEXT_UPLOAD:
+                return <UploadPage
+                    setGenerationStep={setCurrentStep}
+                    text={text}
+                    setText={setText}
+                />;
+            case GenerationSteps.CONFIGURATION:
+                return <ConfigPage
+                    setGenerationStep={setCurrentStep}
+                    lang={lang}
+                    setLang={setLang}
+                    mode={mode}
+                    setMode={setMode}
+                    exportFormat={exportFormat}
+                    setExportFormat={setExportFormat}
+                    generateFlashcards={startFlashcardGenerationTask}
+                />;
+            case GenerationSteps.GENERATION:
+                return <WaitingPage
+                    setGenerationStep={setCurrentStep}
+                    totalBatches={totalBatches}
+                    currentBatch={currentBatch}
+                    cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)}
+                />
+            case GenerationSteps.DOWNLOAD:
+                return <CompletionPage
+                    setGenerationStep={setCurrentStep}
+                    setText={setText}
+                />
+            default:
+                return <ConfigPage
+                    setGenerationStep={setCurrentStep}
+                    lang={lang}
+                    setLang={setLang}
+                    mode={mode}
+                    setMode={setMode}
+                    exportFormat={exportFormat}
+                    setExportFormat={setExportFormat}/>;
+        }
+    }
+
+
+    // TODO: Use environment variables to set API URL or reverse proxy for production browser
     // TODO: Enhance exception handling and provide more informative feedback to the user
     // TODO: Retry mechanism
     // TODO: Display success message when flashcards are ready
@@ -65,8 +138,8 @@ function GeneratorSection() {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         });
                     } else {
-                        console.error('Non-JSON error from server:', response.statusText);
-                        throw new Error('Non-JSON error from server');
+                        console.error('Non-JSON error from browser:', response.statusText);
+                        throw new Error('Non-JSON error from browser');
                     }
                 }
                 return response.json();
@@ -94,7 +167,7 @@ function GeneratorSection() {
     }
 
 
-    const pollFlashcardGenerationTask = (taskId, waitDelay = 3000, updateDelay = 10000) => {
+    const pollFlashcardGenerationTask = (taskId, waitDelay = 1000, updateDelay = 1000) => {
         if (!isPollingActiveRef.current) return;
 
         const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`;
@@ -124,7 +197,9 @@ function GeneratorSection() {
                         if (data.state === 'SUCCESS') {
                             setFlashcards(data.flashcards);
                             setCurrentStep(GenerationSteps.DOWNLOAD)
-                            downloadFlashcards(data.flashcards, exportFormat)
+                            if (!isDevelopmentMode) {
+                                downloadFlashcards(data.flashcards, exportFormat)
+                            }
                         }
                     }
                 }
@@ -198,76 +273,6 @@ function GeneratorSection() {
     };
 
 
-    const renderContent = () => {
-        switch (currentStep) {
-            case GenerationSteps.TEXT_UPLOAD:
-                return <UploadPage
-                    setGenerationStep={setCurrentStep}
-                    text={text}
-                    setText={setText}
-                />;
-            case GenerationSteps.CONFIGURATION:
-                return <ConfigPage
-                    setGenerationStep={setCurrentStep}
-                    lang={lang}
-                    setLang={setLang}
-                    mode={mode}
-                    setMode={setMode}
-                    exportFormat={exportFormat}
-                    setExportFormat={setExportFormat}
-                    generateFlashcards={startFlashcardGenerationTask}
-                />;
-            case GenerationSteps.GENERATION:
-                return <WaitingPage
-                    setGenerationStep={setCurrentStep}
-                    totalBatches={totalBatches}
-                    currentBatch={currentBatch}
-                    cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)}
-                />
-            case GenerationSteps.DOWNLOAD:
-                return <CompletionPage
-                    setGenerationStep={setCurrentStep}
-                />
-            default:
-                return <ConfigPage setGenerationStep={setCurrentStep} lang={lang} setLang={setLang} mode={mode} setMode={setMode} exportFormat={exportFormat} setExportFormat={setExportFormat}/>;
-        }
-    }
-
-
-    // useEffect for polling, triggered when taskId changes
-    useEffect(() => {
-        let timeoutId = null;
-
-        if (taskId && isPollingActiveRef.current) {
-            timeoutId = setTimeout(() => pollFlashcardGenerationTask(taskId), 40000);
-        }
-
-        // Clean up the timeout when taskId changes or component unmounts
-        return () => clearTimeout(timeoutId);
-    }, [taskId]);
-
-    // TODO: Add const to make API call to backend:
-    // "Generate" -> sends the data from the configuration and the text to the backend and initiates generation, as well
-    // as the updates of ProgressBar
-    // "Go Back" from GenerationProcessContainer -> stops the generation process, saves the generated flashcard internally.
-    // If the user doesn't change the text or config the generate button should say "Continue generating". If the something is changed
-    // (i.e. the data is not the same) flashcards are discarded, and the button says "Generate". Reverting changes so that the
-    // data is the same as used for the previous flashcard generation counts as "unchanged".
-
-    useEffect(() => {
-        // Loads the last generation step from sessionStorage when the component mounts
-        const lastGenerationStep = localStorage.getItem('lastGenerationStep');
-        if (lastGenerationStep) {
-            setCurrentStep(lastGenerationStep);
-        }
-    }, [setCurrentStep]);
-
-    useEffect(() => {
-        // Save currentStep to sessionStorage when it changes
-        localStorage.setItem('lastGenerationStep', currentStep);
-    }, [currentStep]);
-
-
     // Check health status of backend and show error message immediately if it is down.
     const { isBackendHealthy } = useHealthCheck();
     if (!isBackendHealthy) {
@@ -278,11 +283,7 @@ function GeneratorSection() {
             <div className="description">
                 <h1>Quizard Flashcard Generator</h1>
                 {/*TODO: Add our own paragraph*/}
-                <p>Our Flashcard Generator automatically transforms your notes or textbooks into flashcards using
-                    the
-                    power of artificial intelligence. Simply upload your materials and let our AI create your
-                    flashcards
-                    in seconds.</p>
+                <p>Our Flashcard Generator automatically transforms your notes or textbooks into flashcards using the power of AI. Simply upload your text and lean back!</p>
             </div>
             {renderContent()}
         </div>

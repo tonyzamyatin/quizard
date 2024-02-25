@@ -1,4 +1,5 @@
 function TriviaSlideShow() {
+    // Slide show to display trivia and fun facts while user waits during flashcard generation
 
     const renderSlideShow = () => {
         return (

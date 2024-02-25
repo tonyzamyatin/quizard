@@ -9,18 +9,13 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
     // Progress of flashcard generation process in percent
     const progress = currentBatch / totalBatches * 100
 
+
+
     const renderProgressBar = () => {
         return <ProgressBar progress={progress}/>;
     }
 
-    // Slide show to display trivia and fun facts while user waits during flashcard generation
-    // TODO: Implement after test version is launched
-    const renderTriviaSlideShow = () => {
-        return (
-            <TriviaSlideShow />
-        );
-    }
-
+ 
     const handleCancelClick = () => {
         setGenerationStep(GenerationSteps.CONFIGURATION);
         cancelFlashcards();
@@ -43,7 +38,7 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
                 </div>
             </div>
             <div className="button-area">
-                <CTAButton buttonText="Cancel" buttonType={'secondary'} onButtonClick={handleCancelClick} active={true}/>
+                <CTAButton buttonText="Cancel" buttonType={'tertiary'} onButtonClick={handleCancelClick} active={true}/>
             </div>
         </div>
     );
