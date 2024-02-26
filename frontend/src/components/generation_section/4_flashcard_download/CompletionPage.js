@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useEffect} from "react";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
+import ShareButtonsComponent from "./ShareButtonsComponent";
+import {useExternalScript} from "../../../hooks/useExternalScript";
 
 function CompletionPage({ setGenerationStep, setText } ) {
+    // TODO: Fix bug: Share buttons not loading on component mount (only on reload)
+    // TODO: Fix bug: Form has black background (maybe create custom form).
+    const shareThisScript = "https://platform-api.sharethis.com/js/sharethis.js#property=65dc401e98ac00001970d5d9&product=inline-share-buttons";
+    const state = useExternalScript(shareThisScript);
+
 
     const handleBackClick = () => {
         setText('');
@@ -12,19 +19,20 @@ function CompletionPage({ setGenerationStep, setText } ) {
     }
 
     return (
-        <div className="generation-section-container">
-            <h2>Your flashcards are ready!</h2>
-            <div className={""}>
-                <p>Found Quizard useful? Spread the magic!</p>
-                <div className="button-area">
-                    <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick}
-                               active={true}/>
-                    <CTAButton buttonText="Share" buttonType={'primary'} onButtonClick={() => ({})}
-                               active={true}/>
-                </div>
-
+    <div className="generation-section-container">
+        <h2>Your flashcards are ready!</h2>
+        <div className={"completion-content"}>
+            <p>Found Quizard useful? Spread the magic!</p>
+            {state === "loading" && <p>Loading...</p>}
+            {state === "ready" && <div className="sharethis-inline-share-buttons"></div>}
+            <div className="button-area">
+                <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick}
+                           active={true}/>
             </div>
         </div>
+        <div class="powr-form-builder" id="sharethis-form-builder-65dc401e98ac00001970d5d9">
+        </div>
+    </div>
     );
 }
 

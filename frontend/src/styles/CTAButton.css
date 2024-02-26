@@ -6,7 +6,7 @@
     width: 120px;
     height: 40px;
     border: none;
-    border-radius: 16px;
+    border-radius: 20px;
     transition: all 0.1s ease-in-out; /* Makes the change gradual */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: scale(1); /* Initial scale */
