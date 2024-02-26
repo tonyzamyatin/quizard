@@ -23,15 +23,15 @@ function CompletionPage({ setGenerationStep, setText } ) {
         <h2>Your flashcards are ready!</h2>
         <div className={"completion-content"}>
             <p>Found Quizard useful? Spread the magic!</p>
-            {state === "loading" && <p>Loading...</p>}
+            {state === "loading" /*&& <p style={{margin: '10px 0 10px 0'}}>Loading</p>*/}
             {state === "ready" && <div className="sharethis-inline-share-buttons"></div>}
-            <div className="button-area">
-                <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick}
-                           active={true}/>
-            </div>
+            <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick}
+                       active={true}/>
         </div>
-        <div class="powr-form-builder" id="sharethis-form-builder-65dc401e98ac00001970d5d9">
-        </div>
+        {/*<div */}
+        {/*    class="powr-form-builder" */}
+        {/*    id="sharethis-form-builder-65dc401e98ac00001970d5d9">*/}
+        {/*</div>*/}
     </div>
     );
 }

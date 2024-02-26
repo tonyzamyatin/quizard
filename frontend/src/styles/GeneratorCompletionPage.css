@@ -5,9 +5,13 @@
     align-items: center;
 }
 
+.completion-content p {
+    margin-bottom: 20px;
+}
+
 .sharethis-inline-share-buttons {
     width: 100%;
-    margin: 20px 0 5px 0;
+    margin-bottom:30px;
 }
 
 .powr-form-builder {

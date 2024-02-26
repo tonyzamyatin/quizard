@@ -27,7 +27,7 @@ html, body, div, h1, h2, h3, p {
 
 body {
     background-color: white;
-    padding: 20px;
+    /*padding: 0 0 30px 0;*/
 }
 
 /* Typography */
@@ -42,19 +42,6 @@ h1, h2, h3 {
 }
 
 
-/* Layout sizes */
-.container {
-    width: 100%;
-    max-width: 1920px;
-    margin: 20px auto;
-}
-
-/* Navbar styling */
-.navbar {
-    height: 60px;
-    background-color: white;
-    color: var(--quizard-black);
-}
 
 /* Sections */
 .section {
@@ -64,10 +51,24 @@ h1, h2, h3 {
 
 /* Footer */
 .footer {
-    height: 220px;
-    background-color: #333;
-    color: white;
+    height: 30px; /* Slimmer height for the footer */
+    background-color: var(--quizard-light-grey); /* Using the color variable you defined */
+    color: var(--quizard-grey); /* Text color for the footer */
+    position: fixed; /* Fixed position to keep it at the bottom */
+    bottom: 0; /* Align to the bottom of the page */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it stays above other content */
+    text-align: center; /* Center the text inside the footer */
+    line-height: 30px; /* Center the text vertically */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow to the footer */
 }
+
+/* Footer links styling */
+.footer a {
+    color: var(--quizard-darker-grey); /* Ensures all links in the footer have the teal color */
+    /*text-decoration: none; !* Removes the underline from links, optional *!*/
+}
+
 
 /* Utilities */
 .center {

@@ -41,13 +41,13 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
                     </div>
                 </div>
             </div>
-            <div className={"ad-container"}>
-                <div className={"ad-box"}>
-                    <script async
-                            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6997800913244414"
-                            crossOrigin="anonymous"></script>
-                </div>
-            </div>
+            {/*<div className={"ad-container"}>*/}
+            {/*    <div className={"ad-box"}>*/}
+            {/*        <script async*/}
+            {/*                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6997800913244414"*/}
+            {/*                crossOrigin="anonymous"></script>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
 }

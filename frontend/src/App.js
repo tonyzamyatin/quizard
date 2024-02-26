@@ -11,14 +11,14 @@ import './styles/GeneratorConfigPage.css'
 import './styles/GeneratorWaitingPage.css'
 import './styles/GeneratorCompletionPage.css'
 import './styles/ProgressBar.css'
+import Footer from "./components/global/Footer";
 
 const App = () => {
 
     return (
         <HealthCheckProvider>
-            <div className="app">
-                <GeneratorSection />
-            </div>
+            <GeneratorSection />
+            <Footer />
         </HealthCheckProvider>
     );
 }
