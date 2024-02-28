@@ -5,7 +5,6 @@ from src.custom_exceptions.env_exceptions import EnvironmentLoadingError
 from src.custom_exceptions.quizard_exceptions import QuizardError
 from src.rest.flask_factory import create_flask_app
 from src.rest.celery_config import create_celery_app
-from src.utils.app_control import shutdown_application
 from src.utils.global_helpers import get_env_variable, load_environment_variables
 
 logger = structlog.get_logger(__name__)

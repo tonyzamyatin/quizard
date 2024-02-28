@@ -82,18 +82,6 @@ class FlashcardDeck:
     def to_json(self) -> str:
         return json.dumps(self, indent=4, default=vars)
 
-    def to_csv_zip(self):
-        """
-        Returns a ZIP containing the flashcard deck as CVS file.
-        """
-        buffer = StringIO()
-        z = zipfile.ZipFile(file=buffer.getvalue(), mode='w')
-        for flashcard in self.flashcards:
-            z.write(flashcard.as_csv())
-            z.write('\n')
-        z.close()
-        return buffer
-
     def to_dict_list(self):
         flashcard_dict_list = [{'id': card.id, 'type': card.type,
                                 'frontSide': card.front_side, 'backSide': card.back_side}

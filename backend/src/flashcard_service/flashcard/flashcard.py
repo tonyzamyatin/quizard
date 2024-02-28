@@ -83,13 +83,3 @@ class Flashcard:
         """
         return self.front_side + ';' + self.back_side
 
-    def to_json(self):
-        """
-        Convert the flashcard to a JSON format.
-
-        Returns
-        -------
-        str
-            A JSON string representing the flashcard.
-        """
-        return json.dumps(self, default=lambda obj: obj.__dict__)
