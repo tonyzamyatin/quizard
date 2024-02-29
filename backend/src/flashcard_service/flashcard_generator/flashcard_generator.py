@@ -13,13 +13,13 @@ from src.utils.global_helpers import format_num
 logger = structlog.getLogger(__name__)
 
 
-def parse_flashcard(number: int, line: str) -> Flashcard:
+def parse_flashcard(id: int, line: str) -> Flashcard:
     """
     Parses a single line into a Flashcard object.
 
     Parameters
     ----------
-    number : int
+    id : int
         The flashcard number or ID.
     line : str
         A string representing the flashcard content in 'question;answer' format.
@@ -44,9 +44,9 @@ def parse_flashcard(number: int, line: str) -> Flashcard:
 
     prefix = prefix_match.group(1).lower()
     front_side = split_line[0][len(prefix) + 2:].strip()
-    flashcard_type = get_flashcard_type(prefix, number)
+    flashcard_type = get_flashcard_type(prefix, id)
 
-    return Flashcard(number, flashcard_type, front_side, split_line[1])
+    return Flashcard(id, flashcard_type, front_side, split_line[1])
 
 
 def get_flashcard_type(prefix: str, number: int) -> FlashcardType:
