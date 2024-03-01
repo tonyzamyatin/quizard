@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
-import ShareButtonsComponent from "./ShareButtonsComponent";
 import {useExternalScript} from "../../../hooks/useExternalScript";
 
 function CompletionPage({ setGenerationStep, setText } ) {

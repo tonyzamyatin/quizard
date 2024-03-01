@@ -5,6 +5,7 @@ import WaitingPage from "./3_flashcard_generation/WaitingPage";
 import CompletionPage from "./4_flashcard_download/CompletionPage";
 import GenerationSteps from "../global/GenerationSteps";
 import {useHealthCheck} from "./HealthCheckContext";
+import {convertToCSV, downloadCSV, convertToApkg, downloadApkg} from "../../utils/flashcardUtils";
 
 function GeneratorSection() {
     const isDevelopmentMode = process.env.NODE_ENV === 'development';
@@ -18,10 +19,11 @@ function GeneratorSection() {
     const [exportFormat, setExportFormat] = useState('')
     const [taskId, setTaskId] = useState('');
     const isPollingActiveRef = useRef(false);
+
     // Define corresponding backend values
     const backendLanguageOptions = { English: 'en', German: 'de' };
     const backendModeOptions = { Practice: 'practice', Test: 'test', Cloze: 'cloze' };
-    const backendExportOptions = { CSV: 'csv', Anki: 'anki' };
+    const backendExportOptions = { CSV: 'csv', Anki: 'apkg' };
 
     // Batches of flashcard generation used to calculate progress and display progress bar
     const [currentBatch, setCurrentBatch] = useState(0);
@@ -104,12 +106,8 @@ function GeneratorSection() {
 
     // TODO: Use environment variables to set API URL or reverse proxy for production browser
     // TODO: Enhance exception handling and provide more informative feedback to the user
-    // TODO: Retry mechanism
-    // TODO: Display success message when flashcards are ready
-
 
     // Method to generate flashcards with specified mode and text
-    // TODO: Add robust error handling
     const startFlashcardGenerationTask = () => {
         const endpoint = '/api/mvp/flashcards/generate/start'
         console.group('Flashcard Generation Request');
@@ -125,7 +123,6 @@ function GeneratorSection() {
                 model_name: modelName,
                 lang: backendLanguageOptions[lang],
                 mode: backendModeOptions[mode],
-                export_format: backendExportOptions[exportFormat],
                 input_text: text,
             }),
         })
@@ -241,36 +238,16 @@ function GeneratorSection() {
     };
 
     function downloadFlashcards(flashcards, exportFormat) {
-        switch (exportFormat) {
-            case "CSV":
-                let csvData = convertToCSV( flashcards );
-                downloadCSV(csvData, 'flashcards.csv')
+        switch (backendExportOptions[exportFormat]) {
+            case "csv":
+                downloadCSV(flashcards, 'flashcards');
+                break;
+            case "apkg":
+                downloadApkg(flashcards, 'Flashcards by Quizard', 'flashcards');
+                break;
+            // Other cases...
         }
     }
-
-    function convertToCSV(flashcards) {
-        const csvRows = [];
-        const headers = ['frontSide', 'backSide'];
-        // Iterate over the JSON data and extract only the required fields
-        flashcards.forEach(row => {
-            const frontSide = row.frontSide.replace(/"/g, '\\"'); // Escape double quotes
-            const backSide = row.backSide.replace(/"/g, '\\"'); // Escape double quotes
-            csvRows.push(`"${frontSide}";"${backSide}"`); // Create a row with frontSide and backSide
-        });
-        return csvRows.join('\n');
-    }
-
-    const downloadCSV = (csvData, filename) => {
-        const blob = new Blob([csvData], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.setAttribute('hidden', '');
-        a.setAttribute('href', url);
-        a.setAttribute('download', filename);
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
 
 
     // Check health status of backend and show error message immediately if it is down.
@@ -282,7 +259,6 @@ function GeneratorSection() {
         <div className="generator-section">
             <div className="description">
                 <h1>Quizard Flashcard Generator</h1>
-                {/*TODO: Add our own paragraph*/}
                 <p>Our Flashcard Generator automatically transforms your notes or textbooks into flashcards using the power of AI. Simply upload your text and lean back!</p>
             </div>
             {renderContent()}

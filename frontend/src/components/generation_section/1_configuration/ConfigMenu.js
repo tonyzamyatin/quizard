@@ -5,7 +5,7 @@ import Dropdown from "../../global/Dropdown";
 function ConfigMenu({ lang, setLang, mode, setMode, exportFormat, setExportFormat}) {
     const languageOptions = ["English", "German"];
     const modeOptions = ["Practice"];
-    const exportOptions = ["CSV"]
+    const exportOptions = ["CSV", "Anki"]
 
     const handleLangChange = (event) => {
         setLang(event.target.value);
