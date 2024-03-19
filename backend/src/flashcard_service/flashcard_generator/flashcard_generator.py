@@ -1,3 +1,4 @@
+# src/flashcard_service/flashcard_generator/flashcard_generator.py
 import re
 import time
 

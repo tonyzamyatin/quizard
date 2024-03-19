@@ -1,7 +1,7 @@
+# src/flashcard_service/flashcard_deck/flashcard_deck.py
 import json
 import os
 import zipfile
-from io import StringIO, BytesIO
 from typing import List
 from src.flashcard_service.flashcard.flashcard import Flashcard
 

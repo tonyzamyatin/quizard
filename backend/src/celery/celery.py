@@ -1,4 +1,4 @@
-# celery.py
+# src.celery.celery.py
 from celery.signals import task_failure
 import structlog
 from src.custom_exceptions.env_exceptions import EnvironmentLoadingError

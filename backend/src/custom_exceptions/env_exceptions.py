@@ -1,3 +1,4 @@
+# src/custom_exceptions/env_exceptions.py
 class EnvironmentLoadingError(EnvironmentError):
     """Custom exception for errors relating loading the .env file."""
     pass

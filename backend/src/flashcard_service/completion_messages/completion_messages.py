@@ -1,3 +1,4 @@
+# src/flashcard_service/completion_messages/completion_messages.py
 class Messages:
     """
     A class representing a structured message sequence for the flashcard generation system.

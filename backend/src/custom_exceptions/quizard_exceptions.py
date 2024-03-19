@@ -1,3 +1,4 @@
+# src/custom_exceptions/quizard_exceptions.py
 from src.flashcard_service.flashcard.flashcard import Flashcard
 
 

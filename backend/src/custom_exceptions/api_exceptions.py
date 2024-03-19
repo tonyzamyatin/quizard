@@ -1,3 +1,4 @@
+# src/custom_exceptions/api_exceptions.py
 # Base class for API errors
 class FlaskAPIError(Exception):
     """Base class for exceptions in the API."""
