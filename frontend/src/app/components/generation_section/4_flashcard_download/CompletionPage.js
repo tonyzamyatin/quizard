@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import CTAButton from "../../global/CTAButton";
 import GenerationSteps from "../../global/GenerationSteps";
-import {useExternalScript} from "../../../hooks/useExternalScript";
+import {useExternalScript} from "../../../../hooks/useExternalScript";
 
 function CompletionPage({ setGenerationStep, setText } ) {
     // TODO: Fix bug: Share buttons not loading on component mount (only on reload)

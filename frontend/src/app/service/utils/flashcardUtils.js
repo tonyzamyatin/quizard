@@ -1,7 +1,5 @@
 // flashcardUtils.js
-
-import { saveAs } from 'file-saver';
-const AnkiExport = require('anki-apkg-export').default;
+import convertCSVToAPKG from '@2anki/csv-to-apkg';
 
 /**
  * Converts flashcards to CSV format.
@@ -41,31 +39,31 @@ export function downloadCSV(flashcards, filename) {
 /**
  * Converts flashcards to the APKG format.
  * @param {Array} flashcards - The flashcards to convert.
- * @param {string} deckName - The name of the Anki deck.
- * @return {Promise<Blob>} A promise that resolves with the APKG blob.
+ * @return {Promise<Buffer>} A promise that resolves with the APKG blob.
  */
-export function convertToApkg(flashcards, deckName) {
-    const apkg = new AnkiExport(deckName);
-    for (const flashcard of flashcards) {
-        apkg.addCard(flashcard.frontSide, flashcard.backSide);
-    }
-    return apkg.save(); // This returns a Promise
+export function convertToApkg(flashcards) {
+    const csvData = convertToCSV(flashcards);
+    return convertCSVToAPKG(csvData); // Promise<Buffer>
 }
 
 /**
  * Initiates a download of an APKG file.
- * @param {Array} cards - The flashcards to convert.
- * @param {string} deckName - The name of the Anki deck.
+ * @param {Array} flashcards - The flashcards to convert.
  * @param {string} filename - The name of the file to download (without extension).
  */
-export function downloadApkg(cards, deckName, filename) {
-    const apkg = new AnkiExport(deckName);
-
-    cards.forEach(card => {
-        apkg.addCard(card.frontSide, card.backSide);
+export function downloadApkg(flashcards, filename) {
+    convertToApkg(flashcards).then(buffer => {
+        const blob = new Blob([buffer], { type: 'application/octet-stream' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', `${filename}.apkg`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }).catch(error => {
+        console.error('Error downloading APKG file:', error);
     });
 
-    apkg.save().then(zip => {
-        saveAs(zip, `${deckName}.apkg`);
-    }).catch(err => console.error(err));
 }

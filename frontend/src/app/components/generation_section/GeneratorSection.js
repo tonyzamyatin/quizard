@@ -5,7 +5,7 @@ import WaitingPage from "./3_flashcard_generation/WaitingPage";
 import CompletionPage from "./4_flashcard_download/CompletionPage";
 import GenerationSteps from "../global/GenerationSteps";
 import {useHealthCheck} from "./HealthCheckContext";
-import {convertToCSV, downloadCSV, convertToApkg, downloadApkg} from "../../utils/flashcardUtils";
+import {convertToCSV, downloadCSV, convertToApkg, downloadApkg} from "../../service/utils/flashcardUtils";
 
 function GeneratorSection() {
     const isDevelopmentMode = process.env.NODE_ENV === 'development';
@@ -109,7 +109,7 @@ function GeneratorSection() {
 
     // Method to generate flashcards with specified mode and text
     const startFlashcardGenerationTask = () => {
-        const endpoint = '/api/mvp/flashcards/generate/start'
+        const endpoint = '/flashcards/generate/start'
         console.group('Flashcard Generation Request');
         console.log(`Endpoint: ${endpoint}`);
         console.log('Method: POST');
@@ -243,7 +243,7 @@ function GeneratorSection() {
                 downloadCSV(flashcards, 'flashcards');
                 break;
             case "apkg":
-                downloadApkg(flashcards, 'Flashcards by Quizard', 'flashcards');
+                downloadApkg(flashcards, 'flashcards');
                 break;
             // Other cases...
         }
