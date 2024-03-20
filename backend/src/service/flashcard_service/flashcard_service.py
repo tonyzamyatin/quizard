@@ -7,11 +7,11 @@ from typing import List, Optional, Callable
 import tiktoken
 from openai import OpenAI, OpenAIError
 
-from src.flashcard_service.flashcard.flashcard import Flashcard
-from src.flashcard_service.flashcard_deck.flashcard_deck import FlashcardDeck
-from src.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator
-from src.flashcard_service.text_splitting import text_split
-from src.flashcard_service.completion_messages.completion_messages import Messages
+from src.entities.flashcard.flashcard import Flashcard
+from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
+from src.service.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator
+from src.service.flashcard_service.text_splitting import text_split
+from src.entities.completion_messages.completion_messages import Messages
 from src.utils.global_helpers import format_num, inset_into_string, read_file, validate_config_param
 from src.custom_exceptions.quizard_exceptions import PromptSizeError, ConfigInvalidValueError
 

@@ -3,17 +3,17 @@ import os
 
 import structlog
 from celery.exceptions import TaskError
-from flask import request, jsonify, make_response
+from flask import request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS
-from openai import OpenAI, OpenAIError
+from openai import OpenAIError
 from werkzeug.exceptions import HTTPException
 
 from src.celery.celery import setup_applications
 from src.custom_exceptions.api_exceptions import HealthCheckError, TaskNotFoundError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
 from config.logging_config import setup_logging
-from src.flashcard_service.flashcard_service import FlashcardService
+from src.service.flashcard_service import FlashcardService
 from src.utils.global_helpers import load_yaml_config, get_env_variable, validate_config_param
 from src.rest.tasks import generate_flashcards_task
 
@@ -100,6 +100,7 @@ class FlashcardGenerator(Resource):
             raise ConfigLoadingError(f"Failed to load critical application configuration")
             # shutdown_application(celery_app=celery_app, reason="Failed to load critical application configuration.", error_info={'error': str(e)})
 
+    # flashcards/generate       (post mapping)
     def post(self):
         """
         Handle POST requests to initiate a flashcard generation task.
@@ -144,16 +145,9 @@ class FlashcardGenerator(Resource):
         except Exception:
             raise
 
-
-api.add_resource(FlashcardGenerator, '/api/mvp/flashcards/generate/start')
-
-
-class Progress(Resource):
-    """
-    API resource for tracking the progress of a flashcard generation task.
-    """
-
-    def get(self, task_id):
+    # flashcards/generate/<task_id>     (get mapping)
+    @staticmethod
+    def get(task_id):
         """
         Get the current progress or result of the flashcard generation task.
         """
@@ -161,7 +155,7 @@ class Progress(Resource):
             task = generate_flashcards_task.AsyncResult(task_id)
             if task is None:
                 raise TaskNotFoundError(f"Unable to retrieve task with taskId: {task_id}")
-            data = self._get_task_response_dict(task)
+            data = _get_task_response_dict(task)
             response = jsonify(data)
             if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
                 response.status_code = 202
@@ -184,40 +178,40 @@ class Progress(Resource):
             logger.error(f"Unexpected error", error=e, exc_info=True)
             return jsonify({'error': str(e)}), 500
 
+    # flashcards/generate/<task_id> (delete mapping)
     @staticmethod
-    def _get_task_response_dict(task):
-        """Constructs a response dict based on the task state."""
-        data = {'state': task.state}
-        if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
-            data.update({
-                'progress': task.info.get('progress', 0),
-                'total': task.info.get('total', 1),  # Avoid division by zero
-            })
-        elif task.state == 'SUCCESS':
-            data['flashcards'] = task.get(timeout=1)
-            data['progress'] = 1
-            data['total'] = 1
-        elif task.state == 'FAILURE':
-            logger.error("Task failed", error=task.error, exc_info=True)
-            data['error'] = str(task.error)  # Assuming task.error contains error
-            task.forget()
-        return data
+    def delete(task_id):
+        try:
+            celery_app.control.revoke(task_id, terminate=True)
+            return {"message": "Cancellation successful"}, 200
+        except Exception as e:
+            logger.error(f"Failed to cancel celery task {task_id}", error=str(e), exc_info=True)
+            return {"error": str(e)}, 500
 
 
-api.add_resource(Progress, '/api/mvp/flashcards/generate/progress/<task_id>')
+api.add_resource(FlashcardGenerator, '/flashcards/generate')
 
 
-@flask_app.route('/api/mvp/flashcards/generate/cancel/<task_id>')
-def cancel_flashcards(task_id):
-    try:
-        celery_app.control.revoke(task_id, terminate=True)
-        return {"message": "Cancellation successful"}, 200
-    except Exception as e:
-        logger.error(f"Failed to cancel celery task {task_id}", error=str(e), exc_info=True)
-        return {"error": str(e)}, 500
+def _get_task_response_dict(task):
+    """Constructs a response dict based on the task state."""
+    data = {'state': task.state}
+    if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
+        data.update({
+            'progress': task.info.get('progress', 0),
+            'total': task.info.get('total', 1),  # Avoid division by zero
+        })
+    elif task.state == 'SUCCESS':
+        data['flashcards'] = task.get(timeout=1)
+        data['progress'] = 1
+        data['total'] = 1
+    elif task.state == 'FAILURE':
+        logger.error("Task failed", error=task.error, exc_info=True)
+        data['error'] = str(task.error)  # Assuming task.error contains error
+        task.forget()
+    return data
 
 
-@flask_app.route('/api/mvp/health')
+@flask_app.route('/health')
 def health_check():
     missing_vars = []
     critical_vars = ["GENERATOR_CONFIG_FILE", "OPENAI_API_KEY", "RABBITMQ_DEFAULT_USER", "RABBITMQ_DEFAULT_PASS",

@@ -6,7 +6,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 
 from config.logging_config import setup_logging
-from src.flashcard_service.flashcard_service import FlashcardService
+from src.service.flashcard_service import FlashcardService
 from src.utils.global_helpers import load_yaml_config, read_file
 
 # Assuming a project structure like:

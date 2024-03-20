@@ -1,7 +1,7 @@
 # src/rest/tasks.py
 from openai import OpenAIError, OpenAI
 from src.custom_exceptions.quizard_exceptions import QuizardError
-from src.flashcard_service.flashcard_service import FlashcardService
+from src.service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
 

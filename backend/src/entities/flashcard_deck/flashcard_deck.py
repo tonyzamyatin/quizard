@@ -3,7 +3,7 @@ import json
 import os
 import zipfile
 from typing import List
-from src.flashcard_service.flashcard.flashcard import Flashcard
+from src.entities.flashcard.flashcard import Flashcard
 
 
 def _create_note_model_and_note(flashcard: Flashcard):

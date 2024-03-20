@@ -4,10 +4,10 @@ import pytest
 from openai import OpenAI
 
 from src.custom_exceptions.quizard_exceptions import FlashcardInvalidFormatError, FlashcardPrefixError
-from src.flashcard_service.completion_messages.completion_messages import Messages
-from src.flashcard_service.flashcard.flashcard import Flashcard, FlashcardType
-from src.flashcard_service.flashcard_deck.flashcard_deck import FlashcardDeck
-from src.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator, parse_flashcard, parse_flashcards
+from src.entities.completion_messages import Messages
+from src.entities.flashcard.flashcard import Flashcard, FlashcardType
+from src.entities.flashcard_deck import FlashcardDeck
+from src.service.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator, parse_flashcard, parse_flashcards
 
 
 # test_flashcard.py
