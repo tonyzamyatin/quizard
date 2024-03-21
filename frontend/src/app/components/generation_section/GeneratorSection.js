@@ -86,7 +86,7 @@ function GeneratorSection() {
                     currentBatch={currentBatch}
                     cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)}
                 />
-            case GenerationSteps.DOWNLOAD:
+            case GenerationSteps.COMPLETE:
                 return <CompletionPage
                     setGenerationStep={setCurrentStep}
                     setText={setText}
@@ -109,7 +109,7 @@ function GeneratorSection() {
 
     // Method to generate flashcards with specified mode and text
     const startFlashcardGenerationTask = () => {
-        const endpoint = '/flashcards/generate/start'
+        const endpoint = '/flashcards/generate'
         console.group('Flashcard Generation Request');
         console.log(`Endpoint: ${endpoint}`);
         console.log('Method: POST');
@@ -167,7 +167,7 @@ function GeneratorSection() {
     const pollFlashcardGenerationTask = (taskId, waitDelay = 1000, updateDelay = 1000) => {
         if (!isPollingActiveRef.current) return;
 
-        const endpoint = `/api/mvp/flashcards/generate/progress/${taskId}`;
+        const endpoint = `/flashcards/generate/${taskId}`;
         console.group('Flashcard Update Request');
         console.log(`Endpoint:${ endpoint }`);
         console.log('Method: GET');
@@ -192,11 +192,9 @@ function GeneratorSection() {
                     } else {
                         isPollingActiveRef.current = false;
                         if (data.state === 'SUCCESS') {
-                            setFlashcards(data.flashcards);
-                            setCurrentStep(GenerationSteps.DOWNLOAD)
-                            if (!isDevelopmentMode) {
-                                downloadFlashcards(data.flashcards, exportFormat)
-                            }
+                            const downloadToken = data.download_token;
+                            setCurrentStep(GenerationSteps.COMPLETE);
+                            downloadFlashcards(downloadToken);
                         }
                     }
                 }
@@ -212,14 +210,11 @@ function GeneratorSection() {
 
     const cancelFlashcardGenerationTask = ( taskId ) => {
         isPollingActiveRef.current = false; // Stop polling
-        const endpoint = `/api/mvp/flashcards/generate/cancel/${taskId}`
+        const endpoint = `/flashcards/generate/${taskId}`
         console.group('Flashcard Cancellation Request');
         console.log(`Endpoint:${ endpoint }`);
-        console.log('Method: GET');
-        console.log('Payload:', { taskId });
-        fetch(`/api/mvp/flashcards/generate/cancel/${taskId}`, {
-            method: 'GET' // or 'POST' if you have additional data to send
-        })
+        console.log('Method: DELETE');
+        fetch(endpoint, {method: 'DELETE'})
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -237,15 +232,31 @@ function GeneratorSection() {
             });
     };
 
-    function downloadFlashcards(flashcards, exportFormat) {
-        switch (backendExportOptions[exportFormat]) {
-            case "csv":
-                downloadCSV(flashcards, 'flashcards');
-                break;
-            case "apkg":
-                downloadApkg(flashcards, 'flashcards');
-                break;
-            // Other cases...
+    const downloadFlashcards = ( downloadToken ) => {
+        if (downloadToken != null) {
+            const endpoint = `/api/mvp/flashcards/download/${downloadToken}`;
+            console.group('Flashcard Download Request');
+            console.log(`Endpoint:${ endpoint }`);
+            console.log('Method: GET');
+            fetch(endpoint)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.blob()
+                }).then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = exportFormat === 'csv' ? 'flashcards.csv' : 'flashcards.apkg';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+                .catch(error => {
+                    console.error('Error during file download:', error);
+                });
         }
     }
 

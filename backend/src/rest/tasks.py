@@ -1,17 +1,18 @@
 # src/rest/tasks.py
 from openai import OpenAIError, OpenAI
 from src.custom_exceptions.quizard_exceptions import QuizardError
-from src.service.flashcard_service import FlashcardService
+from src.service.flashcard_service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
 
+from src.service.flashcard_service.flashcard_exprorter.flashcard_exporter import FlashcardExporter
 from src.utils.global_helpers import get_env_variable
 
 logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True, ignore_result=False, track_started=True)
-def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
+def generate_flashcards_task(self, config, model_name, lang, mode, export_format, input_text):
     """
     Generate flashcards based on input text using the FlashcardService.
 
@@ -64,7 +65,12 @@ def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
         client = OpenAI(api_key=get_env_variable("OPENAI_API_KEY"))
         flashcard_app = FlashcardService(openai=client, app_config=config,
                                          model_name=model_name, lang=lang, mode=mode)
+        flashcard_exporter = FlashcardExporter(export_format)
+
         flashcard_deck = flashcard_app.run(input_text, update_progress)
+        file = flashcard_exporter.export_flashcard_deck(flashcard_deck)
+        # Update task state with file type before returning the file
+        self.update_state(state='SUCCESS', meta={'file_type': export_format})
     except OpenAIError as e:
         self.update_state(state='FAILURE', meta={'error': str(e)})
         raise
@@ -74,5 +80,4 @@ def generate_flashcards_task(self, config, model_name, lang, mode, input_text):
     except Exception as e:
         self.update_state(state='FAILURE', meta={'error': str(e)})
         raise RuntimeError(f"Unexpected error in task: {e}")
-
-    return flashcard_deck.to_dict_list()     # Result needs to be serializable for Celery to store in results backend
+    return file

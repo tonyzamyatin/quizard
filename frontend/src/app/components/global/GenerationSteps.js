@@ -2,7 +2,7 @@ const GenerationSteps = Object.freeze({
     TEXT_UPLOAD: 'TextUpload',
     CONFIGURATION: 'Configuration',
     GENERATION: 'Generation',
-    DOWNLOAD: 'Download'
+    COMPLETE: 'Complete'
 });
 
 export default GenerationSteps;

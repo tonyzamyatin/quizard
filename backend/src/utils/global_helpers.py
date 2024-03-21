@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from src.custom_exceptions.env_exceptions import InvalidEnvironmentVariableError, EnvironmentLoadingError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, UnsupportedOptionError
 
+
 def load_yaml_config(config_dir: str, config_name: str) -> dict:
     """
     Loads a YAML configuration file.

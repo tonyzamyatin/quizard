@@ -53,6 +53,11 @@ def create_celery_app(flask_app: Flask) -> Celery:
         celery_app.conf.task_track_started = True
         celery_app.conf.task_ignore_result = False
         celery_app.set_default()
+        celery_app.conf.update(
+            task_serializer='pickle',
+            result_serializer='pickle',
+            accept_content=['pickle', 'json'],
+        )
         flask_app.extensions["celery"] = celery_app
     except KeyError as e:
         # Raised if the 'CELERY' key is missing in the Flask app's configuration

@@ -3,9 +3,10 @@ import os
 
 import structlog
 from celery.exceptions import TaskError
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from flask_restful import Resource, Api
 from flask_cors import CORS
+from itsdangerous import URLSafeSerializer
 from openai import OpenAIError
 from werkzeug.exceptions import HTTPException
 
@@ -13,7 +14,7 @@ from src.celery.celery import setup_applications
 from src.custom_exceptions.api_exceptions import HealthCheckError, TaskNotFoundError
 from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
 from config.logging_config import setup_logging
-from src.service.flashcard_service import FlashcardService
+from src.service.flashcard_service.flashcard_service import FlashcardService
 from src.utils.global_helpers import load_yaml_config, get_env_variable, validate_config_param
 from src.rest.tasks import generate_flashcards_task
 
@@ -27,6 +28,7 @@ config_dir = os.path.join(backend_root_dir, 'config')
 
 # Create Flask and Celery apps
 flask_app, celery_app = setup_applications()
+flask_app.config['SECRET_KEY'] = get_env_variable('SECRET_KEY')
 # Setup API
 CORS(flask_app)
 api = Api(flask_app)
@@ -76,6 +78,39 @@ def handle_unexpected_error(e):
     """Handle all unexpected exceptions."""
     logger.error(f"Unexpected error", error=e, exc_info=True)
     return standard_error_response(500, 'Unexpected Error', str(e))
+
+
+def _get_task_response_dict(task):
+    """Constructs a response dict based on the task state."""
+    data = {'state': task.state}
+    if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
+        data.update({
+            'progress': task.info.get('progress', 0),
+            'total': task.info.get('total', 1),  # Avoid division by zero
+        })
+    elif task.state == 'SUCCESS':
+        data['download_token'] = generate_download_token(task.id)
+        data['progress'] = 1
+        data['total'] = 1
+    elif task.state == 'FAILURE':
+        logger.error("Task failed", error=task.error, exc_info=True)
+        data['error'] = str(task.error)  # Assuming task.error contains error
+        task.forget()
+    return data
+
+
+def generate_download_token(task_id):
+    s = URLSafeSerializer(flask_app.config['SECRET_KEY'])
+    return s.dumps(task_id)
+
+
+def verify_download_token(token):
+    s = URLSafeSerializer(flask_app.config['SECRET_KEY'])
+    try:
+        task_id = s.loads(token)
+        return task_id
+    except:
+        return None
 
 
 class FlashcardGenerator(Resource):
@@ -130,6 +165,7 @@ class FlashcardGenerator(Resource):
                 model_name=json_data["model_name"],
                 lang=json_data["lang"],
                 mode=json_data["mode"],
+                export_format=json_data["export_format"],
                 input_text=json_data["input_text"]
             )
             logger.info("Flashcard generation task started", task_id=task.id)
@@ -192,23 +228,32 @@ class FlashcardGenerator(Resource):
 api.add_resource(FlashcardGenerator, '/flashcards/generate')
 
 
-def _get_task_response_dict(task):
-    """Constructs a response dict based on the task state."""
-    data = {'state': task.state}
-    if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
-        data.update({
-            'progress': task.info.get('progress', 0),
-            'total': task.info.get('total', 1),  # Avoid division by zero
-        })
-    elif task.state == 'SUCCESS':
-        data['flashcards'] = task.get(timeout=1)
-        data['progress'] = 1
-        data['total'] = 1
-    elif task.state == 'FAILURE':
-        logger.error("Task failed", error=task.error, exc_info=True)
-        data['error'] = str(task.error)  # Assuming task.error contains error
-        task.forget()
-    return data
+@flask_app.route('/flashcards/download/<token>')
+def download_file(token):
+    task_id = verify_download_token(token)
+    if task_id:
+        task = generate_flashcards_task.AsyncResult(task_id)
+        if task.state == 'SUCCESS':
+            file_content = task.result  # This should be your file content in bytes
+            file_type = task.info.get('file_type')
+
+            if file_type == 'csv':
+                filename = "flashcards.csv"
+                mimetype = "text/csv"
+            elif file_type == 'anki':
+                filename = "flashcards.apkg"
+                mimetype = "application/x-sqlite3"
+            else:
+                return "Unsupported file type", 400
+
+            response = make_response(file_content)
+            response.headers['Content-Disposition'] = f'attachment; filename={filename}'
+            response.headers['Content-Type'] = mimetype
+            return response
+        else:
+            return "File not available", 404
+    else:
+        return "Invalid or expired download link", 403
 
 
 @flask_app.route('/health')
