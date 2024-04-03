@@ -108,7 +108,7 @@ function GeneratorSection() {
 
     // Method to generate flashcards with specified mode and text
     const startFlashcardGenerationTask = () => {
-        const endpoint = '/flashcards/generate';
+        const endpoint = '/flashcards/generator';
         const payload = {
             model_name: modelName,
             lang: backendLanguageOptions[lang],
@@ -168,7 +168,7 @@ function GeneratorSection() {
     const pollFlashcardGenerationTask = (taskId, waitDelay = 1000, updateDelay = 1000) => {
         if (!isPollingActiveRef.current) return;
 
-        const endpoint = `/flashcards/generate/${taskId}`;
+        const endpoint = `/flashcards/generator/${taskId}`;
         console.group('Flashcard Update Request');
         console.log(`Endpoint:${ endpoint }`);
         console.log('Method: GET');
@@ -214,7 +214,7 @@ function GeneratorSection() {
 
     const cancelFlashcardGenerationTask = ( taskId ) => {
         isPollingActiveRef.current = false; // Stop polling
-        const endpoint = `/flashcards/generate/${taskId}`
+        const endpoint = `/flashcards/generator/${taskId}`
         console.group('Flashcard Cancellation Request');
         console.log(`Endpoint:${ endpoint }`);
         console.log('Method: DELETE');
@@ -238,7 +238,7 @@ function GeneratorSection() {
 
     const downloadFlashcards = ( downloadToken ) => {
         if (downloadToken != null) {
-            const endpoint = `/api/mvp/flashcards/download/${downloadToken}`;
+            const endpoint = `/flashcards/downloader/${downloadToken}`;
             console.group('Flashcard Download Request');
             console.log(`Endpoint:${ endpoint }`);
             console.log('Method: GET');

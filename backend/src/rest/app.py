@@ -233,10 +233,10 @@ class FlashcardGenerator(Resource):
             return {"error": str(e)}, 500
 
 
-api.add_resource(FlashcardGenerator, '/flashcards/generate')
+api.add_resource(FlashcardGenerator, '/flashcards/generator')
 
 
-@flask_app.route('/flashcards/download/<token>')
+@flask_app.route('/flashcards/downloader/<token>')
 def download_file(token):
     task_id = verify_download_token(token)
     if task_id:
