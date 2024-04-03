@@ -1,5 +1,3 @@
-import GeneratorSection from "./components/generation_section/GeneratorSection";
-import { HealthCheckProvider } from './components/generation_section/HealthCheckContext';
 // Import general styles first
 import '../styles/Global.css'
 import '../styles/Generator.css'
@@ -11,7 +9,9 @@ import '../styles/GeneratorConfigPage.css'
 import '../styles/GeneratorWaitingPage.css'
 import '../styles/GeneratorCompletionPage.css'
 import '../styles/ProgressBar.css'
-import Footer from "./components/global/Footer";
+import {HealthCheckProvider} from "./generation_section/HealthCheckContext";
+import GeneratorSection from "./generation_section/GeneratorSection";
+import Footer from "./global/Footer";
 
 const App = () => {
 

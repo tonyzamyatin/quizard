@@ -10,7 +10,7 @@ export const handlers = [
         // Initialize the task progress
         tasks.set(taskId, { progress: 0, state: 'PENDING', total: 5 });
 
-        return HttpResponse.json({ task_id: taskId});
+        return HttpResponse.json({ taskId: taskId});
     }),
 
     http.get('/api/mvp/flashcards/generate/progress/:taskId', ({ params }) => {

@@ -81,7 +81,7 @@ def _save_anki_deck(anki_deck: genanki.Deck) -> bytes:
 
 
 class FlashcardExporter:
-    EXPORT_FORMATS = ['csv', 'anki', 'list']
+    EXPORT_FORMATS = ['csv', 'apkg', 'list']
 
     def __init__(self, export_format: str) -> None:
         validate_export_format(export_format)
@@ -100,7 +100,7 @@ class FlashcardExporter:
         """
         if self.export_format == 'csv':
             return _save_as_csv(flashcard_deck)
-        if self.export_format == 'anki':
+        if self.export_format == 'apkg':
             anki_deck = _create_anki_deck('flashcards', flashcard_deck)
             return _save_anki_deck(anki_deck)
         if self.export_format == 'list':

@@ -2,11 +2,12 @@
 import os
 
 import structlog
+from humps import camelize, decamelize
 from celery.exceptions import TaskError
 from flask import request, jsonify, make_response
 from flask_restful import Resource, Api
 from flask_cors import CORS
-from itsdangerous import URLSafeSerializer
+from itsdangerous import URLSafeSerializer, BadSignature
 from openai import OpenAIError
 from werkzeug.exceptions import HTTPException
 
@@ -42,7 +43,7 @@ def standard_error_response(error_code, error_message, description=None):
             'description': description
         }
     }
-    response = jsonify(data)
+    response = jsonify(camelize(data))
     response.status_code = error_code
     return response
 
@@ -109,7 +110,7 @@ def verify_download_token(token):
     try:
         task_id = s.loads(token)
         return task_id
-    except:
+    except BadSignature:
         return None
 
 
@@ -132,6 +133,7 @@ class FlashcardGenerator(Resource):
         try:
             self.app_config = load_yaml_config(config_dir, get_env_variable("GENERATOR_CONFIG_FILE"))
         except ConfigLoadingError as e:
+            logger.critical(f"Failed to load critical application configuration", error=str(e), exc_info=True)
             raise ConfigLoadingError(f"Failed to load critical application configuration")
             # shutdown_application(celery_app=celery_app, reason="Failed to load critical application configuration.", error_info={'error': str(e)})
 
@@ -155,7 +157,7 @@ class FlashcardGenerator(Resource):
             For any other unforeseen exceptions.
         """
         try:
-            json_data = request.get_json(force=True)
+            json_data = decamelize(request.get_json(force=True))
             # Validate expected json format here and raise custom KeyError
 
             validate_config_param(json_data["mode"], FlashcardService.GENERATION_MODE)
@@ -170,15 +172,19 @@ class FlashcardGenerator(Resource):
             )
             logger.info("Flashcard generation task started", task_id=task.id)
             logger.info("Returning JSON response", response_data={'task_id': task.id})
-            response = jsonify({'task_id': task.id})
+            response_data = camelize({'task_id': task.id})
+            response = jsonify(response_data)
             response.status_code = 202
             return response
-        except OpenAIError:
+        except OpenAIError as e:
+            logger.error("OpenAI-specific error", error=e, exc_info=True)
             raise
-        except QuizardError:
+        except QuizardError as e:
+            logger.error("Quizard-specific error", error=e, exc_info=True)
             raise
         # Catch custom key error here and raise an HTTP exception to be caught by Flask's exception handler
-        except Exception:
+        except Exception as e:
+            logger.error(f"Unexpected error", error=e, exc_info=True)
             raise
 
     # flashcards/generate/<task_id>     (get mapping)
@@ -190,9 +196,10 @@ class FlashcardGenerator(Resource):
         try:
             task = generate_flashcards_task.AsyncResult(task_id)
             if task is None:
+                logger.warning(f"Task not found with taskId: {task_id}")
                 raise TaskNotFoundError(f"Unable to retrieve task with taskId: {task_id}")
             data = _get_task_response_dict(task)
-            response = jsonify(data)
+            response = jsonify(camelize(data))
             if task.state == 'PROCESSING' or task.state == 'STARTED' or task.state == 'PENDING':
                 response.status_code = 202
             elif task.state == 'SUCCESS':
@@ -209,6 +216,7 @@ class FlashcardGenerator(Resource):
             logger.error("Quizard-specific error", error=e, exc_info=True)
             return jsonify({'error': str(e)}), 500
         except TaskError as e:
+            logger.warning(f"Task not found with taskId: {task_id}")
             return jsonify({'error': str(e)}), 404
         except Exception as e:
             logger.error(f"Unexpected error", error=e, exc_info=True)
@@ -234,7 +242,7 @@ def download_file(token):
     if task_id:
         task = generate_flashcards_task.AsyncResult(task_id)
         if task.state == 'SUCCESS':
-            file_content = task.result  # This should be your file content in bytes
+            file_content = task.result  # file content in bytes
             file_type = task.info.get('file_type')
 
             if file_type == 'csv':

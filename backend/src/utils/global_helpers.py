@@ -1,6 +1,6 @@
 # src/utils/global_helpers.py
 import os
-from typing import Optional, List
+from typing import List
 
 import yaml
 from dotenv import load_dotenv

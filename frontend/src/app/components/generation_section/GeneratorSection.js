@@ -5,7 +5,6 @@ import WaitingPage from "./3_flashcard_generation/WaitingPage";
 import CompletionPage from "./4_flashcard_download/CompletionPage";
 import GenerationSteps from "../global/GenerationSteps";
 import {useHealthCheck} from "./HealthCheckContext";
-import {convertToCSV, downloadCSV, convertToApkg, downloadApkg} from "../../service/utils/flashcardUtils";
 
 function GeneratorSection() {
     const isDevelopmentMode = process.env.NODE_ENV === 'development';
@@ -109,22 +108,24 @@ function GeneratorSection() {
 
     // Method to generate flashcards with specified mode and text
     const startFlashcardGenerationTask = () => {
-        const endpoint = '/flashcards/generate'
+        const endpoint = '/flashcards/generate';
+        const payload = {
+            model_name: modelName,
+            lang: backendLanguageOptions[lang],
+            mode: backendModeOptions[mode],
+            exportFormat: backendExportOptions[exportFormat],
+            input_text: text,
+        };
         console.group('Flashcard Generation Request');
         console.log(`Endpoint: ${endpoint}`);
         console.log('Method: POST');
-        console.log('Payload:', { lang, mode, exportFormat, inputText: text });
+        console.log('Payload:', payload);
         fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                model_name: modelName,
-                lang: backendLanguageOptions[lang],
-                mode: backendModeOptions[mode],
-                input_text: text,
-            }),
+            body: JSON.stringify(payload),
         })
             .then(response => {
                 const contentType = response.headers.get('content-type');
@@ -142,14 +143,14 @@ function GeneratorSection() {
                 return response.json();
             })
         .then(data => {
-            if (!data.task_id) {
-                console.warn('Response missing task_id:', data);
-                throw new Error('task_id is missing from the response');
+            if (!data.taskId) {
+                console.warn('Response missing taskId:', data);
+                throw new Error('taskId is missing from the response');
             } else {
                 isPollingActiveRef.current = true;
-                setTaskId(data.task_id);
+                setTaskId(data.taskId);
                 console.log(`Task started! Task Id: ${taskId}`)
-                pollFlashcardGenerationTask(data.task_id);
+                pollFlashcardGenerationTask(data.taskId);
             }
         })
         .catch(error => {
@@ -171,8 +172,6 @@ function GeneratorSection() {
         console.group('Flashcard Update Request');
         console.log(`Endpoint:${ endpoint }`);
         console.log('Method: GET');
-        console.log('Payload:', { taskId });
-
         fetch(endpoint)
             .then(response => {
                 if (!response.ok) {
@@ -192,9 +191,14 @@ function GeneratorSection() {
                     } else {
                         isPollingActiveRef.current = false;
                         if (data.state === 'SUCCESS') {
-                            const downloadToken = data.download_token;
-                            setCurrentStep(GenerationSteps.COMPLETE);
-                            downloadFlashcards(downloadToken);
+                            if (!data.downloadToken) {
+                                console.warn('Response missing downloadToken:', data);
+                                throw new Error('downloadToken is missing from the response');
+                            } else {
+                                const downloadToken = data.downloadToken;
+                                setCurrentStep(GenerationSteps.COMPLETE);
+                                downloadFlashcards(downloadToken);
+                            }
                         }
                     }
                 }
