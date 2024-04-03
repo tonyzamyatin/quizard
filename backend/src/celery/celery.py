@@ -31,8 +31,8 @@ def setup_applications():
     try:
         load_environment_variables()
         celery_broker_url = create_celery_broker_url()
-        celery_result_backend = create_celery_result_backend()
-        flask_app = create_flask_app(celery_broker_url, celery_result_backend)
+        celery_result_backend_url = create_celery_result_backend_url()
+        flask_app = create_flask_app(celery_broker_url, celery_result_backend_url)
         celery_app = create_celery_app(flask_app)
         return flask_app, celery_app
     except (EnvironmentLoadingError, RuntimeError) as e:
@@ -64,7 +64,7 @@ def create_celery_broker_url() -> str:
     return f"amqp://{rabbit_user}:{rabbit_password}@{rabbit_host}:{rabbit_port}"
 
 
-def create_celery_result_backend() -> str:
+def create_celery_result_backend_url() -> str:
     """
     Create the result backend URL for Celery based on environment variables.
 

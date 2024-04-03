@@ -35,52 +35,6 @@ CORS(flask_app)
 api = Api(flask_app)
 
 
-def standard_error_response(error_code, error_message, description=None):
-    data = {
-        'error': {
-            'code': error_code,
-            'message': error_message,
-            'description': description
-        }
-    }
-    response = jsonify(camelize(data))
-    response.status_code = error_code
-    return response
-
-
-@flask_app.errorhandler(HTTPException)
-def handle_exception(e):
-    """Handle all HTTP exceptions."""
-    return standard_error_response(e.code, e.name, e.description)
-
-
-@flask_app.errorhandler(OpenAIError)
-def handle_unexpected_error(e):
-    """Handle OpenAI errors specifically."""
-    logger.error("OpenAI-specific error", error=e, exc_info=True)
-    return standard_error_response(502, 'OpenAI Error', str(e))
-
-
-@flask_app.errorhandler(QuizardError)
-def handle_unexpected_error(e):
-    """Handle Quizard errors specifically."""
-    logger.error("Quizard-specific error", error=e, exc_info=True)
-    return standard_error_response(500, 'Quizard Error', str(e))
-
-
-@flask_app.errorhandler(HealthCheckError)
-def handle_health_check_error(e):
-    logger.error("Health check error", error=e, exc_info=True)
-    return standard_error_response(503, 'Service Unavailable', str(e))
-
-
-@flask_app.errorhandler(Exception)
-def handle_unexpected_error(e):
-    """Handle all unexpected exceptions."""
-    logger.error(f"Unexpected error", error=e, exc_info=True)
-    return standard_error_response(500, 'Unexpected Error', str(e))
-
-
 def _get_task_response_dict(task):
     """Constructs a response dict based on the task state."""
     data = {'state': task.state}
