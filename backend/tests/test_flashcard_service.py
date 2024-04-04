@@ -7,7 +7,7 @@ from src.custom_exceptions.quizard_exceptions import FlashcardInvalidFormatError
 from src.entities.completion_messages import Messages
 from src.entities.flashcard.flashcard import Flashcard, FlashcardType
 from src.entities.flashcard_deck import FlashcardDeck
-from src.service.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator, parse_flashcard, parse_flashcards
+from src.services.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator, parse_flashcard, parse_flashcards
 
 
 # test_flashcard.py

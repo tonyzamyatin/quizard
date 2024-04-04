@@ -4,7 +4,6 @@ import UploadPage from "./2_text_upload/UploadPage";
 import WaitingPage from "./3_flashcard_generation/WaitingPage";
 import CompletionPage from "./4_flashcard_download/CompletionPage";
 import GenerationSteps from "../global/GenerationSteps";
-import {useHealthCheck} from "./HealthCheckContext";
 
 function GeneratorSection() {
     const isDevelopmentMode = process.env.NODE_ENV === 'development';
@@ -191,13 +190,13 @@ function GeneratorSection() {
                     } else {
                         isPollingActiveRef.current = false;
                         if (data.state === 'SUCCESS') {
-                            if (!data.downloadToken) {
-                                console.warn('Response missing downloadToken:', data);
-                                throw new Error('downloadToken is missing from the response');
+                            if (!data.retrievalToken) {
+                                console.warn('Response missing retrievalToken:', data);
+                                throw new Error('retrievalToken is missing from the response');
                             } else {
-                                const downloadToken = data.downloadToken;
+                                const retrievalToken = data.retrievalToken;
                                 setCurrentStep(GenerationSteps.COMPLETE);
-                                downloadFlashcards(downloadToken);
+                                downloadFlashcards(retrievalToken);
                             }
                         }
                     }
@@ -236,9 +235,9 @@ function GeneratorSection() {
             });
     };
 
-    const downloadFlashcards = ( downloadToken ) => {
-        if (downloadToken != null) {
-            const endpoint = `/flashcards/downloader/${downloadToken}`;
+    const downloadFlashcards = ( retrievalToken ) => {
+        if (retrievalToken != null) {
+            const endpoint = `/flashcards/retriever/${retrievalToken}`;
             console.group('Flashcard Download Request');
             console.log(`Endpoint:${ endpoint }`);
             console.log('Method: GET');

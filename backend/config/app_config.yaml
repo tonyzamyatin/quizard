@@ -8,6 +8,7 @@
 # gpt-4 	                    context:   16K;   input: $0.0300 / 1K tokens;   output: $0.0600 / 1K tokens
 # gpt-4-32k         	        context:   32K;   input: $0.0600 / 1K tokens;   output: $0.1200 / 1K tokens
 model:
+  model_name: "gpt-3.5-turbo"
   temperature: 0.8
   top_p: 1.0
   frequency_penalty: 0.0
@@ -40,7 +41,7 @@ text_splitting:
   # 3.000, 2.400 and 400 when using the 4k model
   # _____, 10.000 and 10.400 when using the 16k model
 
-flashcard_generation:
+prompts:
   example_prompt: "ex1_genetics_of_cancer"     # Name of the example directory
   additional_prompt: "ad1_top_instr"           # Prompt to be inserted at the top of the input text
 

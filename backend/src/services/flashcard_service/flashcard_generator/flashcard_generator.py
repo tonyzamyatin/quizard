@@ -42,7 +42,7 @@ def parse_flashcard(id: int, line: str) -> Flashcard:
 
     prefix_match = re.match(r'\[(.*?)\]', split_line[0])
     if not prefix_match:
-        raise FlashcardInvalidFormatError(f"Missing prefix")
+        raise FlashcardPrefixError(f"Missing prefix")
 
     prefix = prefix_match.group(1).lower()
     front_side = split_line[0][len(prefix) + 2:].strip()
@@ -79,7 +79,7 @@ def get_flashcard_type(prefix: str, number: int) -> FlashcardType:
     raise FlashcardPrefixError(f"Unexpected prefix", Flashcard(number, FlashcardType.UNKNOWN, '', ''))
 
 
-def parse_flashcards(content: str, generation_mode: str, start_id=1, batch_number: Optional[int] = None) -> List[Flashcard]:
+def parse_flashcards(content: str, start_id=1, batch_number: Optional[int] = None) -> List[Flashcard]:
     """
     Parses the content into a list of Flashcard objects.
 
@@ -103,8 +103,7 @@ def parse_flashcards(content: str, generation_mode: str, start_id=1, batch_numbe
     lines = content.replace('\n\n', '\n').split('\n')
     for cnt, line in enumerate(lines, start=start_id):
         try:
-            flashcard = parse_flashcard(cnt, line) if generation_mode == 'practice' else \
-                Flashcard(id=cnt, type=FlashcardType[generation_mode.upper()], front_side=line.split(";")[0], back_side=line.split(";")[1])
+            flashcard = parse_flashcard(cnt, line)
             cards.append(flashcard)
         except FlashcardPrefixError as e:
             logger.warning("Flashcard prefix error", error=str(e), batch=batch_number, flashcard_number=cnt)
@@ -137,12 +136,12 @@ class FlashcardGenerator:
         The mode of flashcard generation.
     """
 
-    def __init__(self, client: OpenAI, model_config: dict, generation_mode: str):
+    def __init__(self, client: OpenAI, model_config: dict):
         self.client = client
         self.model_config = model_config
-        self.generation_mode = generation_mode
 
-    def generate_flashcards(self, model: str, messages: Messages, max_tokens: int, start_id=1, batch_number: Optional[int] = None) -> List[Flashcard]:
+    def generate_flashcards(self, messages: Messages, max_tokens: int, start_id=1, batch_number: Optional[int] = None) \
+            -> List[Flashcard]:
         """
         Generates a list of flashcards using the OpenAI GPT model.
         Optionally includes a batch number in the logging_config information.
@@ -150,8 +149,6 @@ class FlashcardGenerator:
 
         Parameters
         ----------
-        model : str
-            The name of the model to use for generation.
         messages : Messages
             A Message object containing the input message sequence.
         max_tokens : int
@@ -168,7 +165,7 @@ class FlashcardGenerator:
         """
         try:
             response = self.client.chat.completions.create(
-                model=model,
+                model=self.model_config["model_name"],
                 messages=messages.as_message_list(),
                 max_tokens=max_tokens,
                 temperature=self.model_config.get("temperature", 0.7),
@@ -178,7 +175,7 @@ class FlashcardGenerator:
             )
             receive_time_sec = round(time.time(), 3)
             log_completion_metrics(response, receive_time_sec, batch_number)
-            return parse_flashcards(content=response.choices[0].message.content, generation_mode=self.generation_mode, start_id=start_id, batch_number=batch_number)
+            return parse_flashcards(response.choices[0].message.content, start_id, batch_number)
         except openai.BadRequestError as e:
             # Handle error 400
             logger.error("OpenAI API Error occurred", error=f"Error 400: {e}")
