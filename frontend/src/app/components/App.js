@@ -9,17 +9,16 @@ import '../styles/GeneratorConfigPage.css'
 import '../styles/GeneratorWaitingPage.css'
 import '../styles/GeneratorCompletionPage.css'
 import '../styles/ProgressBar.css'
-import {HealthCheckProvider} from "./generation_section/HealthCheckContext";
 import GeneratorSection from "./generation_section/GeneratorSection";
 import Footer from "./global/Footer";
 
 const App = () => {
 
     return (
-        <HealthCheckProvider>
+        <div>
             <GeneratorSection />
             <Footer />
-        </HealthCheckProvider>
+        </div>
     );
 }
 
