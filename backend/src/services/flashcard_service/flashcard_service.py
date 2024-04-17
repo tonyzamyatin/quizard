@@ -7,7 +7,7 @@ from typing import List, Optional, Callable
 import tiktoken
 from openai import OpenAI
 
-from src.dto.flashcards_request_dto import FlashcardsRequestDto
+from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
 from src.entities.flashcard.flashcard import Flashcard
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.services.flashcard_service.flashcard_exprorter.flashcard_exporter import export_as_apkg, export_as_csv
@@ -15,7 +15,8 @@ from src.services.flashcard_service.flashcard_generator.flashcard_generator impo
 from src.services.flashcard_service.text_splitting import text_split
 from src.entities.completion_messages.completion_messages import Messages
 from src.utils.global_helpers import format_num, inset_into_string, read_file, load_yaml_config, get_env_variable
-from src.custom_exceptions.quizard_exceptions import PromptSizeError, ConfigInvalidValueError, ConfigLoadingError
+from src.custom_exceptions.internal_exceptions import ConfigInvalidValueError, ConfigLoadingError
+from src.custom_exceptions.external_exceptions import PromptSizeError, ValidationError
 
 logger = structlog.getLogger(__name__)
 
@@ -66,7 +67,7 @@ def validate_prompt_size(prompt_size: int, prompt_token_limit: int):
         If the prompts exceeds the token limit.
     """
     if prompt_size > prompt_token_limit:
-        raise PromptSizeError(f"Prompt size of {format_num(prompt_size)} exceeds set prompts token limit.")
+        raise ValidationError(f"Prompt size of {format_num(prompt_size)} exceeds set prompts token limit.")
 
 
 def compute_prompt_tokens(encoding: tiktoken.Encoding, system_prompt: str, example_user: str, example_assistant: str,
@@ -82,7 +83,7 @@ def compute_prompt_tokens(encoding: tiktoken.Encoding, system_prompt: str, examp
     prompt_tokens = len(encoding.encode(system_prompt + example_user + example_assistant + additional_prompt))
     try:
         validate_prompt_size(prompt_tokens, prompt_token_limit)
-    except PromptSizeError as e:
+    except ValidationError as e:
         logger.error(
             "Invalid Prompt Size",
             error=e,
@@ -171,7 +172,7 @@ class FlashcardService:
         self.encoding = tiktoken.encoding_for_model(self.model_config['model_name'])
         self.app_token_limit, self.prompt_token_limit, self.completion_token_limit = load_token_limits(app_config)
 
-    def generate_flashcards(self, flashcards_request_dto: FlashcardsRequestDto,
+    def generate_flashcards(self, flashcards_request_dto: FlashcardGeneratorTaskDto,
                             update_progress: Optional[Callable[[int, int], None]]) -> FlashcardDeck:
         """
         Generates flashcards from the given user input.

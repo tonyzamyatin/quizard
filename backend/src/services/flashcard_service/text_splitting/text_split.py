@@ -1,7 +1,7 @@
 # src/flashcard_service/text_splitting/text_split.py
 from typing import List
 import tiktoken
-from src.custom_exceptions.quizard_exceptions import ConfigInvalidValueError
+from src.custom_exceptions.internal_exceptions import ConfigInvalidValueError
 
 
 def split_text(encoding: tiktoken.Encoding, text: str, fragment_size: int, overlap_type: str, overlap: float) -> List[str]:

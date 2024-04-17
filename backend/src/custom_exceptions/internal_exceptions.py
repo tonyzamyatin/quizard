@@ -1,4 +1,4 @@
-# src/custom_exceptions/quizard_exceptions.py
+# src/custom_exceptions/internal_exceptions.py
 from src.entities.flashcard.flashcard import Flashcard
 
 
@@ -24,11 +24,6 @@ class ConfigLoadingError(ConfigError):
     pass
 
 
-class UnsupportedOptionError(ConfigError):
-    """Custom exception for invalid or unsupported options specified in the config"""
-    pass
-
-
 # Exceptions related to Flashcard generation
 class FlashcardGenerationError(QuizardError):
     """Parent class of all errors related to flashcard generation."""
@@ -48,7 +43,11 @@ class FlashcardPrefixError(FlashcardInvalidFormatError):
         self.flashcard = flashcard
 
 
-# Exceptions related to other issues
-class PromptSizeError(QuizardError):
-    """Custom exception for prompts size issues."""
+class EnvironmentLoadingError(EnvironmentError):
+    """Custom exception for errors relating loading the .env file."""
+    pass
+
+
+class InvalidEnvironmentVariableError(EnvironmentError):
+    """Custom exception for the attempted retrival of an undefined variable from .env."""
     pass

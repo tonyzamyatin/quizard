@@ -11,6 +11,7 @@ class ITaskService(ABC):
     def start_task(self, task_params_dto: any, *args, **kwargs) -> str:
         """
         Start a task.
+
         Parameters
         ----------
         task_params_dto: any
@@ -29,10 +30,12 @@ class ITaskService(ABC):
     def get_task_state(self, task_id: str) -> str:
         """
         Get the state of the task.
+
         Parameters
         ----------
         task_id
             The ID of the task.
+
         Returns
         -------
         str
@@ -44,6 +47,7 @@ class ITaskService(ABC):
     def get_task_info(self, task_id: str) -> dict:
         """
         Get the information of the task.
+
         Parameters
         ----------
         task_id: str
@@ -59,10 +63,12 @@ class ITaskService(ABC):
     def get_task_result(self, task_id: str) -> AsyncResult:
         """
         Get the result of the task if it is ready.
+
         Parameters
         ----------
         task_id
             The ID of the task.
+
         Returns
         -------
         Any
@@ -74,10 +80,12 @@ class ITaskService(ABC):
     def get_task_traceback(self, task_id: str) -> str:
         """
         Get the traceback of the task.
+
         Parameters
         ----------
         task_id
             The ID of the task.
+
         Returns
         -------
         str
@@ -89,6 +97,7 @@ class ITaskService(ABC):
     def cancel_task(self, task_id: str) -> None:
         """
         Cancel a task.
+
         Parameters
         ----------
         task_id: str

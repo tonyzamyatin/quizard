@@ -6,8 +6,8 @@ from humps import camelize
 from werkzeug.exceptions import HTTPException
 from openai import OpenAIError
 
-from src.custom_exceptions.api_exceptions import HealthCheckError, TaskNotFoundError
-from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, QuizardError
+from src.custom_exceptions.external_exceptions import HealthCheckError, ValidationError, NotFoundException, AuthenticationError
+from src.custom_exceptions.internal_exceptions import QuizardError
 
 logger = structlog.get_logger(__name__)
 
@@ -42,6 +42,21 @@ def init_app(flask_app):
         """Handle Quizard errors specifically."""
         logger.error("Quizard-specific error", error=e, exc_info=True)
         return standard_error_response(500, 'Quizard Error', str(e))
+
+    @flask_app.errorhandler(ValidationError)
+    def handle_validation_error(e):
+        logger.error("Validation error", error=e, exc_info=True)
+        return standard_error_response(422, 'Validation Error', str(e))
+
+    @flask_app.errorhandler(NotFoundException)
+    def handle_not_found_error(e):
+        logger.error("Not Found error", error=e, exc_info=True)
+        return standard_error_response(404, 'Not Found', str(e))
+
+    @flask_app.errorhandler(AuthenticationError)
+    def handle_authentication_error(e):
+        logger.error("Authentication error", error=e, exc_info=True)
+        return standard_error_response(401, 'Authentication Error', str(e))
 
     @flask_app.errorhandler(HealthCheckError)
     def handle_health_check_error(e):

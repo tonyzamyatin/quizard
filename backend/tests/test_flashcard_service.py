@@ -3,7 +3,7 @@ import json
 import pytest
 from openai import OpenAI
 
-from src.custom_exceptions.quizard_exceptions import FlashcardInvalidFormatError, FlashcardPrefixError
+from src.custom_exceptions.internal_exceptions import FlashcardInvalidFormatError, FlashcardPrefixError
 from src.entities.completion_messages import Messages
 from src.entities.flashcard.flashcard import Flashcard, FlashcardType
 from src.entities.flashcard_deck import FlashcardDeck

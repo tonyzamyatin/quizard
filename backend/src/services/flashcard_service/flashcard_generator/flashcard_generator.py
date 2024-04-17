@@ -7,7 +7,7 @@ import structlog
 from typing import List, Optional
 from openai import OpenAI
 from src.entities.flashcard.flashcard import Flashcard, FlashcardType
-from src.custom_exceptions.quizard_exceptions import FlashcardInvalidFormatError, FlashcardPrefixError
+from src.custom_exceptions.internal_exceptions import FlashcardInvalidFormatError, FlashcardPrefixError
 from src.entities.completion_messages.completion_messages import Messages
 
 from src.utils.global_helpers import format_num

@@ -5,8 +5,8 @@ from typing import List
 import yaml
 from dotenv import load_dotenv
 
-from src.custom_exceptions.env_exceptions import InvalidEnvironmentVariableError, EnvironmentLoadingError
-from src.custom_exceptions.quizard_exceptions import ConfigLoadingError, UnsupportedOptionError
+from src.custom_exceptions.internal_exceptions import ConfigLoadingError, EnvironmentLoadingError, InvalidEnvironmentVariableError
+from src.custom_exceptions.external_exceptions import ValidationError
 
 
 def load_yaml_config(config_dir: str, config_name: str) -> dict:
@@ -166,4 +166,4 @@ def validate_config_param(parameter: str, accepted_params: List[str]):
         If the parameter value is not in the list of accepted values.
     """
     if parameter.lower() not in [param.lower() for param in accepted_params]:
-        raise UnsupportedOptionError(f"Invalid parameter: {parameter}. Expected one of {accepted_params}.")
+        raise ValidationError(f"Invalid parameter: {parameter}. Expected one of {accepted_params}.")

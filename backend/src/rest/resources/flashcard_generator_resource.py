@@ -1,4 +1,5 @@
 # src/rest/resources/flashcard_generator_resource.py
+# TODO: Throw exceptions with descriptive error messages instead of generic ones
 
 import structlog
 from flask import request, jsonify
@@ -6,7 +7,7 @@ from flask_restful import Resource
 from humps import decamelize, camelize
 
 from config.logging_config import setup_logging
-from src.custom_exceptions.api_exceptions import TaskNotFoundError
+from src.custom_exceptions.external_exceptions import TaskNotFoundError
 from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
 from src.services.task_service.flashcard_generator_task_service import IFlashcardGeneratorTaskService
 
@@ -25,7 +26,7 @@ class FlashcardGeneratorResource(Resource):
     def __init__(self, task_service: IFlashcardGeneratorTaskService):
         self.task_service = task_service
 
-    # flashcards/generate       (post mapping)
+    # flashcards/generate
     def post(self):
         """
         Handle POST requests to initiate a flashcard generation task.
@@ -60,7 +61,7 @@ class FlashcardGeneratorResource(Resource):
         response.status_code = 202
         return response
 
-    # flashcards/generate/<task_id>     (get mapping)
+    # flashcards/generate/<task_id>
     def get(self, task_id):
         """
         Get the current progress or result of the flashcard generation task.
@@ -90,7 +91,7 @@ class FlashcardGeneratorResource(Resource):
             response.status_code = 410
         return response
 
-    # flashcards/generate/<task_id> (delete mapping)
+    # flashcards/generate/<task_id>
     def delete(self, task_id):
         """
         Cancel a flashcard generation task.

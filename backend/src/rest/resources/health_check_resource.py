@@ -4,7 +4,7 @@ import os
 import structlog
 from flask import jsonify
 from flask_restful import Resource
-from src.custom_exceptions.api_exceptions import HealthCheckError
+from src.custom_exceptions.external_exceptions import HealthCheckError
 
 logger = structlog.get_logger(__name__)
 

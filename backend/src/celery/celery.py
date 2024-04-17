@@ -1,8 +1,7 @@
 # src.celery.celery.py
 from celery.signals import task_failure
 import structlog
-from src.custom_exceptions.env_exceptions import EnvironmentLoadingError
-from src.custom_exceptions.quizard_exceptions import QuizardError
+from src.custom_exceptions.internal_exceptions import QuizardError, EnvironmentLoadingError
 from src.rest.flask_factory import create_flask_app
 from src.rest.celery_config import create_celery_app
 from src.utils.global_helpers import get_env_variable, load_environment_variables

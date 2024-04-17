@@ -5,8 +5,9 @@ from celery import Celery
 from flask import Flask
 from itsdangerous import URLSafeSerializer, BadSignature
 
+from src.custom_exceptions.external_exceptions import TokenAuthenticationError
 from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
-from src.services.task_service.task_service import ITaskService
+from src.services.task_service.task_service_interface import ITaskService
 from src.celery.tasks import flashcard_generator_task
 
 
@@ -20,6 +21,7 @@ class IFlashcardGeneratorTaskService(ITaskService):
         ----------
         task_id
             The ID of the task the result of which should be retrieved.
+
         Returns
         -------
         str
@@ -36,19 +38,24 @@ class IFlashcardGeneratorTaskService(ITaskService):
         ----------
         token
             The token to verify.
+
         Returns
         -------
         str
             The ID of the task the token corresponds to.
-        None
-            If the token is invalid or expired.
+
+        Raises
+        ------
+        InvalidTokenError
+            If the token is invalid.
         """
         pass
 
 
 class FlashcardGeneratorTaskService(IFlashcardGeneratorTaskService):
     """
-    Wrapper for performing operations on the flashcard generator celery task.
+    Implementation of IFlashcardGeneratorTaskService.
+    Essentially a wrapper for performing operations on the flashcard generator celery task.
     """
 
     def __init__(self, flask_app: Flask, celery_app: Celery):
@@ -83,9 +90,9 @@ class FlashcardGeneratorTaskService(IFlashcardGeneratorTaskService):
         return s.dumps(task_id)
 
     def verify_retrival_token(self, token):
-        s = URLSafeSerializer(self.flask_app.config['SECRET_KEY'])
         try:
+            s = URLSafeSerializer(self.flask_app.config['SECRET_KEY'])
             task_id = s.loads(token)
             return task_id
         except BadSignature:
-            return None
+            raise TokenAuthenticationError("Invalid or expired retrieval token link")
