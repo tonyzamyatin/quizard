@@ -14,13 +14,23 @@ class ConfigError(QuizardError):
     pass
 
 
+class ConfigLoadingError(ConfigError):
+    """Custom exception for config loading issues."""
+    pass
+
+
 class ConfigInvalidValueError(ConfigError):
     """Custom exception for invalid values specified in the run config"""
     pass
 
 
-class ConfigLoadingError(ConfigError):
-    """Custom exception for config loading issues."""
+class ConfigFieldNotFoundError(ConfigError):
+    """Custom exception for missing fields in the config."""
+    pass
+
+
+class PromptSizeError(QuizardError):
+    """Custom exception for internal prompts size issues."""
     pass
 
 

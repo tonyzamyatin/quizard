@@ -44,7 +44,7 @@ logger.info("Logging setup complete.")
 # Load environment variables
 load_dotenv()
 # Load configs
-app_config = load_yaml_config(config_dir, 'app_config.yaml')
+app_config = load_yaml_config(config_dir, 'quizard_config.yaml')
 run_config = load_yaml_config(config_dir, 'run_config.yaml')
 
 # Initialize OpenAI client

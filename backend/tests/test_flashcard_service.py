@@ -7,7 +7,7 @@ from src.custom_exceptions.internal_exceptions import FlashcardInvalidFormatErro
 from src.entities.completion_messages import Messages
 from src.entities.flashcard.flashcard import Flashcard, FlashcardType
 from src.entities.flashcard_deck import FlashcardDeck
-from src.services.flashcard_service.flashcard_generator.flashcard_generator import FlashcardGenerator, parse_flashcard, parse_flashcards
+from src.services.flashcard_service.flashcard_generator_service.flashcard_generator import FlashcardGenerator, parse_flashcard, parse_flashcards
 
 
 # test_flashcard.py
@@ -183,7 +183,7 @@ class TestFlashcardGenerator:
             ]
         })
         # Call the method you want to test
-        flashcards = generator.generate_flashcards(
+        flashcards = generator.make_gpt_completion(
             model="test_model",
             messages=messages,
             max_tokens=100,

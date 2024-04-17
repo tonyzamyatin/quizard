@@ -1,18 +1,20 @@
 # src/rest/tasks.py
-from openai import OpenAIError, OpenAI
+from injector import Injector
+from openai import OpenAIError
 from src.custom_exceptions.internal_exceptions import QuizardError
 from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
-from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
-from src.services.flashcard_service.flashcard_service import FlashcardService, export
+from src.services.flashcard_service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from src.utils.global_helpers import get_env_variable
+
+from src.injector import FlashcardServiceModule
 
 logger = get_task_logger(__name__)
 
+injector = Injector([FlashcardServiceModule()])
 
 @shared_task(bind=True, ignore_result=False, track_started=True)
-def flashcard_generator_task(self, flashcards_generator_task : FlashcardGeneratorTaskDto):
+def flashcard_generator_task(self, params : FlashcardGeneratorTaskDto):
     """
     Generate flashcards based on input .
 
@@ -23,7 +25,7 @@ def flashcard_generator_task(self, flashcards_generator_task : FlashcardGenerato
 
     Parameters
     ----------
-    flashcards_generator_task: FlashcardGeneratorTaskDto
+    params: FlashcardGeneratorTaskDto
         The DTO containing the parameters for generating flashcards including language, mode, export format, and input.
 
     Returns
@@ -44,12 +46,12 @@ def flashcard_generator_task(self, flashcards_generator_task : FlashcardGenerato
 
     try:
         logger.info(f"Flashcard generation task started with task id: {self.request.id}")
-        flashcard_service = FlashcardService()
+        flashcard_service = injector.get(FlashcardService)
         update_progress(0, 1)  # Defensive programming
-        flashcard_deck = flashcard_service.generate_flashcards(flashcards_generator_task, update_progress)
-        file = export(flashcard_deck, flashcards_generator_task.export_format)
+        flashcard_deck = flashcard_service.generate_flashcard_deck(params, update_progress)
+        file = flashcard_service.export_flashcard_deck(flashcard_deck, params.export_format)
         self.update_state(state='SUCCESS',
-                          meta={'file_type': flashcards_generator_task.export_format,
+                          meta={'file_type': params.export_format,
                                 })
     except OpenAIError as e:
         self.update_state(state='FAILURE', meta={'error': str(e)})

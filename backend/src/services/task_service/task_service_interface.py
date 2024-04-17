@@ -105,3 +105,41 @@ class ITaskService(ABC):
         """
         pass
 
+    @abstractmethod
+    def generate_retrieval_token(self, task_id):
+        """
+        Generate a token for retrieving the task result.
+
+        Parameters
+        ----------
+        task_id
+            The ID of the task the result of which should be retrieved.
+
+        Returns
+        -------
+        str
+            The token for retrieving the task result.
+        """
+        pass
+
+    @abstractmethod
+    def verify_retrival_token(self, token):
+        """
+        Verify the token for retrieving the task result.
+
+        Parameters
+        ----------
+        token
+            The token to verify.
+
+        Returns
+        -------
+        str
+            The ID of the task the token corresponds to.
+
+        Raises
+        ------
+        InvalidTokenError
+            If the token is invalid.
+        """
+        pass

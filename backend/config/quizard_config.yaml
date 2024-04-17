@@ -1,4 +1,4 @@
-# config/app_config.yaml
+# config/quizard_config.yaml
 # TODO: Optimize and test parameters
 # 07.02.2024 Model overview:
 # gpt-3.5-turbo-instruct:       context:    4K;   input: $0.0015 / 1K tokens;   output: $0.0020 / 1K tokens
@@ -44,12 +44,3 @@ text_splitting:
 prompts:
   example_prompt: "ex1_genetics_of_cancer"     # Name of the example directory
   additional_prompt: "ad1_top_instr"           # Prompt to be inserted at the top of the input text
-
-system:
-  supported_langs:
-    - "Auto"            # Will try to automatically detect the language
-    - "de"
-    - "en"
-
-export:
-  export_type: "csv"

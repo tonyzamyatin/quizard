@@ -2,8 +2,8 @@ from flask import make_response
 from flask_restful import Resource
 
 from src.celery.tasks import flashcard_generator_task
-from src.custom_exceptions.external_exceptions import TokenAuthenticationError, ValidationError, ResultNotFoundError
-from src.services.task_service.flashcard_generator_task_service import IFlashcardGeneratorTaskService
+from src.custom_exceptions.external_exceptions import ValidationError, ResultNotFoundError
+from src.services.task_service.flashcard_generator_task_service import ITaskService
 
 
 class FlashcardRetrieverResource(Resource):
@@ -11,7 +11,7 @@ class FlashcardRetrieverResource(Resource):
     API resource for retrieving flashcards from the backend.
     """
 
-    def __init__(self, task_service: IFlashcardGeneratorTaskService):
+    def __init__(self, task_service: ITaskService):
         self.task_service = task_service
 
     # flashcards/retriever/<token>
@@ -31,7 +31,7 @@ class FlashcardRetrieverResource(Resource):
 
         Raises
         ------
-        InvalidTokenError
+        TokenAuthenticationError
             If the token is invalid.
         """
         task_id = self.task_service.verify_retrival_token(token)

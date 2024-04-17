@@ -68,7 +68,7 @@ def export_as_csv(flashcard_deck: FlashcardDeck) -> bytes:
     return zip_buffer.getvalue()
 
 
-def export_as_apkg(flashcard_deck: FlashcardDeck) ->  bytes:
+def export_as_apkg(flashcard_deck: FlashcardDeck) -> bytes:
     """
     Parameters
     ----------

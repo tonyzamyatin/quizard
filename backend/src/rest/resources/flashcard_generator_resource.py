@@ -9,7 +9,7 @@ from humps import decamelize, camelize
 from config.logging_config import setup_logging
 from src.custom_exceptions.external_exceptions import TaskNotFoundError
 from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
-from src.services.task_service.flashcard_generator_task_service import IFlashcardGeneratorTaskService
+from src.services.task_service.task_service_interface import ITaskService
 
 # Configure logging
 setup_logging()
@@ -23,7 +23,7 @@ class FlashcardGeneratorResource(Resource):
     This resource handles POST requests to initiate flashcard generation tasks.
     """
 
-    def __init__(self, task_service: IFlashcardGeneratorTaskService):
+    def __init__(self, task_service: ITaskService):
         self.task_service = task_service
 
     # flashcards/generate

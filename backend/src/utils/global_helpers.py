@@ -31,7 +31,7 @@ def load_yaml_config(config_dir: str, config_name: str) -> dict:
     try:
         with open(file_path) as file:
             try:
-                return yaml.load(file, Loader=yaml.FullLoader)
+                return yaml.safe_load(file)
             except yaml.YAMLError as e:
                 raise ConfigLoadingError(f"An error occurred while loading the YAML file: {e}")  # Raise custom exception
     except FileNotFoundError:
