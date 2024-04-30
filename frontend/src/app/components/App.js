@@ -9,14 +9,14 @@ import '../styles/GeneratorConfigPage.css'
 import '../styles/GeneratorWaitingPage.css'
 import '../styles/GeneratorCompletionPage.css'
 import '../styles/ProgressBar.css'
-import GeneratorSection from "./generation_section/GeneratorSection";
+import Generator from "./generator/Generator";
 import Footer from "./global/Footer";
 
 const App = () => {
 
     return (
         <div>
-            <GeneratorSection />
+            <Generator />
             <Footer />
         </div>
     );

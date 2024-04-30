@@ -2,13 +2,12 @@ import React from "react";
 import ProgressBar from "./ProgressBar";
 import TriviaSlideShow from "./TriviaSlideShow";
 import CTAButton from "../../global/CTAButton";
-import GenerationSteps from "../../global/GenerationSteps";
+import GenerationSteps from "../../../enums/GenerationSteps";
 
 function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlashcards}) {
 
     // Progress of flashcard generation process in percent
     const progress = currentBatch / totalBatches * 100
-
 
 
     const renderProgressBar = () => {
@@ -20,6 +19,7 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
         setGenerationStep(GenerationSteps.CONFIGURATION);
         cancelFlashcards();
     }
+
 
     return (
         <div className="generation-section-container">

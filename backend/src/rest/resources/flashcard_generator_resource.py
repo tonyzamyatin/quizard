@@ -26,7 +26,7 @@ class FlashcardGeneratorResource(Resource):
     def __init__(self, task_service: ITaskService):
         self.task_service = task_service
 
-    # flashcards/generate
+    # flashcards/generator
     def post(self):
         """
         Handle POST requests to initiate a flashcard generation task.
@@ -61,7 +61,7 @@ class FlashcardGeneratorResource(Resource):
         response.status_code = 202
         return response
 
-    # flashcards/generate/<task_id>
+    # flashcards/generator/<task_id>
     def get(self, task_id):
         """
         Get the current progress or result of the flashcard generation task.
@@ -91,7 +91,7 @@ class FlashcardGeneratorResource(Resource):
             response.status_code = 410
         return response
 
-    # flashcards/generate/<task_id>
+    # flashcards/generator/<task_id>
     def delete(self, task_id):
         """
         Cancel a flashcard generation task.

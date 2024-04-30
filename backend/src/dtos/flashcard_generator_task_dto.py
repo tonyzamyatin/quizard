@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
-from src.types.export_format import ExportFormatEnum
-from src.types.generation_mode import ModeEnum
-from src.types.language import LanguageEnum
+from src.enums.export_format import ExportFormatEnum
+from src.enums.generation_mode import ModeEnum
+from src.enums.language import LanguageEnum
 
 
 class FlashcardGeneratorTaskDto(BaseModel):
