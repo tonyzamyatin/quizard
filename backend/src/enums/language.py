@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class LanguageEnum(str, Enum):
+class SupportedLanguage(str, Enum):
     german = "de"
     english = "en"

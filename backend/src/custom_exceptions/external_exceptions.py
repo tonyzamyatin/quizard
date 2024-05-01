@@ -9,13 +9,13 @@ class AuthenticationError(Exception):
     pass
 
 
-class TokenAuthenticationError(AuthenticationError):
-    """Exception raised for token authentication errors."""
+class NotFoundException(Exception):
+    """Exception raised for not resource found errors."""
     pass
 
 
-class NotFoundException(Exception):
-    """Exception raised for not resource found errors."""
+class TokenAuthenticationError(AuthenticationError):
+    """Exception raised for token authentication errors."""
     pass
 
 

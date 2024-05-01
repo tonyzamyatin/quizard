@@ -1,14 +1,13 @@
 # src/flashcard_service/flashcard_service.py
 from typing import Optional, Callable
 
-
-from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
+from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.services.flashcard_service.flashcard_export import export_as_apkg, export_as_csv
-from src.services.flashcard_service.flashcard_generator_service.flashcard_generator import FlashcardGenerator
 from src.services.flashcard_service.flashcard_generator_service.flashcard_generator_interface import IFlashcardGenerator
 
 
+# TODO: Validate DTOs
 class FlashcardService:
     """
     Service for everything flashcard related.
@@ -18,8 +17,8 @@ class FlashcardService:
         self.flashcard_generator = flashcard_generator
 
     def generate_flashcard_deck(self, flashcards_request_dto: FlashcardGeneratorTaskDto,
-                                update_progress: Optional[Callable[[int, int], None]]) -> FlashcardDeck:
-        return self.flashcard_generator.generate_flashcard_deck(flashcards_request_dto, update_progress)
+                                fn_update_progress: Optional[Callable[[int, int], None]]) -> FlashcardDeck:
+        return self.flashcard_generator.generate_flashcard_deck(flashcards_request_dto, fn_update_progress)
 
     @staticmethod
     def export_flashcard_deck(flashcard_deck: FlashcardDeck, export_format: str) -> bytes:

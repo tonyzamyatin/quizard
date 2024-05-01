@@ -8,7 +8,9 @@ from humps import decamelize, camelize
 
 from config.logging_config import setup_logging
 from src.custom_exceptions.external_exceptions import TaskNotFoundError
-from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
+from src.dtos.generator_task import FlashcardGeneratorTaskDto
+from src.dtos.generator_task_info import GeneratorTaskInfoDto
+from src.enums.task_state import TaskState
 from src.services.task_service.task_service_interface import ITaskService
 
 # Configure logging
@@ -66,29 +68,13 @@ class FlashcardGeneratorResource(Resource):
         """
         Get the current progress or result of the flashcard generation task.
         """
-        task_state = self.task_service.get_task_state(task_id)
-        task_info = self.task_service.get_task_info(task_id)
-
-        data = {'state': task_state}
-        response = jsonify(camelize(data))  # Default response containing task state
-
-        if task_state == 'PROCESSING' or task_state == 'STARTED' or task_state == 'PENDING':
-            if task_info is None:
-                # Task with specified ID does not exist
-                raise TaskNotFoundError(task_id)
-            else:
-                data.update({
-                    'progress': task_info.get('progress'),
-                    'total': task_info.get('total'),
-                })
-                response = jsonify(camelize(data))
-                response.status_code = 202
-        elif task_state == 'SUCCESS':
-            data['download_token'] = self.task_service.generate_retrieval_token(task_id)
-            response = jsonify(camelize(data))
+        task_response_dto = create_task_info_dto(self.task_service, task_id)
+        response = jsonify(camelize(task_response_dto.dict()))
+        if task_response_dto.task_state == TaskState.success:
             response.status_code = 200
-        elif task_state == 'CANCELLED':
-            response.status_code = 410
+        else:
+            # Task did not complete yet, errors are handle by flask_error_handlers.py
+            response.status_code = 202
         return response
 
     # flashcards/generator/<task_id>
@@ -102,3 +88,23 @@ class FlashcardGeneratorResource(Resource):
         """
         self.task_service.cancel_task(task_id)
         return {"message": "Cancellation successful"}, 200
+
+
+def create_task_info_dto(task_service: ITaskService, task_id: str) -> GeneratorTaskInfoDto:
+    task_state = task_service.get_task_state(task_id)
+    task_info = task_service.get_task_info(task_id)
+    current_batch = task_info.get('current_batch', None)
+    total_batches = task_info.get('total_batches', None)
+
+    task_info_dto = GeneratorTaskInfoDto(
+        taske_state=task_state,
+        current_batch=current_batch,
+        total_batches=total_batches)
+
+    if task_state == TaskState.success:
+        retrieval_token = task_service.generate_retrieval_token(task_id)
+        task_info_dto.retrieval_token = retrieval_token
+    elif task_state == 'REVOKED':
+        raise TaskNotFoundError(f"Task with ID {task_id} was revoked")
+
+    return task_info_dto

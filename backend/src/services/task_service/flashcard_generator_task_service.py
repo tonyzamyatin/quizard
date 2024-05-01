@@ -5,8 +5,10 @@ from celery import Celery
 from flask import Flask
 from itsdangerous import URLSafeSerializer, BadSignature
 
-from src.custom_exceptions.external_exceptions import TokenAuthenticationError
-from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
+from src.custom_exceptions.external_exceptions import TokenAuthenticationError, ResultNotFoundError
+from src.dtos.generator_task import FlashcardGeneratorTaskDto
+from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
+from src.enums.task_state import TaskState
 from src.services.task_service.task_service_interface import ITaskService
 from src.celery.tasks import flashcard_generator_task
 
@@ -25,15 +27,18 @@ class FlashcardGeneratorTaskService(ITaskService):
         task_id = flashcard_generator_task.delay(task).id
         return task_id
 
-    def get_task_state(self, task_id: str):
+    def get_task_state(self, task_id: str) -> TaskState:
         task = flashcard_generator_task.AsyncResult(task_id)
-        return task.state
+        return TaskState(task.state)
 
     def get_task_info(self, task_id: str) -> dict:
         task = flashcard_generator_task.AsyncResult(task_id)
         return task.info
 
-    def get_task_result(self, task_id: str):
+    def get_task_result(self, task_id: str) -> FlashcardDeck:
+        state = self.get_task_state(task_id)
+        if state != 'SUCCESS':
+            raise ResultNotFoundError(f"Task result for taskID: {task_id} not available.")
         task = flashcard_generator_task.AsyncResult(task_id)
         return task.result
 

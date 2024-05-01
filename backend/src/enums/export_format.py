@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class ExportFormatEnum(str, Enum):
+class ExportFormat(str, Enum):
     anki = "apkg"
     csv = "csv"

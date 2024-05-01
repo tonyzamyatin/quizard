@@ -7,10 +7,11 @@ from injector import Injector
 
 from src.celery.celery import setup_applications
 from config.logging_config import setup_logging
-from src.rest.resources.flashcard_retriever_resource import FlashcardRetrieverResource
+from src.rest.resources.flashcard_downloader_resource import FlashcardDownloaderResource
 from src.rest.resources.flashcard_generator_resource import FlashcardGeneratorResource
 from src.rest.resources.health_check_resource import HealthCheckResource
 from src.injector import TaskServiceModule
+from src.services.flashcard_service.flashcard_service import FlashcardService
 from src.services.task_service.flashcard_generator_task_service import FlashcardGeneratorTaskService
 from src.utils.global_helpers import get_env_variable
 
@@ -29,11 +30,12 @@ api = Api(flask_app)
 # Initialize the Injector
 injector = Injector([TaskServiceModule()])
 
-# Get the TaskService instance from the injector
+# Get the service instances from the injector
 task_service = injector.get(FlashcardGeneratorTaskService)
+flashcard_service = injector.get(FlashcardService)
 
 api.add_resource(FlashcardGeneratorResource, '/flashcards/generator', resource_class_kwargs={'task_service': task_service})
-api.add_resource(FlashcardRetrieverResource, '/flashcards/retriever', resource_class_kwargs={'task_service': task_service})
+api.add_resource(FlashcardDownloaderResource, '/flashcards/retriever', resource_class_kwargs={'task_service': task_service, 'flashcard_service': flashcard_service})
 api.add_resource(HealthCheckResource, '/health')
 
 

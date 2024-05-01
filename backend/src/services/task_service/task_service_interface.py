@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 from celery.result import AsyncResult
+
+from src.enums.task_state import TaskState
 
 
 class ITaskService(ABC):
@@ -27,7 +30,7 @@ class ITaskService(ABC):
         pass
 
     @abstractmethod
-    def get_task_state(self, task_id: str) -> str:
+    def get_task_state(self, task_id: str) -> TaskState:
         """
         Get the state of the task.
 
@@ -38,7 +41,7 @@ class ITaskService(ABC):
 
         Returns
         -------
-        str
+        TaskState
             The state of the task.
         """
         pass
@@ -60,7 +63,7 @@ class ITaskService(ABC):
         pass
 
     @abstractmethod
-    def get_task_result(self, task_id: str) -> AsyncResult:
+    def get_task_result(self, task_id: str) -> Any:
         """
         Get the result of the task if it is ready.
 
@@ -73,6 +76,11 @@ class ITaskService(ABC):
         -------
         Any
             The result of the task.
+
+        Raises
+        ------
+        ResultNotFoundError
+            If the task is not ready.
         """
         pass
 
@@ -106,7 +114,7 @@ class ITaskService(ABC):
         pass
 
     @abstractmethod
-    def generate_retrieval_token(self, task_id):
+    def generate_retrieval_token(self, task_id) -> str:
         """
         Generate a token for retrieving the task result.
 
@@ -123,7 +131,7 @@ class ITaskService(ABC):
         pass
 
     @abstractmethod
-    def verify_retrival_token(self, token):
+    def verify_retrival_token(self, token) -> str:
         """
         Verify the token for retrieving the task result.
 

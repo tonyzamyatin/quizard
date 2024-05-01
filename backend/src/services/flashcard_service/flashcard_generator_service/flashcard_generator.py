@@ -11,7 +11,7 @@ from openai import OpenAI
 from openai.types.chat import ChatCompletion
 
 from src.custom_exceptions.internal_exceptions import PromptSizeError
-from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
+from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.completion_messages.completion_messages import Messages
 from src.entities.flashcard.flashcard import Flashcard
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
@@ -112,7 +112,7 @@ class FlashcardGenerator(IFlashcardGenerator):
             logger.error("OpenAI API Error occurred", error=f"API connection error: {e}")
             raise
 
-    def generate_flashcard_deck(self, flashcards_generator_task: FlashcardGeneratorTaskDto, update_progress: Optional[Callable], *args,
+    def generate_flashcard_deck(self, flashcards_generator_task: FlashcardGeneratorTaskDto, fn_update_progress: Optional[Callable], *args,
                                 **kwargs) -> FlashcardDeck:
         """
         Generate flashcards based on input.
@@ -120,8 +120,9 @@ class FlashcardGenerator(IFlashcardGenerator):
         ----------
         flashcards_generator_task: FlashcardGeneratorTaskDto
             The DTO containing the parameters for generating flashcards including language, mode, export format, and input.
-        update_progress: Optional[Callable]
-            Optional callback function.
+        fn_update_progress: Optional[Callable]
+            Optional callback function to update the caller about the current progress of the generation process.
+            Takes in two arguments: current batch and total number of batches.
         args
         kwargs
         Returns
@@ -129,8 +130,6 @@ class FlashcardGenerator(IFlashcardGenerator):
         FlashcardDeck
             The generated flashcards.
         """
-
-        # TODO: Validate DTO
 
         # Load the prompts
         (system_prompt,
@@ -174,12 +173,18 @@ class FlashcardGenerator(IFlashcardGenerator):
 
         # For short texts generate the flashcards in a single run
         if total_message_tokens < app_token_limit:
+            if fn_update_progress:
+                # Set progress to 0
+                fn_update_progress(0, 1)
+
             completion = self.make_gpt_completion(messages=messages, max_tokens=completion_token_limit)
             receive_time_sec = round(time.time(), 3)
             log_completion_metrics(completion, receive_time_sec)
 
             content = completion.choices[0].message.content
             flashcards += parse_flashcards(content)
+            if fn_update_progress:
+                fn_update_progress(1, 1)
 
         # For longer texts, splut the text into fragments and generate flashcards in multiple batches
         else:
@@ -192,6 +197,10 @@ class FlashcardGenerator(IFlashcardGenerator):
                 overlap_type=self.text_splitting_config['overlap_type'],
                 overlap=self.text_splitting_config['overlap']
             )
+
+            if fn_update_progress:
+                # Set progress to 0
+                fn_update_progress(0, len(fragment_list))
 
             total_batch_num = len(fragment_list)
             for batch in range(total_batch_num):
@@ -214,8 +223,8 @@ class FlashcardGenerator(IFlashcardGenerator):
 
                 start_id = len(flashcards) + 1
                 flashcards += parse_flashcards(content, start_id, batch)
-                if update_progress:
-                    update_progress(batch + 1, len(fragment_list))
+                if fn_update_progress:
+                    fn_update_progress(batch + 1, len(fragment_list))
 
         # Log end time
         end_time = time.time()

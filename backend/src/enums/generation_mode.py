@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ModeEnum(str, Enum):
+class GeneratorMode(str, Enum):
     practice = "practice"
     definition = "definitions"
     mc = "mc"

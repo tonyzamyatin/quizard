@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional, Callable
 
-from src.dtos.flashcard_generator_task_dto import FlashcardGeneratorTaskDto
+from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
 
 
@@ -12,14 +12,14 @@ class IFlashcardGenerator(ABC):
     Interface for flashcard generators.
     """
     @abstractmethod
-    def generate_flashcard_deck(self, flashcards_generator_task: FlashcardGeneratorTaskDto, update_progress: Optional[Callable], *args, **kwargs) -> FlashcardDeck:
+    def generate_flashcard_deck(self, flashcards_generator_task: FlashcardGeneratorTaskDto, fn_update_progress: Optional[Callable], *args, **kwargs) -> FlashcardDeck:
         """
         Generate flashcards based on input.
         Parameters
         ----------
         flashcards_generator_task: FlashcardGeneratorTaskDto
             The DTO containing the parameters for generating flashcards including language, mode, export format, and input.
-        update_progress: Optional[Callable]
+        fn_update_progress: Optional[Callable]
             Optional callback function.
         args
         kwargs
