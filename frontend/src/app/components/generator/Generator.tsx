@@ -3,14 +3,16 @@ import ConfigPage from "./configuration/ConfigPage";
 import UploadPage from "./text upload/UploadPage";
 import WaitingPage from "./progress/WaitingPage";
 import CompletionPage from "./completion/CompletionPage";
-import {cancelFlashcardGenerationTask, startFlashcardGenerationTask, pollFlashcardGenerationTask} from "../../service/GeneratorService";
+import {cancelFlashcardGenerationTask, startFlashcardGeneratorTask, pollFlashcardGenerationTask} from "../../service/generatorService";
 import {useHealthCheck} from "./HealthCheckContext";
 import {GenerationSteps} from "../../enums/GenerationSteps";
 
 
-
-// TODO: Use environment variables to set API URL or reverse proxy for production browser
-// TODO: Enhance exception handling and provide more informative feedback to the user
+/**
+ * TODO: Display meaningful error messages to the user
+ * TODO: Use environment variables to set API URL or reverse proxy for production browser
+ * TODO: Enhance exception handling and provide more informative feedback to the user
+ */
 
 function Generator() {
     const isDevelopmentMode = process.env.NODE_ENV === 'development';
@@ -87,7 +89,7 @@ function Generator() {
                     setMode={setMode}
                     exportFormat={exportFormat}
                     setExportFormat={setExportFormat}
-                    generateFlashcards={startFlashcardGenerationTask}
+                    generateFlashcards={startFlashcardGeneratorTask}
                 />;
             case GenerationSteps.Generation:
                 return <WaitingPage

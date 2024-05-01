@@ -1,10 +1,13 @@
 // TODO: Better logging
-// TODO: Better error handling
 // TODO: Add doc strings
 
 
+
+
 import {GenerationSteps} from "../enums/GenerationSteps";
-import {GeneratorTaskDto} from "../dto/GeneratorTaskDto";
+import {GeneratorTask, GeneratorTaskInfo} from "../dto/generator";
+import {sendRequest} from "./utils/requestUtils";
+import {ErrorDetails} from "../dto/errorDetails";
 
 // Define corresponding backend values
 const backendLanguageOptions = { English: 'en', German: 'de' };
@@ -15,48 +18,19 @@ const backendExportOptions = { CSV: 'csv', Anki: 'apkg' };
 const endpoint = '/flashcards/generator';
 
 
-export function startFlashcardGenerationTask(generatorTaskDto: GeneratorTaskDto) {
+export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTask): Promise<string> {
     console.group('Flashcard Generation Request');
-    console.log(`Endpoint: ${endpoint}`);
-    console.log('Method: POST');
-    console.log('Payload:', generatorTaskDto);
-    fetch(endpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(generatorTaskDto),
-    })
-        .then(response => {
-            const contentType = response.headers.get('content-type');
-            if (!response.ok) {
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json().then(errorDetails => {
-                        console.error(`HTTP error! status:${response.status}, ${JSON.stringify(errorDetails)}`);
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    });
-                } else {
-                    console.error('Non-JSON error from browser:', response.statusText);
-                    throw new Error('Non-JSON error from browser');
-                }
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (!data.taskId) {
-                console.warn('Response missing taskId:', data);
-                throw new Error('taskId is missing from the response');
-            } else {
-                return data.taskId;
-            }
-        })
-        .catch(error => {
-            console.error('Error during flashcard generation:', error);
-            console.error(error.stack);
-        })
-        .finally(() => {
-            console.groupEnd();
-        });
+    console.info(`Endpoint: ${endpoint}`);
+    console.info('Method: POST');
+    console.info('Payload:', generatorTaskDto);
+    console.groupEnd();
+    const taskId = await sendRequest<string>(endpoint, 'POST', generatorTaskDto);
+    if (!taskId) {
+        console.warn('Response missing taskId:');
+        throw new Error('taskId is missing from the response');
+    }
+    console.info(`Task started! Task Id: ${taskId}`);
+    return taskId;
 }
 
 
@@ -74,24 +48,24 @@ export function pollFlashcardGenerationTask(taskId, waitDelay = 1000, updateDela
             }
             return response.json();
         })
-        .then(data => {
-            console.log('Data received:', data);
-            if (data.state === 'FAILURE') {
-                console.error(`Task ${data.state.toLowerCase()}: ${data.error}`);
+        .then(task => {
+            console.log('Data received:', task);
+            if (task.state === 'FAILURE') {
+                console.error(`Task ${task.state.toLowerCase()}: ${task.error}`);
             } else {
-                setCurrentBatch(data.progress);
-                setTotalBatches(data.total);
-                if (['PROCESSING', 'STARTED', 'PENDING'].includes(data.state)) {
-                    let timeout = data.state === 'PROCESSING' ? updateDelay : waitDelay;
+                setCurrentBatch(task.current);
+                setTotalBatches(task.total);
+                if (['PROCESSING', 'STARTED', 'PENDING'].includes(task.state)) {
+                    let timeout = task.state === 'PROCESSING' ? updateDelay : waitDelay;
                     setTimeout(() => pollFlashcardGenerationTask(taskId), timeout);
                 } else {
                     isPollingActiveRef.current = false;
-                    if (data.state === 'SUCCESS') {
-                        if (!data.retrievalToken) {
-                            console.warn('Response missing retrievalToken:', data);
+                    if (task.state === 'SUCCESS') {
+                        if (!task.retrievalToken) {
+                            console.warn('Response missing retrievalToken:', task);
                             throw new Error('retrievalToken is missing from the response');
                         } else {
-                            const retrievalToken = data.retrievalToken;
+                            const retrievalToken = task.retrievalToken;
                             setCurrentStep(GenerationSteps.Complete);
                             downloadFlashcards(retrievalToken);
                         }
