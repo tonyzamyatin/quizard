@@ -1,6 +1,6 @@
 import React from "react";
 
-function CTAButton({ buttonText, buttonType, onButtonClick, active, lazy}) {
+function CTAButton({ buttonText, buttonType, onButtonClick, active, nonHover = false}) {
 
     const buttonTypes = []
 
@@ -12,7 +12,7 @@ function CTAButton({ buttonText, buttonType, onButtonClick, active, lazy}) {
 
     return (
         <button
-            className={`CTA-button ${buttonType} ${lazy ? 'static' : ''}`}
+            className={`CTA-button ${buttonType} ${nonHover ? 'static' : ''}`}
             onClick={handleClick}
             disabled={!active} // Disable the button if not active
         >

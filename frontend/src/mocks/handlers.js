@@ -7,7 +7,7 @@ const tasks = new Map();
 export const handlers = [
     http.post('/api/mvp/flashcards/generate/start', () => {
         const taskId = 'mock-task-id';
-        // Initialize the task progress
+        // Initialize the task WaitingComponent
         tasks.set(taskId, { progress: 0, state: 'PENDING', total: 5 });
 
         return HttpResponse.json({ taskId: taskId});
@@ -21,7 +21,7 @@ export const handlers = [
             return new HttpResponse('Task not found', { status: 404 });
         }
 
-        // Simulate progress
+        // Simulate WaitingComponent
         task.progress += 1;
         // return HttpResponse.json('Testing, remove me when done!', { status: 404 })
 

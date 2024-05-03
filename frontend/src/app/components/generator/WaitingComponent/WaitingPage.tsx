@@ -1,10 +1,19 @@
 import React from "react";
 import ProgressBar from "./ProgressBar";
-import TriviaSlideShow from "./TriviaSlideShow";
-import CTAButton from "../../global/CTAButton";
-import GenerationSteps from "../../../enums/GenerationSteps";
+import  {GeneratorStep} from "../../../enum/GeneratorStep";
+import {useGeneratorState} from "../GeneratorContext";
+import CTAButton from "../../global/CTAButton/CTAButton";
 
-function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlashcards}) {
+interface WaitingPageProps {
+    cancelFlashcards: () => void;
+}
+
+function WaitingPage({ cancelFlashcards } : WaitingPageProps) {
+
+    const { setStep, generatorTaskInfo } = useGeneratorState();
+    let { currentBatch, totalBatches } = generatorTaskInfo;
+    currentBatch = currentBatch || 0;
+    totalBatches = totalBatches || 1;
 
     // Progress of flashcard generation process in percent
     const progress = currentBatch / totalBatches * 100
@@ -16,7 +25,7 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
 
  
     const handleCancelClick = () => {
-        setGenerationStep(GenerationSteps.CONFIGURATION);
+        setStep(GeneratorStep.UploadText);
         cancelFlashcards();
     }
 
@@ -36,7 +45,7 @@ function WaitingPage({setGenerationStep, totalBatches, currentBatch, cancelFlash
                             buttonType={'warn'}
                             onButtonClick={handleCancelClick}
                             active={true}
-                            lazy={true}
+                            nonHover={true}
                         />
                     </div>
                 </div>

@@ -1,20 +1,10 @@
 // src/app/dto/generator.ts
-import {GenModeOptions, LangOptions, ExportOptions} from "../enums/GeneratorOptions";
+import {Mode, Language, FileFormat} from "../enum/GeneratorOptions";
 
 export interface GeneratorTask {
-        lang: LangOptions;
-        mode: GenModeOptions;
+        lang: Language | null;
+        mode: Mode | null;
         inputText: string;
-}
-
-enum TaskState {
-        pending = 'PENDING',
-        started = 'STARTED',
-        inProgress =  'IN_PROGRESS',
-        success = 'SUCCESS',
-        failure = 'FAILURE',
-        retry = 'RETRY',
-        revoked = 'REVOKED',
 }
 
 export interface GeneratorTaskInfo {
@@ -22,4 +12,14 @@ export interface GeneratorTaskInfo {
         currentBatch?: number;
         totalBatches?: number;
         retrievalToken?: string;
+}
+
+export enum TaskState {
+        pending = 'PENDING',
+        started = 'STARTED',
+        inProgress =  'IN_PROGRESS',
+        success = 'SUCCESS',
+        failure = 'FAILURE',
+        retry = 'RETRY',
+        revoked = 'REVOKED',
 }

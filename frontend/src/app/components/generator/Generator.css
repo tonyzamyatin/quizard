@@ -1,14 +1,3 @@
-.generator-section {
-    box-sizing: border-box;
-    width: 100%;  /* Cover the whole screen width */
-    height: 100vh;
-    padding: 20px 0 20px 0;
-    /*margin-right: 20px; !* To account for the scroll bars when making the tab smaller.*/
-    display: flex;
-    flex-direction: column; /* Align children vertically */
-    align-items: center; /* Center children horizontally */
-}
-
 .description {
     text-align: center;
     max-width: 800px;

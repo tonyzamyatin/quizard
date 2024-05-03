@@ -1,4 +1,4 @@
-import {ErrorDetails} from "../../dto/errorDetails";
+import {ErrorDetails} from "../dto/errorDetails";
 
 /**
  * Handle error response from the server by logging the error details

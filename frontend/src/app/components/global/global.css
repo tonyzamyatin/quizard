@@ -27,7 +27,6 @@ html, body, div, h1, h2, h3, p {
 
 body {
     background-color: white;
-    /*padding: 0 0 30px 0;*/
 }
 
 /* Typography */
@@ -35,6 +34,17 @@ body {
     font-family: 'Inter', Arial, sans-serif;
     line-height: 1.6;
     color: var(--quizard-black);
+}
+
+main {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    padding: 20px 0 20px 0;
+    /*margin-right: 20px; !* Account for the scroll bars when making the tab smaller.*/
+    display: flex;
+    flex-direction: column; /* Align children vertically */
+    align-items: center; /* Center children horizontally */
 }
 
 h1, h2, h3 {
@@ -50,7 +60,7 @@ h1, h2, h3 {
 }
 
 /* Footer */
-.footer {
+footer {
     height: 30px; /* Slimmer height for the footer */
     background-color: var(--quizard-light-grey); /* Using the color variable you defined */
     color: var(--quizard-grey); /* Text color for the footer */
@@ -64,9 +74,9 @@ h1, h2, h3 {
 }
 
 /* Footer links styling */
-.footer a {
-    color: var(--quizard-darker-grey); /* Ensures all links in the footer have the teal color */
-    /*text-decoration: none; !* Removes the underline from links, optional *!*/
+footer a {
+    color: var(--quizard-darker-grey);
+    /*text-decoration: none; */
 }
 
 

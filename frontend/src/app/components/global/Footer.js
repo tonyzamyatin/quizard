@@ -3,7 +3,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="footer">
+        <footer>
             <p>
                 Copyright © Quizard. All Rights Reserved.
                 By <a href="https://www.linkedin.com/in/anton-zamyatin/" target="_blank" rel="noopener noreferrer">Anton Zamyatin</a>

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import DOMPurify from 'dompurify';
 
-function TextUploadField({ text, setText}) {
+function TextUploadField({ text, setText }) {
 
     const sanitizeText = (dirtyText) => {
         return DOMPurify.sanitize(dirtyText);
