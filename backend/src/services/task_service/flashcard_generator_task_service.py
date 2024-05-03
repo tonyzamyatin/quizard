@@ -37,7 +37,7 @@ class FlashcardGeneratorTaskService(ITaskService):
 
     def get_task_result(self, task_id: str) -> FlashcardDeck:
         state = self.get_task_state(task_id)
-        if state != 'SUCCESS':
+        if state != TaskState.success.name:
             raise ResultNotFoundError(f"Task result for taskID: {task_id} not available.")
         task = flashcard_generator_task.AsyncResult(task_id)
         return task.result

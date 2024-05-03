@@ -41,23 +41,18 @@ class FlashcardDownloaderResource(Resource):
             If the token is invalid.
         """
         task_id = self.task_service.verify_retrival_token(token)
-        task = flashcard_generator_task.AsyncResult(task_id)
         flashcard_deck = self.task_service.get_task_result(task_id)
         file = self.flashcard_service.export_flashcard_deck(flashcard_deck, file_type)
-        if task.state == 'SUCCESS':
-            file_content = task.result  # file content in bytes
-            if file_type == 'csv':
-                filename = "flashcards.csv"
-                mimetype = "text/csv"
-            elif file_type == 'anki':
-                filename = "flashcards.apkg"
-                mimetype = "application/x-sqlite3"
-            else:
-                raise ValidationError("Unsupported file type")
-
-            response = make_response(file_content)
-            response.headers['Content-Disposition'] = f'attachment; filename={filename}'
-            response.headers['Content-Type'] = mimetype
-            return response
+        if file_type == 'csv':
+            filename = "flashcards.csv"
+            mimetype = "text/csv"
+        elif file_type == 'anki':
+            filename = "flashcards.apkg"
+            mimetype = "application/x-sqlite3"
         else:
-            raise ResultNotFoundError("File not available")
+            raise ValidationError("Unsupported file type")
+
+        response = make_response(file)
+        response.headers['Content-Disposition'] = f'attachment; filename={filename}'
+        response.headers['Content-Type'] = mimetype
+        return response
