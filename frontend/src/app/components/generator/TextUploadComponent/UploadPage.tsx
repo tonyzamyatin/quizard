@@ -3,6 +3,7 @@ import CTAButton from "../../global/CTAButton/CTAButton";
 import TextUploadField from "./TextUploadField";
 import {GeneratorStep} from "../../../enum/GeneratorStep";
 import {useGeneratorState} from "../GeneratorContext";
+import {inputTextLengthInRange} from "../../../util/generatorComponentUtil";
 
 function UploadPage() {
     const { setStep, generatorTaskDto, setGeneratorTaskDto} = useGeneratorState();
@@ -10,16 +11,12 @@ function UploadPage() {
     const text = generatorTaskDto.inputText;
     const setText = (text: string) => setGeneratorTaskDto({...generatorTaskDto, inputText: text});
 
-    const minLength = 250
-    const maxLength = 500000;
-
-    function checkTextLength() {
-        // Checks if the text is long enough to proceed
-        return text.length > minLength && text.length <= maxLength;
-    }
-
     function handleNextClick() {
         setStep(GeneratorStep.Configure);
+    }
+
+    function isActive() {
+        return inputTextLengthInRange(text);
     }
 
     const renderInputField = () => {
@@ -33,7 +30,11 @@ function UploadPage() {
                 {renderInputField()}
             </div>
             <div className="button-area">
-                <CTAButton buttonText="Next" buttonType={'primary'} onButtonClick={handleNextClick} active={checkTextLength()}/>
+                <CTAButton
+                    buttonText="Next"
+                    buttonType={'primary'}
+                    onButtonClick={handleNextClick}
+                    active={isActive()}/>
             </div>
         </div>
     );

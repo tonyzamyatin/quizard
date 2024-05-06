@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 
-function Dropdown({ labelText, selected, options, onChange }) {
+function Dropdown({ id, labelText, options, selected,  onChange }) {
     return (
         <div>
-            <label>{labelText}</label>
-            <select value={selected} onChange={onChange}>
+            <label htmlFor= {id}>{labelText}</label>
+            <select id ={id} value={selected} onChange={onChange}>
                 <option value="" disabled>Select...</option>
                 {options.map((optionText, index) => (
                     <option key={index} value={optionText}>

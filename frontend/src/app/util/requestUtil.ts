@@ -1,16 +1,23 @@
-import axios, { Method } from 'axios';
+import axios, {AxiosRequestConfig, AxiosResponse, Method} from 'axios';
 
-export async function sendRequest<T>(endpoint: string, method: Method, data?: any): Promise<T> {
+interface RequestProps {
+    endpoint: string
+    method: Method,
+    data?: any,
+    config?: AxiosRequestConfig
+}
+
+export async function sendRequest({ endpoint, method, data, config }: RequestProps): Promise<AxiosResponse> {
     try {
-        const response = await axios({
+        return await axios({
             url: endpoint,
             method: method,
             data: data,
             headers: {
                 'Content-Type': 'application/json',
             },
+            ...config
         });
-        return response.data;
     } catch (error: any) {
         if (error.response) {
             // The request was made and the server responded with a status code

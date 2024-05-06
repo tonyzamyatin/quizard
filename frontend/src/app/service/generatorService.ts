@@ -5,18 +5,24 @@
 import {GeneratorStep} from "../enum/GeneratorStep";
 import {GeneratorTask, GeneratorTaskInfo, TaskState,} from "../dto/generator";
 import {sendRequest} from "../util/requestUtil";
+import {FileFormat} from "../enum/GeneratorOptions";
 
 
 // API Endpoint
 const endpoint = '/flashcards/generator';
 
 export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTask): Promise<string> {
-    console.group('Flashcard Generation Request');
+    console.group('startFlashcardGeneratorTask');
     console.info(`Endpoint: ${endpoint}`);
     console.info('Method: POST');
     console.info('Payload:', generatorTaskDto);
     console.groupEnd();
-    const taskId = await sendRequest<string>(endpoint, 'POST', generatorTaskDto);
+    const response = await sendRequest({
+        endpoint: endpoint,
+        method: 'POST',
+        data: generatorTaskDto
+    });
+    const taskId = response.data.taskId;
     if (!taskId) {
         console.warn('Response missing taskId:');
         throw new Error('taskId is missing from the response');
@@ -27,15 +33,19 @@ export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTas
 
 async function getFlashcardGeneratorTaskInfo(taskId: string): Promise<GeneratorTaskInfo> {
     const endpoint = `/flashcards/generator/${taskId}`;
-    console.group('Flashcard Update Request');
+    console.group('getFlashcardGeneratorTaskInfo');
     console.log(`Endpoint:${ endpoint }`);
     console.log('Method: GET');
-
-    const taskInfo = await sendRequest<GeneratorTaskInfo>(endpoint, 'GET');
+    const response = await sendRequest({
+        endpoint: endpoint,
+        method: 'GET'
+    });
+    const taskInfo = response.data.taskInfo;
     if (!taskInfo) {
         console.warn('Response missing taskInfo:');
         throw new Error('taskInfo is missing from the response');
     }
+    console.groupEnd();
     return taskInfo;
 }
 
@@ -54,59 +64,41 @@ export async function pollFlashcardGeneratorTask(taskId: string, setCurrentBatch
 }
 
 
-export function cancelFlashcardGenerationTask( taskId: string ) {
+export async function cancelFlashcardGeneratorTask(taskId: string ) {
     const endpoint = `/flashcards/generator/${taskId}`
-    console.group('Flashcard Cancellation Request');
+    console.group('cancelFlashcardGenerationTask');
     console.log(`Endpoint:${ endpoint }`);
     console.log('Method: DELETE');
-    fetch(endpoint, {method: 'DELETE'})
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Cancellation successful:', data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        })
-        .finally(() => {
-            console.groupEnd();
-        });
+    await sendRequest({
+        endpoint: endpoint,
+        method: 'DELETE'
+    });
+    console.groupEnd();
 };
 
-export function downloadFlashcards( retrievalToken: string ) {
-    if (retrievalToken != null) {
-        const endpoint = `/flashcards/retriever/${retrievalToken}`;
-        fetch(endpoint)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const contentDisposition = response.headers.get('Content-Disposition');
-                let filename = 'flashcards';
-                if (contentDisposition) {
-                    const filenameMatch = contentDisposition.match(/filename="(.+)"/i);
-                    if (filenameMatch && filenameMatch.length > 1) {
-                        filename = filenameMatch[1];
-                    }
-                }
-                return response.blob().then(blob => ({blob, filename}));
-            })
-            .then(({blob, filename}) => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(error => {
-                console.error('Error during file download:', error);
-            });
+export async function exportGeneratorTaskResult(retrievalToken: string, fileFormat: FileFormat ) {
+    console.group('getGeneratorTaskResult');
+    if (retrievalToken == null) {
+        console.warn('Retrieval token is missing')
+        return;
     }
+    // @ts-ignore - FileFormat is an enum
+    const fileFormatKey = FileFormat[fileFormat];
+    const endpoint = `/flashcards/exporter/${retrievalToken}?format=${fileFormatKey}`;
+    console.log(`Endpoint:${ endpoint }`);
+    console.log('Method: DELETE');
+    const response = await sendRequest({
+        endpoint: endpoint,
+        method: 'GET',
+        config: { responseType: 'blob' }
+    });
+    const contentDisposition = response.headers['Content-Disposition'];
+    let filename = 'flashcards';
+    if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/i);
+        if (filenameMatch && filenameMatch.length > 1) {
+            filename = filenameMatch[1];
+        }
+    }
+    return { blob: response.data, filename };
 }

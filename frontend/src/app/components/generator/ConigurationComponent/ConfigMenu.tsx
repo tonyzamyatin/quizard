@@ -26,24 +26,29 @@ function ConfigMenu() {
     const handleModeChange = handleOptionChange(modeOptions, setMode);
     const handleExportFormatChange = handleOptionChange(fileFormatOptions, setFileFormat);
 
+
+
     return (
-        <div className="config-menu">
+        <form className="config-menu">
             <Dropdown
-                labelText="Choose your language"
+                labelText="Select language"
+                id={"lang-config-dropdown"}
                 selected={generatorTaskDto.lang}
                 options={langOptions.map(option => option.value)}
                 onChange={handleLangChange}/>
             <Dropdown
-                labelText="Choose generation mode"
+                labelText="Select flashcard type"
+                id={"mode-config-dropdown"}
                 selected={generatorTaskDto.mode}
                 options={modeOptions.map(option => option.value)}
                 onChange={handleModeChange}/>
             <Dropdown
-                labelText="Choose file format "
+                labelText="Select file format "
+                id={"file-format-config-dropdown"}
                 selected={fileFormat}
                 options={fileFormatOptions.map(option => option.value)}
                 onChange={handleExportFormatChange}/>
-        </div>
+        </form>
     );
 }
 

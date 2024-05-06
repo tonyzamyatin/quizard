@@ -3,6 +3,7 @@ import ConfigMenu from "./ConfigMenu";
 import React from "react";
 import {useGeneratorState} from "../GeneratorContext";
 import {GeneratorStep} from "../../../enum/GeneratorStep";
+import {inputTextLengthInRange} from "../../../util/generatorComponentUtil";
 
 interface ConfigPageProps {
     generateFlashcards: () => void;
@@ -11,7 +12,7 @@ interface ConfigPageProps {
 function ConfigPage({generateFlashcards} : ConfigPageProps) {
 
     const {setStep, generatorTaskDto, fileFormat} = useGeneratorState();
-    const {lang, mode} = generatorTaskDto;
+    const {lang, mode, inputText} = generatorTaskDto;
 
     const handleGenerateClick  = () => {
         // start generation of flashcards
@@ -23,8 +24,8 @@ function ConfigPage({generateFlashcards} : ConfigPageProps) {
         setStep(GeneratorStep.UploadText);
     }
 
-    function isButtonActive() {
-        return lang.length > 0 && mode.length > 0 && fileFormat.length > 0;
+    function isDtoComplete() {
+        return lang && mode && fileFormat && inputTextLengthInRange(inputText);
     }
 
     return (
@@ -42,7 +43,7 @@ function ConfigPage({generateFlashcards} : ConfigPageProps) {
                 <CTAButton
                     buttonText="Generate" buttonType={'primary'}
                     onButtonClick={handleGenerateClick}
-                    active={lang.length > 0 && mode.length > 0 && fileFormat.length > 0}/>
+                    active={isDtoComplete()}/>
             </div>
         </div>
     )

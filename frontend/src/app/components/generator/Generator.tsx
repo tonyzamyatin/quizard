@@ -3,7 +3,7 @@ import ConfigPage from "./ConigurationComponent/ConfigPage";
 import UploadPage from "./TextUploadComponent/UploadPage";
 import WaitingPage from "./WaitingComponent/WaitingPage";
 import CompletionPage from "./CompletionComponent/CompletionPage";
-import {cancelFlashcardGenerationTask, startFlashcardGeneratorTask, pollFlashcardGeneratorTask} from "../../service/generatorService";
+import {cancelFlashcardGeneratorTask, startFlashcardGeneratorTask, pollFlashcardGeneratorTask} from "../../service/generatorService";
 import {GeneratorStep} from "../../enum/GeneratorStep";
 import {GeneratorStateProvider, useGeneratorState} from "./GeneratorContext";
 
@@ -39,16 +39,12 @@ function Generator() {
                     .then(() => {
                 setStep(GeneratorStep.Complete);
             });
+        });
     }
 
     function downloadFlashcards() {
 
     }
-
-    isPollingActiveRef.current = true;
-    setTaskId(data.taskId);
-    console.log(`Task started! Task Id: ${taskId}`)
-    pollFlashcardGeneratorTask(data.taskId);
 
     useEffect(() => {
         // useEffect for polling, triggered when taskId changes
@@ -71,10 +67,12 @@ function Generator() {
                     generateFlashcards={generateFlashcards}
                 />;
             case GeneratorStep.Wait:
-                return <WaitingPage  cancelFlashcards={() => cancelFlashcardGenerationTask(taskId)}
+                return <WaitingPage
+                    cancelFlashcards={() => cancelFlashcardGeneratorTask(taskId)}
                 />
             case GeneratorStep.Complete:
                 return <CompletionPage
+                    downloadFlashcards={downloadFlashcards}
                 />
             default:
                 return <UploadPage />;
