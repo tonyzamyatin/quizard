@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class ExportFormat(str, Enum):
-    anki = "apkg"
+    apkg = "anki"
     csv = "csv"
