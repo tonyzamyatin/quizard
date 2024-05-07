@@ -18,7 +18,7 @@ function Generator() {
     const isDevelopmentMode = process.env.NODE_ENV === 'development';
 
     // App related hooks
-    const {step, setStep, generatorTaskDto, generatorTaskInfo} = useGeneratorState();
+    const {step, setStep, generatorTaskDto, generatorTaskInfo, fileFormat} = useGeneratorState();
     const [taskId, setTaskId] = useState('');
     const isPollingActiveRef = useRef(false);
 
@@ -37,40 +37,40 @@ function Generator() {
                     (total) => {generatorTaskInfo.totalBatches = total},
                 )
                     .then(() => {
-                setStep(GeneratorStep.Complete);
+                setStep(GeneratorStep.COMPLETE);
             });
         });
     }
 
     function downloadFlashcards() {
-
+        const blob = localStorage.getItem(`${fileFormat}${taskId}`
+        if ()) {
+            const flashcards = JSON.parse(localStorage.getItem(`flashcards-${taskId}`));
+            const blob = new Blob([JSON.stringify(flashcards, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `flashcards-${taskId}.json`;
+            a.click();
+        }
     }
 
-    useEffect(() => {
-        // useEffect for polling, triggered when taskId changes
-        let timeoutId = null;
 
-        if (taskId && isPollingActiveRef.current) {
-            timeoutId = setTimeout(() => pollFlashcardGeneratorTask(taskId), 40000);
-        }
 
-        // Clean up the timeout when taskId changes or component unmounts
-        return () => clearTimeout(timeoutId);
-    }, [taskId]);
 
     const renderContent = () => {
         switch (step) {
-            case GeneratorStep.UploadText:
+            case GeneratorStep.UPLOAD_TEXT:
                 return <UploadPage/>;
-            case GeneratorStep.Configure:
+            case GeneratorStep.CONFIGURE:
                 return <ConfigPage
                     generateFlashcards={generateFlashcards}
                 />;
-            case GeneratorStep.Wait:
+            case GeneratorStep.WAIT:
                 return <WaitingPage
                     cancelFlashcards={() => cancelFlashcardGeneratorTask(taskId)}
                 />
-            case GeneratorStep.Complete:
+            case GeneratorStep.COMPLETE:
                 return <CompletionPage
                     downloadFlashcards={downloadFlashcards}
                 />

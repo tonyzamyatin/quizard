@@ -12,7 +12,7 @@ function UploadPage() {
     const setText = (text: string) => setGeneratorTaskDto({...generatorTaskDto, inputText: text});
 
     function handleNextClick() {
-        setStep(GeneratorStep.Configure);
+        setStep(GeneratorStep.CONFIGURE);
     }
 
     function isActive() {

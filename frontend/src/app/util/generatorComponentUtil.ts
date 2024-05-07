@@ -7,3 +7,5 @@ import {config} from "../config";
 export function inputTextLengthInRange(text: string) {
     return text.length > config.generator.minTextLength && text.length <= config.generator.maxTextLength;
 }
+
+

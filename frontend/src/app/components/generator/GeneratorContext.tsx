@@ -1,7 +1,7 @@
 import {GeneratorTask, GeneratorTaskInfo} from "../../dto/generator";
 import {createContext, ReactNode, useContext, useState} from "react";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../../util/dtoUtil";
-import {FileFormat} from "../../enum/GeneratorOptions";
+import {FileFormat} from "../../enum/generatorOptions";
 import {GeneratorStep} from "../../enum/GeneratorStep";
 import {ChildProp} from "../../../types";
 
@@ -19,7 +19,7 @@ interface GeneratorState  {
 
 // Context definition with default values for TS type checking
 const GeneratorStateContext = createContext<GeneratorState>({
-    step: GeneratorStep.UploadText,
+    step: GeneratorStep.UPLOAD_TEXT,
     setStep: () => {},
     generatorTaskDto: createDefaultGeneratorTask(),
     setGeneratorTaskDto: () => {},
@@ -36,7 +36,7 @@ export function GeneratorStateProvider({ children } :  ChildProp) {
         if (!(savedStep === null || !(savedStep in GeneratorStep))) {
             return savedStep as GeneratorStep;
         } else {
-            return GeneratorStep.UploadText;   // Default
+            return GeneratorStep.UPLOAD_TEXT;   // Default
         }
     });
     const [fileFormat, setFileFormat] = useState<FileFormat | null>(() => {

@@ -1,5 +1,6 @@
-import {Mode, Language} from "../enum/GeneratorOptions";
-import {GeneratorTask, GeneratorTaskInfo, TaskState} from "../dto/generator";
+import {Mode, Language} from "../enum/generatorOptions";
+import {GeneratorTask, GeneratorTaskInfo} from "../dto/generator";
+import {TaskState} from "../enum/taskState";
 
 export function createDefaultGeneratorTask(): GeneratorTask {
     return {

@@ -2,10 +2,10 @@
 // TODO: Add doc strings
 
 
-import {GeneratorStep} from "../enum/GeneratorStep";
-import {GeneratorTask, GeneratorTaskInfo, TaskState,} from "../dto/generator";
+import {GeneratorTask, GeneratorTaskInfo} from "../dto/generator";
 import {sendRequest} from "../util/requestUtil";
-import {FileFormat} from "../enum/GeneratorOptions";
+import {FileFormat} from "../enum/generatorOptions";
+import {TaskState} from "../enum/taskState";
 
 
 // API Endpoint

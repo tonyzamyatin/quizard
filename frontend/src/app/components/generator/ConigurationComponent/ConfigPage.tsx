@@ -17,15 +17,15 @@ function ConfigPage({generateFlashcards} : ConfigPageProps) {
     const handleGenerateClick  = () => {
         // start generation of flashcards
         generateFlashcards();
-        setStep(GeneratorStep.Wait)
+        setStep(GeneratorStep.WAIT)
     }
 
     function handleBackClick() {
-        setStep(GeneratorStep.UploadText);
+        setStep(GeneratorStep.UPLOAD_TEXT);
     }
 
     function isDtoComplete() {
-        return lang && mode && fileFormat && inputTextLengthInRange(inputText);
+        return !! (lang && mode && fileFormat && inputTextLengthInRange(inputText));
     }
 
     return (

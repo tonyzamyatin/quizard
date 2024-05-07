@@ -1,6 +1,6 @@
 import React from "react";
 
-function CTAButton({ buttonText, buttonType, onButtonClick, active, nonHover = false}) {
+function CTAButton({ buttonText, buttonType, onButtonClick, active=true, nonHover=false}) {
 
     const buttonTypes = []
 

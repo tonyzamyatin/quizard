@@ -25,7 +25,7 @@ function WaitingPage({ cancelFlashcards } : WaitingPageProps) {
 
  
     const handleCancelClick = () => {
-        setStep(GeneratorStep.UploadText);
+        setStep(GeneratorStep.UPLOAD_TEXT);
         cancelFlashcards();
     }
 

@@ -1,6 +1,6 @@
 export enum GeneratorStep {
-    UploadText = 'UploadText',
-    Configure = 'Configure',
-    Wait = 'Wait',
-    Complete = 'Complete'
+    UPLOAD_TEXT = 'UPLOAD_TEXT',
+    CONFIGURE = 'CONFIGURE',
+    WAIT = 'WAIT',
+    COMPLETE = 'COMPLETE'
 }

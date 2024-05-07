@@ -5,8 +5,11 @@ import {useGeneratorState} from "../GeneratorContext";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../../../util/dtoUtil";
 import {GeneratorStep} from "../../../enum/GeneratorStep";
 
+interface CompletionPageProps {
+    downloadFlashcards: () => void;
+}
 
-function CompletionPage() {
+function CompletionPage( {downloadFlashcards}: CompletionPageProps ) {
     // TODO: Fix bug: Share buttons not loading on component mount (only on reload)
     // TODO: Fix bug: Form has black background (maybe create custom form).
 
@@ -24,7 +27,7 @@ function CompletionPage() {
         sessionStorage.removeItem('savedGeneratorTaskDto');
         localStorage.removeItem('savedFileFormat');
         sessionStorage.removeItem('savedFileFormat');
-        setStep(GeneratorStep.UploadText);
+        setStep(GeneratorStep.UPLOAD_TEXT);
     }
 
     return (
@@ -34,8 +37,16 @@ function CompletionPage() {
             <p>Found Quizard useful? Spread the magic!</p>
             {state === "loading" && <p style={{margin: '10px 0 10px 0'}}>Loading</p>}
             {state === "ready" && <div className="sharethis-inline-share-buttons"></div>}
-            <CTAButton buttonText="Back" buttonType={'secondary'} onButtonClick={handleBackClick}
-                       active={true}/>
+            <CTAButton
+                buttonText="Back"
+                buttonType={'secondary'}
+                onButtonClick={handleBackClick}
+            />
+            <CTAButton
+                buttonText="Download"
+                buttonType={'primary'}
+                onButtonClick={downloadFlashcards}
+            />
         </div>
         {/*<div */}
         {/*    class="powr-form-builder" */}
