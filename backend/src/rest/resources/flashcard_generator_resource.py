@@ -10,7 +10,7 @@ from config.logging_config import setup_logging
 from src.custom_exceptions.external_exceptions import TaskNotFoundError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.dtos.generator_task_info import GeneratorTaskInfoDto
-from src.enums.task_state import TaskState
+from src.enums.task_states import TaskState
 from src.services.task_service.task_service_interface import ITaskService
 
 # Configure logging

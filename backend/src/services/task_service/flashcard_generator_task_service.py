@@ -8,7 +8,7 @@ from itsdangerous import URLSafeSerializer, BadSignature
 from src.custom_exceptions.external_exceptions import TokenAuthenticationError, ResultNotFoundError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
-from src.enums.task_state import TaskState
+from src.enums.task_states import TaskState
 from src.services.task_service.task_service_interface import ITaskService
 from src.celery.tasks import flashcard_generator_task
 

@@ -3,7 +3,7 @@ from typing import Optional, Callable
 
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
-from src.enums.export_format import ExportFormat
+from src.enums.generatorOptions import ExportFormat
 from src.services.flashcard_service.flashcard_export import export_as_apkg, export_as_csv
 from src.services.flashcard_service.flashcard_generator_service.flashcard_generator_interface import IFlashcardGenerator
 
@@ -38,7 +38,7 @@ class FlashcardService:
         bytes
             The exported flashcards in the specified format.
         """
-        if export_format == ExportFormat.apkg:
+        if export_format == ExportFormat.anki:
             return export_as_apkg(flashcard_deck)
         elif export_format == ExportFormat.csv:
             return export_as_csv(flashcard_deck)

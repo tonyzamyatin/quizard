@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from src.celery.tasks import flashcard_generator_task
 from src.custom_exceptions.external_exceptions import ValidationError, ResultNotFoundError
-from src.enums.export_format import ExportFormat
+from src.enums.generatorOptions import ExportFormat
 from src.services.flashcard_service.flashcard_service import FlashcardService
 from src.services.task_service.flashcard_generator_task_service import ITaskService
 

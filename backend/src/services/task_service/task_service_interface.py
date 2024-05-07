@@ -3,7 +3,7 @@ from typing import Any
 
 from celery.result import AsyncResult
 
-from src.enums.task_state import TaskState
+from src.enums.task_states import TaskState
 
 
 class ITaskService(ABC):

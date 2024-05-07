@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from src.enums.task_state import TaskState
+from src.enums.task_states import TaskState
 
 
 class GeneratorTaskInfoDto(BaseModel):

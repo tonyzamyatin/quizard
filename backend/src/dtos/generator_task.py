@@ -1,9 +1,7 @@
 from pydantic import BaseModel
 
 from src.dtos.immutable_dto import ImmutableBaseModel
-from src.enums.export_format import ExportFormat
-from src.enums.generation_mode import GeneratorMode
-from src.enums.language import SupportedLanguage
+from src.enums.generatorOptions import SupportedLanguage, GeneratorMode, ExportFormat
 
 
 class FlashcardGeneratorTaskDto(ImmutableBaseModel):
