@@ -5,13 +5,9 @@ import {useGeneratorState} from "../GeneratorContext";
 import {GeneratorStep} from "../../../enum/GeneratorStep";
 import {inputTextLengthInRange} from "../../../util/generatorComponentUtil";
 
-interface ConfigPageProps {
-    generateFlashcards: () => void;
-}
+function ConfigPage() {
 
-function ConfigPage({generateFlashcards} : ConfigPageProps) {
-
-    const {setStep, generatorTaskDto, fileFormat} = useGeneratorState();
+    const {setStep, generatorTaskDto, fileFormat, generateFlashcards} = useGeneratorState();
     const {lang, mode, inputText} = generatorTaskDto;
 
     const handleGenerateClick  = () => {

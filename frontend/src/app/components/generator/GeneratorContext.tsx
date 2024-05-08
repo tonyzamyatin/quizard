@@ -4,9 +4,13 @@ import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../../
 import {FileFormat} from "../../enum/generatorOptions";
 import {GeneratorStep} from "../../enum/GeneratorStep";
 import {ChildProp} from "../../../types";
+import {useFlashcardGenerator} from "../../hooks/useFlashcardGenerator";
 
+
+/**
+ * Generator state context interface (for TS type checking)
+ */
 interface GeneratorState  {
-    // State interface for TS type checking
     step: GeneratorStep;
     setStep: (step: GeneratorStep) => void;
     generatorTaskDto: GeneratorTask;
@@ -15,9 +19,16 @@ interface GeneratorState  {
     setGeneratorTaskInfo: (generatorTaskInfo: GeneratorTaskInfo) => void;
     fileFormat: FileFormat | null
     setFileFormat: (fileFormat: FileFormat | null) => void;
+    generateFlashcards: () => void;
+    downloadFlashcards: () => void;
+    cancelFlashcards: () => void;
 }
 
-// Context definition with default values for TS type checking
+/**
+ * Generator state context definition of the generator state provided to the child components.
+ * GeneratorState interface defines the context value (for TS type checking).
+ * Default values are set for all values (initial state, necessity).
+ */
 const GeneratorStateContext = createContext<GeneratorState>({
     step: GeneratorStep.UPLOAD_TEXT,
     setStep: () => {},
@@ -27,52 +38,28 @@ const GeneratorStateContext = createContext<GeneratorState>({
     setGeneratorTaskInfo: () => {},
     fileFormat: null,
     setFileFormat: () => {},
+    generateFlashcards: () => {},
+    downloadFlashcards: () => {},
+    cancelFlashcards: () => {},
 });
 
-// Functional provider component to provide the generator state context to the child components
+/**
+ * Provider component that wraps the application and provides the generator state context to all child components.
+ * Uses the {@link useFlashcardGenerator} hook to get the generator state.
+ * @param children - child components to which the generator state context is provided
+ */
 export function GeneratorStateProvider({ children } :  ChildProp) {
-    const [step, setStep] = useState<GeneratorStep>(() => {
-        const savedStep = localStorage.getItem('savedStep');
-        if (!(savedStep === null || !(savedStep in GeneratorStep))) {
-            return savedStep as GeneratorStep;
-        } else {
-            return GeneratorStep.UPLOAD_TEXT;   // Default
-        }
-    });
-    const [fileFormat, setFileFormat] = useState<FileFormat | null>(() => {
-        const savedFileFormat = localStorage.getItem('savedFileFormat');
-        if (!(savedFileFormat === null || !(savedFileFormat in FileFormat))) {
-            return savedFileFormat as FileFormat;
-        } else {
-            return null;   // Default
-        }
-    });
-    const [generatorTaskDto, setGeneratorTaskDto] = useState<GeneratorTask>(() => {
-        const savedTaskDto = localStorage.getItem('savedGeneratorTaskDto');
-        return savedTaskDto ? JSON.parse(savedTaskDto) : createDefaultGeneratorTask();
-    });
-    const [generatorTaskInfo, setGeneratorTaskInfo] = useState<GeneratorTaskInfo>(() => {
-        return createDefaultGeneratorTaskInfo();
-    });
+    const flashcardGenerator = useFlashcardGenerator();
+
     return (
-        <GeneratorStateContext.Provider value={
-            {
-                step,
-                setStep,
-                generatorTaskDto,
-                setGeneratorTaskDto,
-                generatorTaskInfo,
-                setGeneratorTaskInfo,
-                fileFormat,
-                setFileFormat
-            }
-        }>
-            {children}
+        <GeneratorStateContext.Provider value={ flashcardGenerator }>
+            { children }
         </GeneratorStateContext.Provider>
     );
 }
 
 /**
- * Custom hook to use the generator state context in functional components.
+ * Custom hook that returns the generator state context.
+ * @returns generator state context
  */
 export const useGeneratorState = () => useContext(GeneratorStateContext);

@@ -4,13 +4,9 @@ import  {GeneratorStep} from "../../../enum/GeneratorStep";
 import {useGeneratorState} from "../GeneratorContext";
 import CTAButton from "../../global/CTAButton/CTAButton";
 
-interface WaitingPageProps {
-    cancelFlashcards: () => void;
-}
+function WaitingPage() {
 
-function WaitingPage({ cancelFlashcards } : WaitingPageProps) {
-
-    const { setStep, generatorTaskInfo } = useGeneratorState();
+    const { setStep, generatorTaskInfo, cancelFlashcards } = useGeneratorState();
     let { currentBatch, totalBatches } = generatorTaskInfo;
     currentBatch = currentBatch || 0;
     totalBatches = totalBatches || 1;
@@ -23,10 +19,9 @@ function WaitingPage({ cancelFlashcards } : WaitingPageProps) {
         return <ProgressBar progress={progress}/>;
     }
 
- 
     const handleCancelClick = () => {
-        setStep(GeneratorStep.UPLOAD_TEXT);
         cancelFlashcards();
+        setStep(GeneratorStep.UPLOAD_TEXT);
     }
 
 

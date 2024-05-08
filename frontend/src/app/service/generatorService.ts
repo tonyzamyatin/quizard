@@ -16,7 +16,6 @@ export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTas
     console.info(`Endpoint: ${endpoint}`);
     console.info('Method: POST');
     console.info('Payload:', generatorTaskDto);
-    console.groupEnd();
     const response = await sendRequest({
         endpoint: endpoint,
         method: 'POST',
@@ -28,12 +27,13 @@ export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTas
         throw new Error('taskId is missing from the response');
     }
     console.info(`Task started! Task Id: ${taskId}`);
+    console.groupEnd();
     return taskId;
 }
 
-async function getFlashcardGeneratorTaskInfo(taskId: string): Promise<GeneratorTaskInfo> {
+export async function fetchFlashcardGeneratorTaskInfo(taskId: string): Promise<GeneratorTaskInfo> {
     const endpoint = `/flashcards/generator/${taskId}`;
-    console.group('getFlashcardGeneratorTaskInfo');
+    console.group('fetchFlashcardGeneratorTaskInfo');
     console.log(`Endpoint:${ endpoint }`);
     console.log('Method: GET');
     const response = await sendRequest({
@@ -49,21 +49,6 @@ async function getFlashcardGeneratorTaskInfo(taskId: string): Promise<GeneratorT
     return taskInfo;
 }
 
-export async function pollFlashcardGeneratorTask(taskId: string, setCurrentBatch: (current: number) => void, setTotalBatches: (total: number) => void, waitDelay = 1000, updateDelay = 1000) {
-    const taskInfo = await getFlashcardGeneratorTaskInfo(taskId);
-    if (taskInfo.currentBatch && taskInfo.totalBatches) {
-        setCurrentBatch(taskInfo.currentBatch);
-        setTotalBatches(taskInfo.totalBatches);
-    }
-    if (taskInfo.taskState === TaskState.success) {
-        return;
-    } else {
-        let timeout = taskInfo.taskState === TaskState.inProgress ? updateDelay : waitDelay;
-        setTimeout(() => pollFlashcardGeneratorTask(taskId, setCurrentBatch, setTotalBatches, waitDelay, updateDelay), timeout);
-    }
-}
-
-
 export async function cancelFlashcardGeneratorTask(taskId: string ) {
     const endpoint = `/flashcards/generator/${taskId}`
     console.group('cancelFlashcardGenerationTask');
@@ -76,17 +61,21 @@ export async function cancelFlashcardGeneratorTask(taskId: string ) {
     console.groupEnd();
 };
 
-export async function exportGeneratorTaskResult(retrievalToken: string, fileFormat: FileFormat ) {
+/**
+ * Fetches the flashcard file in the specified file format.
+ * @param retrievalToken the token to retrieve the file, provided in the task info when the task is complete (see fetchFlashcardGeneratorTaskInfo)
+ * @param fileFormat the file format to download the flashcards in
+ * @returns {Promise<{blob: Blob, filename: string}>} the flashcard file as a blob and the filename
+ */
+export async function fetchFlashcardFile(retrievalToken: string, fileFormat: FileFormat ): Promise<{blob: Blob, filename: string}> {
     console.group('getGeneratorTaskResult');
     if (retrievalToken == null) {
         console.warn('Retrieval token is missing')
-        return;
+        throw new Error('Retrieval token must not be null or undefined');
     }
-    // @ts-ignore - FileFormat is an enum
-    const fileFormatKey = FileFormat[fileFormat];
-    const endpoint = `/flashcards/exporter/${retrievalToken}?format=${fileFormatKey}`;
+    const endpoint = `/flashcards/exporter/${retrievalToken}?format=${fileFormat}`;
     console.log(`Endpoint:${ endpoint }`);
-    console.log('Method: DELETE');
+    console.log('Method: GET');
     const response = await sendRequest({
         endpoint: endpoint,
         method: 'GET',
@@ -100,5 +89,7 @@ export async function exportGeneratorTaskResult(retrievalToken: string, fileForm
             filename = filenameMatch[1];
         }
     }
-    return { blob: response.data, filename };
+    const blob = response.data;
+    console.groupEnd();
+    return { blob: blob, filename };
 }

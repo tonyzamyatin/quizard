@@ -3,8 +3,9 @@
  */
 export const config = {
     generator : {
-        // Text length in characters
-        minTextLength: 250,
-        maxTextLength: 500000,
+        minTextLength: 250,             // characters
+        maxTextLength: 500000,     // characters
+        pollingDelayLong: 3000,        // milliseconds
+        pollingDelayShort: 1000,        // milliseconds
     }
 }
