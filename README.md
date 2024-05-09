@@ -12,7 +12,7 @@ Currently, is is still a proof of concept and a playground for testing various f
 
 ## Setup Instructions
 ### Prerequisites
-- Python 3.12+
+- Python 3.8+
 - Docker
 - Node.js 14+
 
@@ -29,22 +29,15 @@ Currently, is is still a proof of concept and a playground for testing various f
 
 ## Configuration
 Environment variables:
-- `FLASK_ENV`: Flask environment (`development`, `production`).
+- `ENVIRONMENT`: (`development`, `production`).
 - `OPENAI_API_KEY`: public key to access OpenAI API
 - `SECRET_KEY`: secret key to access OpenAI API
 
 ## API Documentation
-Refer to [API Documentation](docs/API.md).
+Coming soon
 
 ## Testing
-1. Backend Tests:
-    ```bash
-    pytest
-    ```
-2. Frontend Tests:
-    ```bash
-    npm test
-    ```
+Coming soon
 
 ## Deployment Guide
 Refer to docker-compose.yml
