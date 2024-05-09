@@ -7,7 +7,7 @@ suprise effect if you know the answer in advance.
 
 Using ready flashcards from the internet generally doesn’t do the job either since they usually differ in content, even if the topic is the same.
 
-This is why we built Quizard™ — an AI powered flashcard generator. It tailors flashcards to your needs and exports them to your favorite flashcard learning app.
+This is why we built Quizard — an AI powered flashcard generator. It tailors flashcards to your needs and exports them to your favorite flashcard learning app.
 Currently, is is still a proof of concept and a playground for testing various features.
 
 ## Setup Instructions
