@@ -6,7 +6,6 @@ from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.services.flashcard_service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
-
 from src.injector import FlashcardServiceModule
 
 logger = get_task_logger(__name__)

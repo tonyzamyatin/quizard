@@ -38,10 +38,13 @@ def init_app(flask_app):
         logger.error("Not Found error", error=e, exc_info=True)
         return standard_error_response(404, 'Not Found', str(e))
 
-    @flask_app.errorhandler((external_exceptions.ValidationError, pydantic.ValidationError))
-    def handle_validation_error(e):
-        logger.error("Validation error", error=e, exc_info=True)
-        return standard_error_response(422, 'Validation Error', str(e))
+    @flask_app.errorhandler(pydantic.ValidationError)
+    def handle_generic_validation_error(e):
+        handle_validation_error(e)
+
+    @flask_app.errorhandler(external_exceptions.ValidationError)
+    def handle_specific_validation_error(e):
+        handle_validation_error(e)
 
     @flask_app.errorhandler(QuizardError)
     def handle_unexpected_error(e):
@@ -65,3 +68,8 @@ def init_app(flask_app):
         """Handle all unexpected exceptions."""
         logger.error(f"Unexpected error", error=e, exc_info=True)
         return standard_error_response(500, 'Unexpected Error', str(e))
+
+
+def handle_validation_error(e):
+    logger.error("Validation error", error=e, exc_info=True)
+    return standard_error_response(422, 'Validation Error', str(e))

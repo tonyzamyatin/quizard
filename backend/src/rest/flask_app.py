@@ -1,39 +1,31 @@
-# src.rest.api.py
+# src.rest.flask_app.py
 
 import structlog
+from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
-from injector import Injector
 
-from src.celery.celery import setup_applications
 from config.logging_config import setup_logging
+from src.injector.injector_setup import get_injector
 from src.rest.resources.flashcard_exporter_resource import FlashcardExporterResource
 from src.rest.resources.flashcard_generator_resource import FlashcardGeneratorResource
 from src.rest.resources.health_check_resource import HealthCheckResource
-from src.injector import TaskServiceModule
 from src.services.flashcard_service.flashcard_service import FlashcardService
 from src.services.task_service.flashcard_generator_task_service import FlashcardGeneratorTaskService
-from src.utils.global_helpers import get_env_variable
 
 # Configure logging
 setup_logging()
 logger = structlog.get_logger(__name__)
 
-# Create Flask and Celery apps
-flask_app, celery_app = setup_applications()
-flask_app.config['SECRET_KEY'] = get_env_variable('SECRET_KEY')
+# Inject dependencies
+injector = get_injector()
+flask_app = injector.get(Flask)
+task_service = injector.get(FlashcardGeneratorTaskService)
+flashcard_service = injector.get(FlashcardService)
 
 # Setup API
 CORS(flask_app)
 api = Api(flask_app)
-
-# Initialize the Injector
-injector = Injector([TaskServiceModule()])
-
-# Get the service instances from the injector
-task_service = injector.get(FlashcardGeneratorTaskService)
-flashcard_service = injector.get(FlashcardService)
-
 api.add_resource(FlashcardGeneratorResource, '/flashcards/generator', resource_class_kwargs={'task_service': task_service})
 api.add_resource(FlashcardExporterResource, '/flashcards/exporter', resource_class_kwargs={'task_service': task_service, 'flashcard_service': flashcard_service})
 api.add_resource(HealthCheckResource, '/health')

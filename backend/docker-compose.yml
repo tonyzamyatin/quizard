@@ -5,7 +5,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.app
+      dockerfile: Dockerfile
     image: quizard-app:latest
     ports:
       - "5000:5000"
@@ -13,20 +13,20 @@ services:
       - .env  # Use environment variables defined in the .env file
     volumes:
       - ./src:/src  # Mount the backend directory to the app directory in the container
-    command: python -m src.rest.app
+    command: python -m src.rest.flask_app
     depends_on:
       - rabbitmq
       - redis
   worker:
     build:
       context: .
-      dockerfile: Dockerfile.app
-    image: quizard-worker:latest
+      dockerfile: Dockerfile
+    image: quizard-app:latest
     depends_on:
       - web
       - redis
       - rabbitmq
-    command: celery -A src.celery.celery worker -l info
+    command: celery -A src.celery.celery_worker worker -l info
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:

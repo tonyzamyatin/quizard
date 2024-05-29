@@ -20,7 +20,9 @@ from src.services.flashcard_service.flashcard_generator_service.flashcard_genera
 from src.services.flashcard_service.flashcard_generator_service.flashcard_parsing import parse_flashcards
 from src.services.flashcard_service.flashcard_generator_service.quizard_config import QuizardConfig
 
-from src.utils.global_helpers import format_num, read_file, inset_into_string, get_env_variable
+from src.utils.file_util import read_file
+from src.utils.env_util import get_env_variable
+from src.utils.formatting_util import format_num, inset_into_string
 
 logger = structlog.getLogger(__name__)
 
