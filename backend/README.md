@@ -13,9 +13,3 @@ favorite flashcard learning app.
 ## Proof of Concept
 
 This is the proof of concept and also a playground to test various features and techniques.
-
-## Environment
-The api key can be set in the .env file
-
-.env:
-    `OPENAI_API_KEY=key123`
