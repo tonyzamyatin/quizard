@@ -6,7 +6,6 @@ from flask import request, jsonify
 from flask_restful import Resource
 from humps import decamelize, camelize
 
-from config.logging_config import setup_logging
 from src.custom_exceptions.external_exceptions import TaskNotFoundError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.dtos.generator_task_info import GeneratorTaskInfoDto
@@ -14,7 +13,6 @@ from src.enums.task_states import TaskState
 from src.services.task_service.task_service_interface import ITaskService
 
 # Configure logging
-setup_logging()
 logger = structlog.get_logger(__name__)
 
 

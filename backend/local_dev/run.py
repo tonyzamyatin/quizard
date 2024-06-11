@@ -5,7 +5,7 @@ import structlog
 from openai import OpenAI
 from dotenv import load_dotenv
 
-from config.logging_config import setup_logging
+from src.config import setup_logging
 from src.services.flashcard_service import FlashcardService
 from src.utils.file_util import load_yaml_config, read_file
 

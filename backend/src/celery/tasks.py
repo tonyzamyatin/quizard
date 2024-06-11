@@ -1,20 +1,20 @@
 # src/rest/tasks.py
-from injector import Injector
+from dependency_injector.wiring import inject, Provide
 from openai import OpenAIError
 from src.custom_exceptions.internal_exceptions import QuizardError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
+from src.container import Container
 from src.services.flashcard_service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from src.injector import FlashcardServiceModule
 
 logger = get_task_logger(__name__)
-injector = Injector([FlashcardServiceModule()])
 
 
 # TODO: add retries with exponential backoff
 @shared_task(bind=True, ignore_result=False, track_started=True)
-def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto):
+@inject
+def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto, flashcard_service=Provide[Container.flashcard_service]):
     """
     Flashcard generator task.
     This task generates flashcards based on the provided parameters and stores the result in the backend used by Celery.
@@ -27,6 +27,8 @@ def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto):
     params: FlashcardGeneratorTaskDto
         The DTO containing the parameters for generating flashcards including language, mode, export format, and input.
 
+    flashcard_service: FlashcardService
+        The service used to generate flashcards, injected by the dependency injector.
     Returns
     -------
     FlashcardDeck
@@ -42,7 +44,6 @@ def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto):
 
     try:
         logger.info(f"Flashcard generation task started with task id: {self.request.id}")
-        flashcard_service = injector.get(FlashcardService)
         flashcard_deck = flashcard_service.generate_flashcard_deck(params, lambda c, t: update_progress(self, c, t))
         # Get the final progress from the task's meta field
         final_progress = self.request.chain.get('meta', {})

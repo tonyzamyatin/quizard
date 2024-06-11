@@ -1,11 +1,13 @@
 # src/flashcard_service/flashcard_service.py
 from typing import Optional, Callable
 
+from dependency_injector.wiring import inject, Provide
+
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.enums.generatorOptions import ExportFormat
+from src.container import Container
 from src.services.flashcard_service.flashcard_export import export_as_apkg, export_as_csv
-from src.services.flashcard_service.flashcard_generator_service.flashcard_generator_interface import IFlashcardGenerator
 
 
 # TODO: Validate DTOs (especially length of input text!)
@@ -15,7 +17,8 @@ class FlashcardService:
     Service for everything flashcard related.
     """
 
-    def __init__(self, flashcard_generator: IFlashcardGenerator):
+    @inject
+    def __init__(self, flashcard_generator=Provide[Container.flashcard_generator]):
         self.flashcard_generator = flashcard_generator
 
     def generate_flashcard_deck(self, flashcards_request_dto: FlashcardGeneratorTaskDto,

@@ -1,9 +1,11 @@
+# src/utils/env_util.py
 import os
 
+import structlog
 from dotenv import load_dotenv
-
-from src.celery.celery_worker import logger
 from src.custom_exceptions.internal_exceptions import EnvironmentLoadingError, InvalidEnvironmentVariableError
+
+logger = structlog.get_logger(__name__)
 
 
 def load_environment_variables():

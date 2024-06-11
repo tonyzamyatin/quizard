@@ -4,7 +4,7 @@ from flask import Flask
 from src.rest import flask_error_handlers
 
 
-def create_flask_app(broker_url: str, result_backend_url: str) -> Flask:
+def create_flask_app(broker_url: str, result_backend_url: str, import_name: str) -> Flask:
     """
     Create and configure a Flask application instance with Celery configurations.
 
@@ -14,6 +14,8 @@ def create_flask_app(broker_url: str, result_backend_url: str) -> Flask:
         The URL of the message broker that Celery will use.
     result_backend_url : str
         The URL of the backend used to store task results.
+    import_name : str
+        The name of the application package.
 
     Returns
     -------
@@ -39,7 +41,7 @@ def create_flask_app(broker_url: str, result_backend_url: str) -> Flask:
     'flask.app'
     """
     try:
-        flask_app = Flask(__name__)
+        flask_app = Flask(import_name)
         flask_app.config.from_mapping(
             CELERY=dict(
                 broker_url=broker_url,

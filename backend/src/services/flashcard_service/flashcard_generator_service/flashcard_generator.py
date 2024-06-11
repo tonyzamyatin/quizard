@@ -7,21 +7,22 @@ import structlog
 from typing import List, Optional, Callable
 
 import tiktoken
+from dependency_injector.wiring import inject, Provide
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
 
+from src import src_root
 from src.custom_exceptions.internal_exceptions import PromptSizeError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.completion_messages.completion_messages import Messages
 from src.entities.flashcard.flashcard import Flashcard
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
-from src.services.flashcard_service.flashcard_generator_service import src_root
+from src.container import Container
 from src.services.flashcard_service.flashcard_generator_service.flashcard_generator_interface import IFlashcardGenerator
 from src.services.flashcard_service.flashcard_generator_service.flashcard_parsing import parse_flashcards
 from src.services.flashcard_service.flashcard_generator_service.quizard_config import QuizardConfig
 
 from src.utils.file_util import read_file
-from src.utils.env_util import get_env_variable
 from src.utils.formatting_util import format_num, inset_into_string
 
 logger = structlog.getLogger(__name__)
@@ -46,7 +47,8 @@ class FlashcardGenerator(IFlashcardGenerator):
         ...
     """
 
-    def __init__(self, client: OpenAI):
+    @inject
+    def __init__(self, client=Provide[Container.openai_client]):
         self.client = client
         self.model_config = QuizardConfig.get_model_config()
         self.text_splitting_config = QuizardConfig.get_text_splitting_config()

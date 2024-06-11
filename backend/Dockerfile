@@ -2,7 +2,7 @@
 # See the Quizard-Notion page "Docker-Poetry" for explanations regarding this Docker Build
 
 #syntax=docker/dockerfile:1
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.11
 FROM python:${PYTHON_VERSION}-slim as builder
 
 ENV LANG C.UTF-8

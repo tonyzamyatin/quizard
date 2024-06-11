@@ -1,9 +1,13 @@
 # src/rest/celery_config.py
 from celery import Celery, Task
+from dependency_injector.wiring import inject, Provide
 from flask import Flask
 
+from src.container import Container
 
-def create_celery_app(flask_app: Flask) -> Celery:
+
+@inject
+def create_celery_app(flask_app=Provide[Container.flask_app]) -> Celery:
     """
     Create and return a Celery application object configured for a Flask application.
 

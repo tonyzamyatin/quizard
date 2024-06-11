@@ -22,6 +22,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: quizard-app:latest
+    env_file:
+      - .env
     depends_on:
       - web
       - redis

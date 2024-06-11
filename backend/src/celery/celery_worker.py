@@ -1,9 +1,8 @@
 # src.celery.celery_worker.py
-from celery import Celery
 from celery.signals import task_failure
 import structlog
 
-from src.injector.injector_setup import get_injector
+from src.container import get_container
 
 logger = structlog.get_logger(__name__)
 
@@ -19,7 +18,9 @@ def handle_task_failure(sender=None, task_id=None, exception=None, args=None, kw
 # Handle Celery task failures
 task_failure.connect(handle_task_failure)
 
+# Get the container
+container = get_container()
+celery_app = container.celery_app()
+
 if __name__ == '__main__':
-    injector = get_injector()
-    celery_app = injector.get(Celery)
     celery_app.start()

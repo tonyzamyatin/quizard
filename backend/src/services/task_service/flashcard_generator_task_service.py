@@ -1,14 +1,13 @@
 # src/services/task_service/flashcard_generator_task_service.py
-from abc import abstractmethod
 
-from celery import Celery
-from flask import Flask
+from dependency_injector.wiring import inject, Provide
 from itsdangerous import URLSafeSerializer, BadSignature
 
 from src.custom_exceptions.external_exceptions import TokenAuthenticationError, ResultNotFoundError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.enums.task_states import TaskState
+from src.container import Container
 from src.services.task_service.task_service_interface import ITaskService
 from src.celery.tasks import flashcard_generator_task
 
@@ -19,7 +18,8 @@ class FlashcardGeneratorTaskService(ITaskService):
     Essentially a wrapper for performing operations on the flashcard generator celery task.
     """
 
-    def __init__(self, flask_app: Flask, celery_app: Celery):
+    @inject
+    def __init__(self, flask_app=Provide[Container.flask_app], celery_app=Provide[Container.celery_app]):
         self.flask_app = flask_app
         self.celery_app = celery_app
 
