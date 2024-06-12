@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import DOMPurify from 'dompurify';
 
 function TextUploadField({ text, setText }) {
@@ -9,9 +9,10 @@ function TextUploadField({ text, setText }) {
 ;
 
     const handleChange = (event) => {
-        let sanitizedText;
-        sanitizedText = sanitizeText(event.target.value)
-        setText(sanitizedText);
+        const sanitizedText = sanitizeText(event.target.value)
+        if (sanitizedText !== text) {
+            setText(sanitizedText);
+        }
     }
 
     // Display character length of the text, separating every three digits with a comma
@@ -25,18 +26,6 @@ function TextUploadField({ text, setText }) {
         );
     }
 
-    useEffect(() => {
-        // Load saved text from localStorage when the component mounts
-        const savedText = sessionStorage.getItem('savedText');
-        if (savedText) {
-            setText(savedText);
-        }
-    }, [setText]);
-
-    useEffect(() => {
-        // Save text to localStorage when it changes
-        sessionStorage.setItem('savedText', text);
-    }, [text]);
 
     // TODO: Decide on the number of max characters. (currently 500.000)
     // TODO: Cut off text when it is too long and notify user that the text exceeds the accepted length

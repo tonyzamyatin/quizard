@@ -1,16 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ConfigPage from "./ConigurationComponent/ConfigPage";
 import UploadPage from "./TextUploadComponent/UploadPage";
 import WaitingPage from "./WaitingComponent/WaitingPage";
 import CompletionPage from "./CompletionComponent/CompletionPage";
 import {GeneratorStep} from "../../enum/GeneratorStep";
-import {GeneratorStateProvider} from "./GeneratorContext";
-import {useFlashcardGenerator} from "../../hooks/useFlashcardGenerator";
+import {useGeneratorState} from "./GeneratorContext";
 
 function Generator() {
-    const {
-        step,
-    } = useFlashcardGenerator();
+    const { step} = useGeneratorState();
 
     const renderContent = () => {
         switch (step) {
@@ -26,10 +23,9 @@ function Generator() {
                 return <UploadPage />;
         }
     }
+
     return (
-        <GeneratorStateProvider>
-            {renderContent()}
-        </GeneratorStateProvider>
+        renderContent()
     );
 }
 

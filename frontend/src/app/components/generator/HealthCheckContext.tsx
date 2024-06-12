@@ -1,12 +1,11 @@
-import React, { createContext, useState, useContext } from 'react';
-import {ChildProp} from "../../../types";
+import React, {createContext, useState, useContext, ReactNode} from 'react';
 
 const HealthCheckContext = createContext({
     isBackendHealthy: false,
     checkBackendHealth: () => {},
 });
 
-export const HealthCheckProvider = ({ children }: ChildProp) => {
+export const HealthCheckProvider = ({ children }: { children: ReactNode }) => {
     const [isBackendHealthy, setIsBackendHealthy] = useState(true);
 
     const checkBackendHealth = () => {

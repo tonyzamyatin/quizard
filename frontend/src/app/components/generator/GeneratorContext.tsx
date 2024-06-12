@@ -3,7 +3,6 @@ import {createContext, ReactNode, useContext, useState} from "react";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../../util/dtoUtil";
 import {FileFormat} from "../../enum/generatorOptions";
 import {GeneratorStep} from "../../enum/GeneratorStep";
-import {ChildProp} from "../../../types";
 import {useFlashcardGenerator} from "../../hooks/useFlashcardGenerator";
 
 
@@ -44,11 +43,17 @@ const GeneratorStateContext = createContext<GeneratorState>({
 });
 
 /**
+ * Custom hook that returns the generator state context.
+ * @returns generator state context
+ */
+export const useGeneratorState = () => useContext(GeneratorStateContext);
+
+/**
  * Provider component that wraps the application and provides the generator state context to all child components.
  * Uses the {@link useFlashcardGenerator} hook to get the generator state.
  * @param children - child components to which the generator state context is provided
  */
-export function GeneratorStateProvider({ children } :  ChildProp) {
+export function GeneratorStateProvider({ children } :  { children: ReactNode }) {
     const flashcardGenerator = useFlashcardGenerator();
 
     return (
@@ -57,9 +62,3 @@ export function GeneratorStateProvider({ children } :  ChildProp) {
         </GeneratorStateContext.Provider>
     );
 }
-
-/**
- * Custom hook that returns the generator state context.
- * @returns generator state context
- */
-export const useGeneratorState = () => useContext(GeneratorStateContext);

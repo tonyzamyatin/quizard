@@ -12,6 +12,7 @@ import './generator/WaitingComponent/ProgressBar.css'
 import Generator from "./generator/Generator";
 import Footer from "./global/Footer";
 import React from "react";
+import {GeneratorStateProvider} from "./generator/GeneratorContext";
 
 const App = () => {
 
@@ -23,7 +24,9 @@ const App = () => {
                     <p>Our Flashcard Generator automatically transforms your notes or textbooks into flashcards using
                         the power of AI. Simply upload your text and lean back!</p>
                 </div>
-                <Generator/>
+                <GeneratorStateProvider>
+                    <Generator/>
+                </GeneratorStateProvider>
             </main>
             <Footer/>
         </>
