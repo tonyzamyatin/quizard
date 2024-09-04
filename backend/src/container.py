@@ -1,9 +1,7 @@
 # src/container.py
-from typing import Callable
+import sys
 
 from dependency_injector import containers, providers
-from flask import Flask
-from celery import Celery
 from openai import OpenAI
 
 from src.rest.flask_factory import create_flask_app
@@ -15,8 +13,8 @@ class Container(containers.DeclarativeContainer):
 
     flask_app = providers.Singleton(
         create_flask_app,
-        broker_url=create_celery_broker_url(),
-        result_backend_url=create_celery_result_backend_url(),
+        broker_url=config.celery_broker_url,
+        result_backend_url=config.celery_result_backend_url,
         import_name=__name__,
     )
 
@@ -45,7 +43,7 @@ def configure_services(container: Container) -> None:
         The container instance
     """
     # Import the services inside function to avoid circular imports
-    from src.rest.celery_config import create_celery_app
+    from src.celery_config.celery_config import create_celery_app
     from src.services.flashcard_service.flashcard_generator_service.flashcard_generator import FlashcardGenerator
     from src.services.flashcard_service.flashcard_service import FlashcardService
     from src.services.task_service.flashcard_generator_task_service import FlashcardGeneratorTaskService
@@ -108,6 +106,6 @@ def start_container() -> Container:
         'celery_broker_url': create_celery_broker_url(),
         'celery_result_backend_url': create_celery_result_backend_url(),
     })
+    container.wire(modules=[sys.modules['__main__']])
     configure_services(container)
-    container.wire(modules=["src.rest.flask_app", "src.celery.celery_worker"])
     return container

@@ -62,7 +62,7 @@ def create_celery_app(flask_app=Provide[Container.flask_app]) -> Celery:
             result_serializer='pickle',
             accept_content=['pickle', 'json'],
         )
-        flask_app.extensions["celery"] = celery_app
+        flask_app.extensions["celery_config"] = celery_app
     except KeyError as e:
         # Raised if the 'CELERY' key is missing in the Flask app's configuration
         raise RuntimeError(f"Missing 'CELERY' key in Flask configuration: {e}")

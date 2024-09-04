@@ -9,13 +9,13 @@ from src.entities.flashcard_deck.flashcard_deck import FlashcardDeck
 from src.enums.task_states import TaskState
 from src.container import Container
 from src.services.task_service.task_service_interface import ITaskService
-from src.celery.tasks import flashcard_generator_task
+from src.celery_config.tasks import flashcard_generator_task
 
 
 class FlashcardGeneratorTaskService(ITaskService):
     """
     Implementation of IFlashcardGeneratorTaskService.
-    Essentially a wrapper for performing operations on the flashcard generator celery task.
+    Essentially a wrapper for performing operations on the flashcard generator celery_config task.
     """
 
     @inject
