@@ -5,6 +5,7 @@ import {TaskState} from "../enum/taskState";
 export interface GeneratorTask {
         lang: Language | null;
         mode: Mode | null;
+        exportFormat: FileFormat | null;
         inputText: string;
 }
 

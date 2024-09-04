@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import ConfigPage from "./ConigurationComponent/ConfigPage";
 import UploadPage from "./TextUploadComponent/UploadPage";
 import WaitingPage from "./WaitingComponent/WaitingPage";

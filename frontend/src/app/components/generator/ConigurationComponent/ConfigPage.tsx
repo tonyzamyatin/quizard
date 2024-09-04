@@ -7,8 +7,8 @@ import {inputTextLengthInRange} from "../../../util/generatorComponentUtil";
 
 function ConfigPage() {
 
-    const {setStep, generatorTaskDto, fileFormat, generateFlashcards} = useGeneratorState();
-    const {lang, mode, inputText} = generatorTaskDto;
+    const {setStep, generatorTaskDto, generateFlashcards} = useGeneratorState();
+    const {lang, mode, exportFormat, inputText} = generatorTaskDto;
 
     const handleGenerateClick  = () => {
         // start generation of flashcards
@@ -21,7 +21,7 @@ function ConfigPage() {
     }
 
     function isDtoComplete() {
-        return !! (lang && mode && fileFormat && inputTextLengthInRange(inputText));
+        return !! (lang && mode && exportFormat && inputTextLengthInRange(inputText));
     }
 
     return (

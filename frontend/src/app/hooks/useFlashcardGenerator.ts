@@ -1,9 +1,10 @@
 // src/app/hooks/useFlashcardGenerator.ts
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
     cancelFlashcardGeneratorTask,
-    startFlashcardGeneratorTask,
-    fetchFlashcardFile, fetchFlashcardGeneratorTaskInfo
+    fetchFlashcardFile,
+    fetchFlashcardGeneratorTaskInfo,
+    startFlashcardGeneratorTask
 } from "../service/generatorService";
 import {GeneratorStep} from "../enum/GeneratorStep";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../util/dtoUtil";
@@ -30,29 +31,20 @@ export function useFlashcardGenerator() {
         const savedStep = sessionStorage.getItem('savedStep');
         return savedStep ? (savedStep as GeneratorStep) : GeneratorStep.UPLOAD_TEXT;
     });
-    const [fileFormat, setFileFormat] = useState(() => {
-        const savedFileFormat = sessionStorage.getItem('savedFileFormat');
-        return savedFileFormat ? (savedFileFormat as FileFormat) : null;
-    });
     const [generatorTaskDto, setGeneratorTaskDto] = useState(() => {
         const savedTaskDto = sessionStorage.getItem('savedGeneratorTaskDto');
         return savedTaskDto ? JSON.parse(savedTaskDto) : createDefaultGeneratorTask();
     });
     const [generatorTaskInfo, setGeneratorTaskInfo] = useState(createDefaultGeneratorTaskInfo());
     const [taskId, setTaskId] = useState('');
-    const [pollingIntervalId, setPollingIntervalId] = useState<number | null>(null);
+    const pollingIntervalId = useRef<number | null>(null);
+    const isPollingActive = useRef(false);
+    const [pollingTimeout, setPollingTimeOut] = useState(config.generator.pollingDelayLong)
 
     // Save step  to session storage whenever they change
     useEffect(() => {
         sessionStorage.setItem('savedStep', step);
     }, [step]);
-
-    // Save file format to session storage whenever it changes
-    useEffect(() => {
-        if (fileFormat) {
-            sessionStorage.setItem('savedFileFormat', fileFormat);
-        }
-    }, [fileFormat]);
 
     // Save generator task DTO to session storage whenever it changes
     useEffect(() => {
@@ -65,37 +57,53 @@ export function useFlashcardGenerator() {
      * The polling interval is set to 'pollingDelayLong' when the task is pending and 'pollingDelayShort' when the task is in progress.
      */
     useEffect(() => {
-        if (step === GeneratorStep.WAIT) {
-            let timeout = config.generator.pollingDelayLong;
-            const intervalId = window.setInterval(async () => {
-                const taskInfo = await fetchFlashcardGeneratorTaskInfo(taskId);
-                setGeneratorTaskInfo(taskInfo);
-                if (taskInfo.taskState === TaskState.success) {
-                    clearInterval(intervalId);
-                    setStep(GeneratorStep.COMPLETE);
-                }
-                if (taskInfo.taskState === TaskState.inProgress) {
-                    timeout = config.generator.pollingDelayShort;
-                }
-            }, timeout);    // Poll every 'timeout' milliseconds
-            setPollingIntervalId(intervalId);
+        if (step === GeneratorStep.WAIT && taskId) {
+            pollingIntervalId.current = window.setInterval(taskPollingHandler, pollingTimeout);
         }
-
-        // useEffect returns a cleanup function that runs when the component unmounts or before the next time the side effect runs.
         return () => {
-            if (pollingIntervalId) {
-                clearInterval(pollingIntervalId);
+            if (pollingIntervalId.current) {
+                clearInterval(pollingIntervalId.current);
             }
         };
-    }, [step, taskId, generatorTaskInfo]);
+    }, [step, taskId, taskPollingHandler]);
+
+    async function taskPollingHandler() {
+        try {
+            if (step !== GeneratorStep.WAIT) return;
+            if (isPollingActive.current) return;
+
+            isPollingActive.current = true;
+            const taskInfo = await fetchFlashcardGeneratorTaskInfo(taskId);
+            setGeneratorTaskInfo(taskInfo);
+            if (taskInfo.taskState === TaskState.success) {
+                setStep(GeneratorStep.COMPLETE);
+                // Reset all polling variables
+                if (pollingIntervalId.current) {
+                    clearInterval(pollingIntervalId.current);
+                }
+                isPollingActive.current = false;
+                setPollingTimeOut(config.generator.pollingDelayLong);
+            }
+            if (taskInfo.taskState === TaskState.inProgress) {
+                setPollingTimeOut(config.generator.pollingDelayShort);
+            }
+        } catch (error) {
+            console.log('Error occurred when polling flashcard generator task:', error);
+            isPollingActive.current = false;
+        }
+    }
 
     /**
      * Start the flashcard generator task and set the step to 'WAIT'.
      */
     async function generateFlashcards() {
-        const taskId = await startFlashcardGeneratorTask(generatorTaskDto);
-        setTaskId(taskId);
-        setStep(GeneratorStep.WAIT);
+        try {
+            const taskId = await startFlashcardGeneratorTask(generatorTaskDto);
+            setTaskId(taskId);
+            setStep(GeneratorStep.WAIT);
+        } catch (error) {
+            console.log('Error occurred when starting flashcard generation:', error)
+        }
     }
 
     /**
@@ -104,6 +112,7 @@ export function useFlashcardGenerator() {
      */
     async function downloadFlashcards() {
         // Check if the flashcard file is already stored in session storage
+        const fileFormat = generatorTaskDto.exportFormat;
         const flashcardResultJSON = sessionStorage.getItem(`${fileFormat}${taskId}`);
         let flashcardBlob;
         let flashcardFileName;
@@ -117,18 +126,23 @@ export function useFlashcardGenerator() {
             if (!retrievalToken || !fileFormat) {
                 return;
             }
-            const result = await fetchFlashcardFile(retrievalToken, fileFormat);
-            flashcardBlob = result.blob;
-            flashcardFileName = result.filename;
+            try {
 
-            // Save the flashcard file to session storage
-            const reader = new FileReader();
-            reader.readAsDataURL(result.blob);
-            reader.onloadend = function () {
-                const base64data = reader.result;
-                const resultToStore = {blob: base64data, filename: result.filename};
-                sessionStorage.setItem(`${fileFormat}${taskId}`, JSON.stringify(resultToStore));
-            };
+                const result = await fetchFlashcardFile(retrievalToken, fileFormat);
+                flashcardBlob = result.blob;
+                flashcardFileName = result.filename;
+
+                // Save the flashcard file to session storage
+                const reader = new FileReader();
+                reader.readAsDataURL(result.blob);
+                reader.onloadend = function () {
+                    const base64data = reader.result;
+                    const resultToStore = {blob: base64data, filename: result.filename};
+                    sessionStorage.setItem(`${fileFormat}${taskId}`, JSON.stringify(resultToStore));
+                };
+            } catch (error) {
+                console.log('Error occurred when downloading flashcards:', error);
+            }
         }
         if (flashcardBlob && flashcardFileName) {
             downloadBlob(flashcardBlob, flashcardFileName);
@@ -139,7 +153,12 @@ export function useFlashcardGenerator() {
      * Cancel the flashcard generator task and set the step to 'UPLOAD_TEXT'.
      */
     async function cancelFlashcards() {
-        await cancelFlashcardGeneratorTask(taskId);
+        try {
+            await cancelFlashcardGeneratorTask(taskId);
+
+        } catch (error) {
+            console.log('Error occurred when cancelling flashcard generation:', error);
+        }
         setStep(GeneratorStep.UPLOAD_TEXT);
     }
 
@@ -150,8 +169,6 @@ export function useFlashcardGenerator() {
         setGeneratorTaskDto,
         generatorTaskInfo,
         setGeneratorTaskInfo,
-        fileFormat,
-        setFileFormat,
         generateFlashcards,
         downloadFlashcards,
         cancelFlashcards,

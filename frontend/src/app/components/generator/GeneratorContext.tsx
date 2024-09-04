@@ -1,5 +1,5 @@
 import {GeneratorTask, GeneratorTaskInfo} from "../../dto/generator";
-import {createContext, ReactNode, useContext, useState} from "react";
+import {createContext, ReactNode, useContext} from "react";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../../util/dtoUtil";
 import {FileFormat} from "../../enum/generatorOptions";
 import {GeneratorStep} from "../../enum/GeneratorStep";
@@ -16,8 +16,6 @@ interface GeneratorState  {
     setGeneratorTaskDto: (generatorTaskDto: GeneratorTask) => void;
     generatorTaskInfo: GeneratorTaskInfo,
     setGeneratorTaskInfo: (generatorTaskInfo: GeneratorTaskInfo) => void;
-    fileFormat: FileFormat | null
-    setFileFormat: (fileFormat: FileFormat | null) => void;
     generateFlashcards: () => void;
     downloadFlashcards: () => void;
     cancelFlashcards: () => void;
@@ -35,8 +33,6 @@ const GeneratorStateContext = createContext<GeneratorState>({
     setGeneratorTaskDto: () => {},
     generatorTaskInfo: createDefaultGeneratorTaskInfo(),
     setGeneratorTaskInfo: () => {},
-    fileFormat: null,
-    setFileFormat: () => {},
     generateFlashcards: () => {},
     downloadFlashcards: () => {},
     cancelFlashcards: () => {},

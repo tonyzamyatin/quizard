@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw';
 const tasks = new Map();
 
 export const handlers = [
-    http.post('/api/mvp/flashcards/generate/start', () => {
+    http.post('/flashcards/generator', () => {
         const taskId = 'mock-task-id';
         // Initialize the task WaitingComponent
         tasks.set(taskId, { progress: 0, state: 'PENDING', total: 5 });
@@ -13,7 +13,7 @@ export const handlers = [
         return HttpResponse.json({ taskId: taskId});
     }),
 
-    http.get('/api/mvp/flashcards/generate/progress/:taskId', ({ params }) => {
+    http.get('/flashcards/generator/:taskId', ({ params }) => {
         const { taskId } = params;
         const task = tasks.get(taskId);
 
@@ -43,7 +43,7 @@ export const handlers = [
         }
     }),
 
-    http.get('/api/mvp/flashcards/generate/cancel/:taskId', ({ params }) => {
+    http.delete('/flashcards/generator/:taskId', ({ params }) => {
         const { taskId } = params;
         const task = tasks.get(taskId);
         if (!task) {

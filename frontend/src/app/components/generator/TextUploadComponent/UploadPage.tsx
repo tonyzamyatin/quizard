@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import CTAButton from "../../global/CTAButton/CTAButton";
 import TextUploadField from "./TextUploadField";
 import {GeneratorStep} from "../../../enum/GeneratorStep";
@@ -6,7 +6,7 @@ import {useGeneratorState} from "../GeneratorContext";
 import {inputTextLengthInRange} from "../../../util/generatorComponentUtil";
 
 function UploadPage() {
-    const { step, setStep, generatorTaskDto, setGeneratorTaskDto} = useGeneratorState();
+    const { setStep, generatorTaskDto, setGeneratorTaskDto} = useGeneratorState();
 
     const text = generatorTaskDto.inputText;
     const setText = (text: string) => setGeneratorTaskDto({...generatorTaskDto, inputText: text});

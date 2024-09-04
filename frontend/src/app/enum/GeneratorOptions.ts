@@ -51,5 +51,6 @@ export const FileFormatDisplayNames = {
 /*
     * Type definitions for the generator options and display name maps, for TypeScript type checking.
  */
-export type OptionEnum = typeof Mode | typeof Language | typeof FileFormat;
+export type OptionEnum = Mode | Language | FileFormat;
+export type OptionEnumType = typeof Mode | typeof Language | typeof FileFormat;
 export type DisplayNameMap = typeof ModeDisplayNames | typeof LanguageDisplayNames | typeof FileFormatDisplayNames;

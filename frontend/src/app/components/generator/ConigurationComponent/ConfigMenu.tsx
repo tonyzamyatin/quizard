@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Dropdown from "../../global/Dropdown";
 import {
     FileFormat,
@@ -7,8 +7,7 @@ import {
     LanguageDisplayNames,
     ModeDisplayNames,
     FileFormatDisplayNames,
-    OptionEnum,
-    DisplayNameMap,
+    DisplayNameMap, OptionEnumType,
 } from "../../../enum/generatorOptions";
 import {useGeneratorState} from "../GeneratorContext";
 import {displayNameFromEnumValue, enumValueFromDisplayName} from "../../../util/generatorOptionsUtil";
@@ -16,9 +15,10 @@ import {displayNameFromEnumValue, enumValueFromDisplayName} from "../../../util/
 // TODO: Pep up config menu by using icons and make the ConfigurationComponent process more user friendly
 function ConfigMenu() {
 
-    const { generatorTaskDto, setGeneratorTaskDto, fileFormat, setFileFormat} = useGeneratorState();
+    const { generatorTaskDto, setGeneratorTaskDto} = useGeneratorState();
     const setLang = (lang: Language | null) => setGeneratorTaskDto({...generatorTaskDto, lang});
     const setMode = (mode: Mode | null) => setGeneratorTaskDto({...generatorTaskDto, mode});
+    const setExportFormat = (exportFormat: FileFormat | null) => setGeneratorTaskDto({...generatorTaskDto, exportFormat});
 
 
     /**
@@ -28,10 +28,10 @@ function ConfigMenu() {
      * @param displayNameMap the display names map for the corresponding enum
      * @param setter the state setter function
      */
-    const handleOptionChange = <T extends OptionEnum>(
-        enumObj: T,
+    const handleOptionChange = (
+        enumObj: OptionEnumType,
         displayNameMap: DisplayNameMap,
-        setter: (value: T[keyof T] | null) => void
+        setter: (value: OptionEnumType[keyof OptionEnumType] | null) => void
     ) => (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedDisplayName = event.target.value;
         const selectedEnumValue = enumValueFromDisplayName(enumObj, displayNameMap, selectedDisplayName);
@@ -42,7 +42,7 @@ function ConfigMenu() {
     // Specific handler for changes in the language dropdown.
     const handleLangChange = handleOptionChange(Language, LanguageDisplayNames, setLang);
     const handleModeChange = handleOptionChange(Mode, ModeDisplayNames, setMode);
-    const handleExportFormatChange = handleOptionChange(FileFormat, FileFormatDisplayNames, setFileFormat);
+    const handleExportFormatChange = handleOptionChange(FileFormat, FileFormatDisplayNames, setExportFormat);
 
 
 
@@ -51,19 +51,19 @@ function ConfigMenu() {
             <Dropdown
                 labelText="Select language"
                 id={"lang-config-dropdown"}
-                selected={displayNameFromEnumValue(Language, LanguageDisplayNames, generatorTaskDto.lang)}
+                selected={displayNameFromEnumValue(LanguageDisplayNames, generatorTaskDto.lang) || ''}
                 options={Object.values(LanguageDisplayNames)}
                 onChange={handleLangChange}/>
             <Dropdown
                 labelText="Select flashcard type"
                 id={"mode-config-dropdown"}
-                selected={displayNameFromEnumValue(Mode, ModeDisplayNames, generatorTaskDto.mode)}
+                selected={displayNameFromEnumValue(ModeDisplayNames, generatorTaskDto.mode) || ''}
                 options={Object.values(ModeDisplayNames)}
                 onChange={handleModeChange}/>
             <Dropdown
                 labelText="Select file format "
                 id={"file-format-config-dropdown"}
-                selected={displayNameFromEnumValue(FileFormat, FileFormatDisplayNames, fileFormat)}
+                selected={displayNameFromEnumValue(FileFormatDisplayNames, generatorTaskDto.exportFormat) || ''}
                 options={Object.values(FileFormatDisplayNames)}
                 onChange={handleExportFormatChange}/>
         </form>

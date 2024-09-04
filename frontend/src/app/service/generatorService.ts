@@ -5,8 +5,6 @@
 import {GeneratorTask, GeneratorTaskInfo} from "../dto/generator";
 import {sendRequest} from "../util/requestUtil";
 import {FileFormat} from "../enum/generatorOptions";
-import {TaskState} from "../enum/taskState";
-
 
 // API Endpoint
 const endpoint = '/flashcards/generator';
@@ -43,7 +41,6 @@ export async function fetchFlashcardGeneratorTaskInfo(taskId: string): Promise<G
     const taskInfo = response.data.taskInfo;
     if (!taskInfo) {
         console.warn('Response missing taskInfo:');
-        throw new Error('taskInfo is missing from the response');
     }
     console.groupEnd();
     return taskInfo;
@@ -59,7 +56,7 @@ export async function cancelFlashcardGeneratorTask(taskId: string ) {
         method: 'DELETE'
     });
     console.groupEnd();
-};
+}
 
 /**
  * Fetches the flashcard file in the specified file format.

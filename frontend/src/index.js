@@ -5,11 +5,12 @@ import App from './app/components/App';
 
 async function enableMocking() {
     if (process.env.REACT_APP_USE_MOCKS) {
-        const { worker } = await import('./mocks/browser')
+        const { worker } = require('./mocks/browser')
 
-        // `worker.start()` returns a Promise that resolves
-        // once the Service Worker is up and ready to intercept requests.
-        return worker.start()
+        // Start the Service Worker
+        return worker.start({
+            onUnhandledRequest: 'bypass' // or 'warn' based on preference
+        });
     }
 }
 
@@ -20,4 +21,6 @@ enableMocking().then(() => {
             <App />
         </React.StrictMode>
     );
-})
+}).catch(err => {
+    console.error('Error starting mock worker:', err);
+});

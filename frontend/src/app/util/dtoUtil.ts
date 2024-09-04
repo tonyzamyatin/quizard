@@ -6,6 +6,7 @@ export function createDefaultGeneratorTask(): GeneratorTask {
     return {
         lang: null,
         mode: null,
+        exportFormat: null,
         inputText: '',
     };
 }
