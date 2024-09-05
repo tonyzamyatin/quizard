@@ -34,8 +34,7 @@ token_limits:
 # absolute token value.
 text_splitting:
   overlap_type: "absolute"    # "relative" or "absolute"
-  relative_overlap: 0.167
-  absolute_overlap: 100
+  overlap: 100  # if "relative" expect values in range [0, 1), if "absolute" expect number of characters as measure of overlap
 
   # Optimal parameters:
   # 3.000, 2.400 and 400 when using the 4k model

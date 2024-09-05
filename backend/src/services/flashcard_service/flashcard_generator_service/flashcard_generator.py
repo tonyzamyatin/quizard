@@ -142,9 +142,9 @@ class FlashcardGenerator(IFlashcardGenerator):
          example_assistant_prompt,
          additional_prompt) = load_prompts(self.prompt_config, flashcards_generator_task.mode, flashcards_generator_task.lang)
 
-        app_token_limit = self.token_limits['app_token_limit']
-        prompt_token_limit = self.token_limits['prompt_token_limit']
-        completion_token_limit = self.token_limits['completion_token_limit']
+        app_token_limit = self.token_limits['app_limit']
+        prompt_token_limit = self.token_limits['prompt_limit']
+        completion_token_limit = self.token_limits['completion_limit']
 
         encoding = tiktoken.encoding_for_model(self.model_config['model_name'])
 
@@ -166,7 +166,7 @@ class FlashcardGenerator(IFlashcardGenerator):
         start_time = time.time()
         logger.info(
             "Flashcard generation started",
-            generation_mode=flashcards_generator_task.generation_mode,
+            generation_mode=flashcards_generator_task.mode,
             language=flashcards_generator_task.lang,
             token_est=format_num(messages.compute_input_tokens(encoding=encoding))
         )
