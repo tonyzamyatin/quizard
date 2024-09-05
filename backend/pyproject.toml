@@ -6,7 +6,7 @@ authors = ["tonyzamyatin <anton.zamyatin14@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "~3.11"
 openai = "*"
 python-dotenv = "*"
 tiktoken = "*"
