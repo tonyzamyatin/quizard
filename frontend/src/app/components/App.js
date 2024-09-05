@@ -20,8 +20,8 @@ const App = () => {
         <>
             <main>
                 <div className="description">
-                    <h1>Quizard Flashcard Generator</h1>
-                    <p>Our Flashcard Generator automatically transforms your notes or textbooks into flashcards using AI.</p>
+                    <h1>✨Quizard AI Flashcards✨</h1>
+                    <p>Quizard automatically transforms your notes or textbooks into flashcards using AI.</p>
                     <p>Simply upload your text and lean back!</p>
                 </div>
                 <GeneratorStateProvider>
