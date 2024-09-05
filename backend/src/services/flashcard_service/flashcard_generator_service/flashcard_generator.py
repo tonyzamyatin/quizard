@@ -11,7 +11,8 @@ from dependency_injector.wiring import inject, Provide
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
 
-from src import src_root
+from src.enums.generatorOptions import GeneratorMode, SupportedLanguage
+from src.utils.path_util import get_system_prompt_path, get_example_prompt_path, get_additional_prompt_path
 from src.custom_exceptions.internal_exceptions import PromptSizeError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.entities.completion_messages.completion_messages import Messages
@@ -139,7 +140,7 @@ class FlashcardGenerator(IFlashcardGenerator):
         (system_prompt,
          example_user_prompt,
          example_assistant_prompt,
-         additional_prompt) = load_prompts(self.prompt_config, flashcards_generator_task.lang, flashcards_generator_task.mode)
+         additional_prompt) = load_prompts(self.prompt_config, flashcards_generator_task.mode, flashcards_generator_task.lang)
 
         app_token_limit = self.token_limits['app_token_limit']
         prompt_token_limit = self.token_limits['prompt_token_limit']
@@ -260,22 +261,17 @@ def log_completion_metrics(completion: openai.Completion, receive_time_sec: floa
     )
 
 
-def load_prompts(prompt_config: dict, generation_mode: str, lang: str) -> (str, str, str, str):
+def load_prompts(prompt_config: dict, generation_mode: GeneratorMode, lang: SupportedLanguage) -> (str, str, str, str):
     """
     Initializes the message components for the OpenAI API request.
     """
-    system_prompt_path = os.path.join(src_root, "prompts/system/generation_mode", generation_mode, f"{lang}.txt")
-    example_user_prompt_path = os.path.join(src_root, "prompts/example/", prompt_config['example_prompt'], "example_user",
-                                            f"{lang}.txt")
-    example_assistant_prompt_path = os.path.join(src_root, "prompts/example/", prompt_config['example_prompt'], lang,
-                                                 "example_assistant", f"{lang}.txt")
-    additional_prompt_path = os.path.join(src_root, "prompts/additional/", prompt_config['additional_prompt'],
-                                          f"{lang}.txt")
+    example_prompt_name = prompt_config.get('example_prompt')
+    additional_prompt_name = prompt_config.get('additional_prompt')
 
-    system_prompt = read_file(system_prompt_path)
-    example_user_prompt = read_file(example_user_prompt_path)
-    example_assistant_prompt = read_file(example_assistant_prompt_path)
-    additional_prompt = read_file(additional_prompt_path)
+    system_prompt = read_file(get_system_prompt_path(generation_mode, lang))
+    example_user_prompt = read_file(get_example_prompt_path(example_prompt_name, 'user', lang))
+    example_assistant_prompt = read_file(get_example_prompt_path(example_prompt_name, 'assistant', lang))
+    additional_prompt = read_file(get_additional_prompt_path(additional_prompt_name, lang))
 
     return system_prompt, example_user_prompt, example_assistant_prompt, additional_prompt
 

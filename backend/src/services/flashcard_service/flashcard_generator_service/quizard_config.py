@@ -3,12 +3,12 @@ from enum import Enum
 
 import structlog
 
-from src import src_root
+from src.utils.path_util import get_config_dir
 from src.custom_exceptions.internal_exceptions import ConfigInvalidValueError, ConfigFieldNotFoundError
 from src.utils.file_util import load_yaml_config
 from src.utils.env_util import get_env_variable
 
-config_dir = os.path.join(src_root, 'config')
+config_dir = get_config_dir()
 logger = structlog.getLogger(__name__)
 
 
