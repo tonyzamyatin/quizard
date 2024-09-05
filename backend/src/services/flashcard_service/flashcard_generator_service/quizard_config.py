@@ -58,8 +58,6 @@ class QuizardConfig:
         validate_field(config, 'top_p', float, 0.0, 1.0)
         validate_field(config, 'frequency_penalty', float, 0.0, 1.0)
         validate_field(config, 'presence_penalty', float, 0.0, 1.0)
-        if config['model_name'] not in SupporterModels.__members__.values():
-            raise ConfigInvalidValueError("Invalid model name")
 
     @staticmethod
     def validate_token_limits(config: dict) -> None:
@@ -81,14 +79,6 @@ class QuizardConfig:
     def validate_prompt_config(config: dict) -> None:
         validate_field(config, 'example_prompt', str)
         validate_field(config, 'additional_prompt', str)
-
-
-class SupporterModels(str, Enum):
-    """
-    Enum class for supported OpenAI models.
-    """
-    gpt3 = "gpt-3.5-turbo"
-    gpt3_0125 = "gpt-3.5-turbo-0125"
 
 
 def validate_field(config: dict, field: str, expected_type: type, min_value=None, max_value=None) -> None:

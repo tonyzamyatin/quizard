@@ -43,7 +43,7 @@ def configure_services(container: Container) -> None:
         The container instance
     """
     # Import the services inside function to avoid circular imports
-    from src.celery_config.celery_config import create_celery_app
+    from src.celery.celery_config import create_celery_app
     from src.services.flashcard_service.flashcard_generator_service.flashcard_generator import FlashcardGenerator
     from src.services.flashcard_service.flashcard_service import FlashcardService
     from src.services.task_service.flashcard_generator_task_service import FlashcardGeneratorTaskService
@@ -106,6 +106,6 @@ def start_container() -> Container:
         'celery_broker_url': create_celery_broker_url(),
         'celery_result_backend_url': create_celery_result_backend_url(),
     })
-    container.wire(modules=[sys.modules['__main__'], 'src.celery_config.tasks'])
+    container.wire(modules=[sys.modules['__main__'], 'src.celery.tasks'])
     configure_services(container)
     return container

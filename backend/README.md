@@ -56,7 +56,7 @@ For example, to create a `.env` file, you can add:
 ```
 ENVIRONMENT=development
 OPENAI_API_KEY=your-openai-api-key
-SECRET_KEY=your-openai-secret-key
+SECRET_KEY=your-secret-key
 RABBITMQ_DEFAULT_USER=dev_user
 RABBITMQ_DEFAULT_PASS=your-rabbitmq-pw
 RABBITMQ_PORT=5672

@@ -1,4 +1,4 @@
-# src/celery_config/tasks.py
+# src/celery/tasks.py
 from dependency_injector.wiring import inject, Provide
 from openai import OpenAIError
 from src.custom_exceptions.internal_exceptions import QuizardError
@@ -11,7 +11,6 @@ from celery.utils.log import get_task_logger
 logger = get_task_logger(__name__)
 
 
-# TODO: add retries with exponential backoff
 @shared_task(bind=True, ignore_result=False, track_started=True)
 @inject
 def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto, flashcard_service=Provide[Container.flashcard_service]):
@@ -46,11 +45,11 @@ def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto, flashcard_
         logger.info(f"Flashcard generation task started with task id: {self.request.id}")
         flashcard_deck = flashcard_service.generate_flashcard_deck(params, lambda c, t: update_progress(self, c, t))
         # Get the final progress from the task's meta field
-        final_progress = self.request.chain.get('meta', {})
-        current = final_progress.get('current_batch', 0)
-        total = final_progress.get('total_batches', 0)
+        # final_progress = self.request.chain.get('meta', {})
+        # current = final_progress.get('current_batch', 0)
+        # total = final_progress.get('total_batches', 0)
         # Update the state with the final progress before returning
-        self.update_state(state='SUCCESS', meta={'current_batch': current, 'total_batches': total})
+        # self.update_state(state='SUCCESS', meta={'current_batch': current, 'total_batches': total})
 
     except OpenAIError as e:
         self.update_state(state='FAILURE', meta={'error': str(e)})

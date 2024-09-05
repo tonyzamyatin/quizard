@@ -1,4 +1,4 @@
-# src/flashcard_service/flashcard_generator_service/flashcard_generator_service.py
+# src/flashcard_service/flashcard_generator_service/flashcard_generator.py
 import os
 import time
 
@@ -55,67 +55,6 @@ class FlashcardGenerator(IFlashcardGenerator):
         self.text_splitting_config = QuizardConfig.get_text_splitting_config()
         self.token_limits = QuizardConfig.get_token_limits()
         self.prompt_config = QuizardConfig.get_prompt_config()
-
-    def make_gpt_completion(self, messages: Messages, max_tokens: int) \
-            -> ChatCompletion:
-        """
-        Make a GPT completion request to the OpenAI API.
-
-        Parameters
-        ----------
-        messages : Messages
-            A Message object containing the input message sequence.
-        max_tokens : int
-            The maximum number of tokens to generate.
-
-        Returns
-        -------
-        ChatCompletion
-            The completion response from the OpenAI API.
-        """
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model_config["model_name"],
-                messages=messages.as_message_list(),
-                max_tokens=max_tokens,
-                temperature=self.model_config.get("temperature", 0.7),
-                top_p=self.model_config.get("top_p", 1.0),
-                frequency_penalty=self.model_config.get("frequency_penalty", 0.0),
-                presence_penalty=self.model_config.get("presence_penalty", 0.0)
-            )
-            return response
-        except openai.BadRequestError as e:
-            # Handle error 400
-            logger.error("OpenAI API Error occurred", error=f"Error 400: {e}")
-            raise
-        except openai.AuthenticationError as e:
-            # Handle error 401
-            logger.error("OpenAI API Error occurred", error=f"Error 401: {e}")
-            raise
-        except openai.PermissionDeniedError as e:
-            # Handle error 403
-            logger.error("OpenAI API Error occurred", error=f"Error 403: {e}")
-            raise
-        except openai.NotFoundError as e:
-            # Handle error 404
-            logger.error("OpenAI API Error occurred", error=f"Error 404: {e}")
-            raise
-        except openai.UnprocessableEntityError as e:
-            # Handle error 422
-            logger.error("OpenAI API Error occurred", error=f"Error 422: {e}")
-            raise
-        except openai.RateLimitError as e:
-            # Handle error 429
-            logger.error("OpenAI API Error occurred", error=f"Error 429: {e}")
-            raise
-        except openai.InternalServerError as e:
-            # Handle error >=500
-            logger.error("OpenAI API Error occurred", error=f"Error >=500: {e}")
-            raise
-        except openai.APIConnectionError as e:
-            # Handle API connection error
-            logger.error("OpenAI API Error occurred", error=f"API connection error: {e}")
-            raise
 
     def generate_flashcard_deck(self, flashcards_generator_task: FlashcardGeneratorTaskDto, fn_update_progress: Optional[Callable], *args,
                                 **kwargs) -> FlashcardDeck:
@@ -182,12 +121,12 @@ class FlashcardGenerator(IFlashcardGenerator):
                 # Set progress to 0
                 fn_update_progress(0, 1)
 
-            completion = self.make_gpt_completion(messages=messages, max_tokens=completion_token_limit)
+            completion = self.make_gpt_completion_request(messages=messages, max_tokens=completion_token_limit)
             receive_time_sec = round(time.time(), 3)
             log_completion_metrics(completion, receive_time_sec)
 
-            content = completion.choices[0].message.content
-            flashcards += parse_flashcards(content)
+            completion_message_content = completion.choices[0].message.content
+            flashcards += parse_flashcards(completion_message_content)
             if fn_update_progress:
                 fn_update_progress(1, 1)
 
@@ -218,16 +157,16 @@ class FlashcardGenerator(IFlashcardGenerator):
                     input_text=modified_input_text
                 )
 
-                completion = self.make_gpt_completion(
+                completion = self.make_gpt_completion_request(
                     messages=new_message,
                     max_tokens=completion_token_limit
                 )
                 receive_time_sec = round(time.time(), 3)
                 log_completion_metrics(completion, receive_time_sec, batch)
-                content = completion.choices[0].message.content
+                completion_message_content = completion.choices[0].message.content
 
                 start_id = len(flashcards) + 1
-                flashcards += parse_flashcards(content, start_id, batch)
+                flashcards += parse_flashcards(completion_message_content, start_id, batch)
                 if fn_update_progress:
                     fn_update_progress(batch + 1, len(fragment_list))
 
@@ -236,6 +175,67 @@ class FlashcardGenerator(IFlashcardGenerator):
         logger.info("Flashcard generation completed", total_flashcards=len(flashcards), duration=round(end_time - start_time, 3), )
         flashcard_deck = FlashcardDeck(flashcards)
         return flashcard_deck
+
+    def make_gpt_completion_request(self, messages: Messages, max_tokens: int) \
+            -> ChatCompletion:
+        """
+        Make a GPT completion request to the OpenAI API.
+
+        Parameters
+        ----------
+        messages : Messages
+            A Messages object containing the input message sequence.
+        max_tokens : int
+            The maximum number of tokens to generate.
+
+        Returns
+        -------
+        ChatCompletion
+            The completion response from the OpenAI API.
+        """
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model_config["model_name"],
+                messages=messages.as_message_list(),
+                max_tokens=max_tokens,
+                temperature=self.model_config.get("temperature", 0.7),
+                top_p=self.model_config.get("top_p", 1.0),
+                frequency_penalty=self.model_config.get("frequency_penalty", 0.0),
+                presence_penalty=self.model_config.get("presence_penalty", 0.0)
+            )
+            return response
+        except openai.BadRequestError as e:
+            # Handle error 400
+            logger.error("OpenAI API Error occurred", error=f"Error 400: {e}")
+            raise
+        except openai.AuthenticationError as e:
+            # Handle error 401
+            logger.error("OpenAI API Error occurred", error=f"Error 401: {e}")
+            raise
+        except openai.PermissionDeniedError as e:
+            # Handle error 403
+            logger.error("OpenAI API Error occurred", error=f"Error 403: {e}")
+            raise
+        except openai.NotFoundError as e:
+            # Handle error 404
+            logger.error("OpenAI API Error occurred", error=f"Error 404: {e}")
+            raise
+        except openai.UnprocessableEntityError as e:
+            # Handle error 422
+            logger.error("OpenAI API Error occurred", error=f"Error 422: {e}")
+            raise
+        except openai.RateLimitError as e:
+            # Handle error 429
+            logger.error("OpenAI API Error occurred", error=f"Error 429: {e}")
+            raise
+        except openai.InternalServerError as e:
+            # Handle error >=500
+            logger.error("OpenAI API Error occurred", error=f"Error >=500: {e}")
+            raise
+        except openai.APIConnectionError as e:
+            # Handle API connection error
+            logger.error("OpenAI API Error occurred", error=f"API connection error: {e}")
+            raise
 
 
 def log_completion_metrics(completion: openai.Completion, receive_time_sec: float, batch_number: Optional[int] = None):
