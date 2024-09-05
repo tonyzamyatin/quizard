@@ -23,7 +23,7 @@ class Container(containers.DeclarativeContainer):
         api_key=config.openai_api_key,
     )
 
-    # Definition of dummy services, to be replaced with actual services by calling configure_services (avoid circular imports)
+    # Define of dummy services, to be replaced with actual services when calling configure_services (this is to avoid circular imports)
     celery_app = providers.Factory(object)
     flashcard_generator = providers.Factory(object)
     flashcard_service = providers.Factory(object)
@@ -106,6 +106,6 @@ def start_container() -> Container:
         'celery_broker_url': create_celery_broker_url(),
         'celery_result_backend_url': create_celery_result_backend_url(),
     })
-    container.wire(modules=[sys.modules['__main__']])
+    container.wire(modules=[sys.modules['__main__'], 'src.celery_config.tasks'])
     configure_services(container)
     return container
