@@ -9,8 +9,8 @@ class SupportedLanguage(str, Enum):
 class GeneratorMode(str, Enum):
     practice = "PRACTICE"
     definitions = "DEFINITIONS"
-    mc = "MULTIPLE_CHOICE"
-    open_ended = "OPEN_ENDED"
+    # mc = "MULTIPLE_CHOICE"
+    # open_ended = "OPEN_ENDED"
 
 
 class ExportFormat(str, Enum):
