@@ -28,7 +28,7 @@ services:
       - web
       - redis
       - rabbitmq
-    command: celery_config -A src.celery_config.celery_worker worker -l info
+    command: celery  -A src.celery_config.celery_worker worker -l info
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:

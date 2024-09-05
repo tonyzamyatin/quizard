@@ -1,4 +1,4 @@
-# src/rest/tasks.py
+# src/celery_config/tasks.py
 from dependency_injector.wiring import inject, Provide
 from openai import OpenAIError
 from src.custom_exceptions.internal_exceptions import QuizardError
