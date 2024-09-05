@@ -48,7 +48,7 @@ class QuizardConfig:
     @classmethod
     def get_prompt_config(cls) -> dict:
         if cls._prompt_config is None:
-            cls._prompt_config = cls.get_config().get('prompt')
+            cls._prompt_config = cls.get_config().get('prompts')
         return cls._prompt_config
 
     @staticmethod
