@@ -69,7 +69,7 @@ export function useFlashcardGenerator() {
     async function taskPollingHandler() {
         try {
             if (step !== GeneratorStep.WAIT) return;
-            if (isPollingActive.current) return;
+            if (!isPollingActive.current) return;
 
             isPollingActive.current = true;
             const taskInfo = await fetchFlashcardGeneratorTaskInfo(taskId);
