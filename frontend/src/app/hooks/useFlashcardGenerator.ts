@@ -56,7 +56,10 @@ export function useFlashcardGenerator() {
      * The polling interval is set to 'pollingDelayLong' when the task is pending and 'pollingDelayShort' when the task is in progress.
      */
     useEffect(() => {
+        // console.debug('Polling use effect called')
         if (step === GeneratorStep.WAIT && taskId) {
+            // console.debug('Activating polling')
+            isPollingActive.current = true
             pollingIntervalId.current = window.setInterval(taskPollingHandler, pollingTimeout);
         }
         return () => {
@@ -68,6 +71,8 @@ export function useFlashcardGenerator() {
 
     async function taskPollingHandler() {
         try {
+            console.debug('Task polling called')
+            console.debug('Is polling active:', isPollingActive.current)
             if (step !== GeneratorStep.WAIT) return;
             if (!isPollingActive.current) return;
 
@@ -152,6 +157,8 @@ export function useFlashcardGenerator() {
      * Cancel the flashcard generator task and set the step to 'UPLOAD_TEXT'.
      */
     async function cancelFlashcards() {
+        isPollingActive.current = false
+        setGeneratorTaskInfo(createDefaultGeneratorTaskInfo)
         try {
             await cancelFlashcardGeneratorTask(taskId);
 
