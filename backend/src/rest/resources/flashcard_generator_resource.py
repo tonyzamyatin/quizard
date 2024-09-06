@@ -107,7 +107,7 @@ def create_task_info_dto(task_service: ITaskService, task_id: str) -> GeneratorT
     logger.debug(f"Current batch: {current_batch}, Total batches: {total_batches}")
 
     task_info_dto = GeneratorTaskInfoDto(
-        taske_state=task_state,
+        task_state=task_state,
         current_batch=current_batch,
         total_batches=total_batches)
     if task_state == TaskState.success:
