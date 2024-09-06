@@ -1,5 +1,5 @@
 import React from "react";
-import ConfigPage from "./ConigurationComponent/ConfigPage";
+import ConfigPage from "./ConfigurationComponent/ConfigPage";
 import UploadPage from "./TextUploadComponent/UploadPage";
 import WaitingPage from "./WaitingComponent/WaitingPage";
 import CompletionPage from "./CompletionComponent/CompletionPage";

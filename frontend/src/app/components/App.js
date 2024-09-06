@@ -5,7 +5,7 @@ import './global/Slider/Slider.css';
 import './global/CTAButton/CTAButton.css'
 // Import specific styles later
 import './generator/TextUploadComponent/GeneratorUploadPage.css';
-import './generator/ConigurationComponent/GeneratorConfigPage.css'
+import './generator/ConfigurationComponent/GeneratorConfigPage.css'
 import './generator/WaitingComponent/GeneratorWaitingPage.css'
 import './generator/CompletionComponent/GeneratorCompletionPage.css'
 import './generator/WaitingComponent/ProgressBar.css'

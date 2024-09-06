@@ -1,5 +1,5 @@
 // src/app/dto/generator.ts
-import {Mode, Language, FileFormat} from "../enum/generatorOptions";
+import {Mode, Language, FileFormat} from "../enum/GeneratorOptions";
 import {TaskState} from "../enum/taskState";
 
 export interface GeneratorTask {

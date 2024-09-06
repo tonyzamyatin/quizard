@@ -1,7 +1,6 @@
 import {GeneratorTask, GeneratorTaskInfo} from "../../dto/generator";
 import {createContext, ReactNode, useContext} from "react";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../../util/dtoUtil";
-import {FileFormat} from "../../enum/generatorOptions";
 import {GeneratorStep} from "../../enum/GeneratorStep";
 import {useFlashcardGenerator} from "../../hooks/useFlashcardGenerator";
 

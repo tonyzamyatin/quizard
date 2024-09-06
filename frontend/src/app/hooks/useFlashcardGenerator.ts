@@ -9,7 +9,6 @@ import {
 import {GeneratorStep} from "../enum/GeneratorStep";
 import {createDefaultGeneratorTask, createDefaultGeneratorTaskInfo} from "../util/dtoUtil";
 import {downloadBlob} from "../util/downloadUtil";
-import {FileFormat} from "../enum/generatorOptions";
 import {TaskState} from "../enum/taskState";
 import {config} from "../config";
 

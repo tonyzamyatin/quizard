@@ -1,4 +1,4 @@
-import {DisplayNameMap, OptionEnum, OptionEnumType} from "../enum/generatorOptions";
+import {DisplayNameMap, OptionEnum, OptionEnumType} from "../enum/GeneratorOptions";
 /*
     * This file contains utility functions for mapping  between enum values of generator options and their
     * corresponding display names.
