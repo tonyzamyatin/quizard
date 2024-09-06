@@ -1,7 +1,7 @@
 # src/rest/flask_error_handlers.py
 import pydantic
 import structlog
-from flask import jsonify
+from flask import jsonify, Flask
 from humps import camelize
 from werkzeug.exceptions import HTTPException
 from openai import OpenAIError
@@ -22,7 +22,8 @@ def standard_error_response(error_code, error_name, description=None):
     return response
 
 
-def init_app(flask_app):
+def set_error_handlers(flask_app: Flask):
+    # TODO: Test error handlers
     @flask_app.errorhandler(HTTPException)
     def handle_exception(e):
         """Handle all HTTP exceptions."""

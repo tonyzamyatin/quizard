@@ -25,8 +25,11 @@ def setup_api(flask_app: Flask, task_service=Provide[Container.flashcard_generat
     """
     CORS(flask_app)
     api = Api(flask_app)
-    api.add_resource(FlashcardGeneratorResource, '/flashcards/generator', resource_class_kwargs={'task_service': task_service})
-    api.add_resource(FlashcardExporterResource, '/flashcards/exporter',
+    api.add_resource(FlashcardGeneratorResource,
+                     '/flashcards/generator', '/flashcards/generator/<task_id>',
+                     resource_class_kwargs={'task_service': task_service})
+    api.add_resource(FlashcardExporterResource,
+                     '/flashcards/exporter', '/flashcards/exporter/<token>',
                      resource_class_kwargs={'task_service': task_service, 'flashcard_service': flashcard_service})
     api.add_resource(HealthCheckResource, '/health')
 

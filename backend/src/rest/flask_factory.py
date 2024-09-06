@@ -60,6 +60,6 @@ def create_flask_app(broker_url: str, result_backend_url: str, import_name: str)
         raise RuntimeError(f"Failed to create or configure the Flask app: {e}")
 
     # Initialize error handlers with the flask app
-    flask_error_handlers.init_app(flask_app)
+    flask_error_handlers.set_error_handlers(flask_app)
 
     return flask_app
