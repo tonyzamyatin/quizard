@@ -1,14 +1,6 @@
 # config/quizard_config.yaml
-# TODO: Optimize and test parameters
-# 07.02.2024 Model overview:
-# gpt-3.5-turbo-instruct:       context:    4K;   input: $0.0015 / 1K tokens;   output: $0.0020 / 1K tokens
-# gpt-3.5-turbo-0125:           context:   16K;   input: $0.0005 / 1K tokens;   output: $0.0015 / 1K tokens
-# gpt-4-0125-preview	        context:  128K;   input: $0.0005 / 1K tokens;   output: $0.0015 / 1K tokens
-# gpt-4-0125-vision-preview	    context:  128K;   input: $0.0005 / 1K tokens;   output: $0.0015 / 1K tokens (additional overhead for vision)
-# gpt-4 	                    context:   16K;   input: $0.0300 / 1K tokens;   output: $0.0600 / 1K tokens
-# gpt-4-32k         	        context:   32K;   input: $0.0600 / 1K tokens;   output: $0.1200 / 1K tokens
 model:
-  model_name: "gpt-3.5-turbo"
+  model_name: "gpt-4o-mini"
   temperature: 0.8
   top_p: 1.0
   frequency_penalty: 0.0
@@ -17,6 +9,7 @@ model:
 
 # Token limits are to be tweaked and optimized during development, but left alone during production
 token_limits:
+  # TODO: Optimize...gpt-4o-mini has a context window of 128,000 tokens
   # APP PARAM: Token limit for the application to use (must be <= OpenAI's token limit for the model used). Note: on must use less than the max.
 #  possible context length since tiktoken is inaccurate.
 #  4K proved to generate more flashcards
@@ -34,8 +27,7 @@ token_limits:
 # absolute token value.
 text_splitting:
   overlap_type: "absolute"    # "relative" or "absolute"
-  relative_overlap: 0.167
-  absolute_overlap: 100
+  overlap: 100  # if "relative" expect values in range [0, 1), if "absolute" expect number of characters as measure of overlap
 
   # Optimal parameters:
   # 3.000, 2.400 and 400 when using the 4k model

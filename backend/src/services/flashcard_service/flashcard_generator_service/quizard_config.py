@@ -3,12 +3,12 @@ from enum import Enum
 
 import structlog
 
-from src import src_root
+from src.utils.path_util import get_config_dir
 from src.custom_exceptions.internal_exceptions import ConfigInvalidValueError, ConfigFieldNotFoundError
 from src.utils.file_util import load_yaml_config
 from src.utils.env_util import get_env_variable
 
-config_dir = os.path.join(src_root, 'config')
+config_dir = get_config_dir()
 logger = structlog.getLogger(__name__)
 
 
@@ -48,7 +48,7 @@ class QuizardConfig:
     @classmethod
     def get_prompt_config(cls) -> dict:
         if cls._prompt_config is None:
-            cls._prompt_config = cls.get_config().get('prompt')
+            cls._prompt_config = cls.get_config().get('prompts')
         return cls._prompt_config
 
     @staticmethod
@@ -58,8 +58,6 @@ class QuizardConfig:
         validate_field(config, 'top_p', float, 0.0, 1.0)
         validate_field(config, 'frequency_penalty', float, 0.0, 1.0)
         validate_field(config, 'presence_penalty', float, 0.0, 1.0)
-        if config['model_name'] not in SupporterModels.__members__.values():
-            raise ConfigInvalidValueError("Invalid model name")
 
     @staticmethod
     def validate_token_limits(config: dict) -> None:
@@ -81,14 +79,6 @@ class QuizardConfig:
     def validate_prompt_config(config: dict) -> None:
         validate_field(config, 'example_prompt', str)
         validate_field(config, 'additional_prompt', str)
-
-
-class SupporterModels(str, Enum):
-    """
-    Enum class for supported OpenAI models.
-    """
-    gpt3 = "gpt-3.5-turbo"
-    gpt3_0125 = "gpt-3.5-turbo-0125"
 
 
 def validate_field(config: dict, field: str, expected_type: type, min_value=None, max_value=None) -> None:

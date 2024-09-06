@@ -11,8 +11,8 @@
 export enum Mode {
     PRACTICE = 'PRACTICE',
     DEFINITIONS = 'DEFINITIONS',
-    MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-    OPEN_ENDED = 'OPEN_ENDED',
+    // MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',     // coming soon
+    // OPEN_ENDED = 'OPEN_ENDED',               // coming soon
 }
 
 export enum Language {
@@ -33,8 +33,8 @@ export enum FileFormat {
 export const ModeDisplayNames = {
     [Mode.PRACTICE]: 'Practice',
     [Mode.DEFINITIONS]: 'Definitions',
-    [Mode.MULTIPLE_CHOICE]: 'Multiple Choice',
-    [Mode.OPEN_ENDED]: 'Open Ended',
+    // [Mode.MULTIPLE_CHOICE]: 'Multiple Choice',  // coming soon
+    // [Mode.OPEN_ENDED]: 'Open Ended',            // coming soon
 } as const;
 
 export const LanguageDisplayNames = {
