@@ -71,8 +71,6 @@ export function useFlashcardGenerator() {
 
     async function taskPollingHandler() {
         try {
-            console.debug('Task polling called')
-            console.debug('Is polling active:', isPollingActive.current)
             if (step !== GeneratorStep.WAIT) return;
             if (!isPollingActive.current) return;
 
@@ -124,7 +122,7 @@ export function useFlashcardGenerator() {
         if (flashcardResultJSON) {
             const flashcardResult = JSON.parse(flashcardResultJSON);
             flashcardBlob = await fetch(flashcardResult.blob).then(r => r.blob());
-            flashcardFileName = flashcardResult.filename;
+            flashcardFileName = flashcardResult.filename + '.' + fileFormat;
         } else {
             const retrievalToken = generatorTaskInfo.retrievalToken;
             if (!retrievalToken || !fileFormat) {
@@ -134,8 +132,7 @@ export function useFlashcardGenerator() {
 
                 const result = await fetchFlashcardFile(retrievalToken, fileFormat);
                 flashcardBlob = result.blob;
-                flashcardFileName = result.filename;
-
+                flashcardFileName = result.filename + '.' + fileFormat;
                 // Save the flashcard file to session storage
                 const reader = new FileReader();
                 reader.readAsDataURL(result.blob);
