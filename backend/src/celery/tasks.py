@@ -4,6 +4,7 @@ from openai import OpenAIError
 from src.custom_exceptions.internal_exceptions import QuizardError
 from src.dtos.generator_task import FlashcardGeneratorTaskDto
 from src.container import Container
+from src.enums.task_states import TaskState
 from src.services.flashcard_service.flashcard_service import FlashcardService
 from celery import shared_task
 from celery.utils.log import get_task_logger
@@ -43,25 +44,24 @@ def flashcard_generator_task(self, params: FlashcardGeneratorTaskDto, flashcard_
 
     try:
         logger.info(f"Flashcard generation task started with task id: {self.request.id}")
-        flashcard_deck = flashcard_service.generate_flashcard_deck(params, lambda c, t: update_progress(self, c, t))
-        # Get the final progress from the task's meta field
-        # final_progress = self.request.chain.get('meta', {})
-        # current = final_progress.get('current_batch', 0)
-        # total = final_progress.get('total_batches', 0)
-        # Update the state with the final progress before returning
-        # self.update_state(state='SUCCESS', meta={'current_batch': current, 'total_batches': total})
+        flashcard_deck = flashcard_service.generate_flashcard_deck(params, lambda cb, tbs: update_progress(self, cb, tbs))
+        self.update_state(state=TaskState.success)
+        return flashcard_deck
 
     except OpenAIError as e:
-        self.update_state(state='FAILURE', meta={'error': str(e)})
+        update_state_with_exception(self, e)
         raise
     except QuizardError as e:
-        self.update_state(state='FAILURE', meta={'error': str(e)})
+        update_state_with_exception(self, e)
         raise
     except Exception as e:
-        self.update_state(state='FAILURE', meta={'error': str(e)})
+        update_state_with_exception(self, e)
         raise RuntimeError(f"Unexpected error in task: {e}")
-    return flashcard_deck
 
 
-def update_progress(task, current: int, total: int):
-    task.update_state(state='IN_PROGRESS', meta={'current_batch': current, 'total_batches': total})
+def update_progress(task, current_batch: int, total_batches: int):
+    task.update_state(state=TaskState.in_progress, meta={'current_batch': current_batch, 'total_batches': total_batches})
+
+
+def update_state_with_exception(task, e: Exception):
+    task.update_state(state=TaskState.failure, meta={'error': str(e), 'exc_type': type(e).__name__})

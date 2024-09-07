@@ -1,5 +1,5 @@
 # src/services/task_service/flashcard_generator_task_service.py
-
+import structlog
 from dependency_injector.wiring import inject, Provide
 from itsdangerous import URLSafeSerializer, BadSignature
 
@@ -10,6 +10,8 @@ from src.enums.task_states import TaskState
 from src.container import Container
 from src.services.task_service.task_service_interface import ITaskService
 from src.celery.tasks import flashcard_generator_task
+
+logger = structlog.get_logger(__name__)
 
 
 class FlashcardGeneratorTaskService(ITaskService):
@@ -33,14 +35,26 @@ class FlashcardGeneratorTaskService(ITaskService):
 
     def get_task_info(self, task_id: str) -> dict:
         task = flashcard_generator_task.AsyncResult(task_id)
-        return task.info
+        task_info = task.info   # If task fails or success task.info returns exception or result (not metadata)
+        logger.info(f"get_task_info(): Task state - {task.state}")
+        if TaskState(task.state) == TaskState.failure:
+            logger.info(f"get_task_info(): returning task.result with exception")
+            raise task.result
+        if TaskState(task.state) == TaskState.success:
+            logger.info(f"get_task_info(): returning fallback metadata for successfully completed task")
+            # Signifies completion, but looses information about original number of batches
+            return {
+                'current_batch': 1,
+                'total_batches': 1
+            }
+        return task_info
 
     def get_task_result(self, task_id: str) -> FlashcardDeck:
         state = self.get_task_state(task_id)
         if state != TaskState.success.name:
             raise ResultNotFoundError(f"Task result for taskID: {task_id} not available.")
         task = flashcard_generator_task.AsyncResult(task_id)
-        return task.result
+        return task.result.get('result')
 
     def get_task_traceback(self, task_id: str):
         task = flashcard_generator_task.AsyncResult(task_id)

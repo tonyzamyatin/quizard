@@ -96,24 +96,17 @@ class FlashcardGeneratorResource(Resource):
 
 
 def create_task_info_dto(task_service: ITaskService, task_id: str) -> GeneratorTaskInfoDto:
-    logger.debug("Fetching task state")
     task_state = task_service.get_task_state(task_id)
-    logger.debug(f"Task state fetched: {task_state}")
-    logger.debug("Fetching task info")
     task_info = task_service.get_task_info(task_id)
-    logger.debug(f"Task info fetched: {task_info}")
     current_batch = task_info.get('current_batch', None)
     total_batches = task_info.get('total_batches', None)
-    logger.debug(f"Current batch: {current_batch}, Total batches: {total_batches}")
 
     task_info_dto = GeneratorTaskInfoDto(
         task_state=task_state,
         current_batch=current_batch,
         total_batches=total_batches)
     if task_state == TaskState.success:
-        logger.debug(f"Generating retrieval token")
         retrieval_token = task_service.generate_retrieval_token(task_id)
-        logger.debug(f"Generated retrieval token: {retrieval_token}")
         task_info_dto.retrieval_token = retrieval_token
     elif task_state == 'REVOKED':
         raise TaskNotFoundError(f"Task with ID {task_id} was revoked")
