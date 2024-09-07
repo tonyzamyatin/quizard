@@ -16,3 +16,8 @@ class GeneratorMode(str, Enum):
 class ExportFormat(str, Enum):
     anki = "apkg"
     csv = "csv"
+
+    @classmethod
+    def values(cls):
+        return [member.value for member in cls]
+
