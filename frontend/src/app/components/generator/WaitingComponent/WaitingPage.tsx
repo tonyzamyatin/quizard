@@ -3,6 +3,7 @@ import ProgressBar from "./ProgressBar";
 import  {GeneratorStep} from "../../../enum/GeneratorStep";
 import {useGeneratorState} from "../GeneratorContext";
 import CTAButton from "../../global/CTAButton/CTAButton";
+import {safeDivide} from "../../../util/generatorComponentUtil";
 
 function WaitingPage() {
 
@@ -14,7 +15,7 @@ function WaitingPage() {
 
 
     // Progress of flashcard generation process in percent
-    const progress = currentBatch / totalBatches * 100
+    const progress = safeDivide(currentBatch, totalBatches) * 100
 
 
     const renderProgressBar = () => {
