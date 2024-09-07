@@ -26,8 +26,8 @@ jobs:
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ github.repository_owner }}/quizard-backend-api:latest
 
@@ -59,8 +59,8 @@ jobs:
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ github.repository_owner }}/quizard-backend-worker:latest
 
