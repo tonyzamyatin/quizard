@@ -1,0 +1,88 @@
+:root {
+    --quizard-white: white;
+    --quizard-black: #0D052D;
+    --quizard-light-grey: #EEEEEE;
+    --quizard-lighter-grey: #F5F5F5;
+    --quizard-grey: #8E8C96;
+    --quizard-dark-grey: #6A6870;
+    --quizard-darker-grey: #323135;
+    --quizard-pale-violet: #F4F5FF;
+    --quizard-subtle-teal: #74E8C5;
+    --quizard-popping-teal: #6BFFD3;
+    --quizard-light-red: #FAE5E3;
+    --quizard-red: #E06760;
+    --outer-border-radius: 16px;
+}
+
+/* Reset some basic browser default styling */
+* {
+    /*border: 1px solid magenta !important;*/
+}
+
+html, body, div, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background-color: white;
+}
+
+/* Typography */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--quizard-black);
+}
+
+main {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    padding: 20px 0 20px 0;
+    /*margin-right: 20px; !* Account for the scroll bars when making the tab smaller.*/
+    display: flex;
+    flex-direction: column; /* Align children vertically */
+    align-items: center; /* Center children horizontally */
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+}
+
+
+
+/* Sections */
+.section {
+    min-height: 1080px;
+    width: 100%;
+}
+
+/* Footer */
+footer {
+    height: 30px; /* Slimmer height for the footer */
+    background-color: var(--quizard-light-grey); /* Using the color variable you defined */
+    color: var(--quizard-grey); /* Text color for the footer */
+    position: fixed; /* Fixed position to keep it at the bottom */
+    bottom: 0; /* Align to the bottom of the page */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it stays above other content */
+    text-align: center; /* Center the text inside the footer */
+    line-height: 30px; /* Center the text vertically */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow to the footer */
+}
+
+/* Footer links styling */
+footer a {
+    color: var(--quizard-darker-grey);
+    /*text-decoration: none; */
+}
+
+
+/* Utilities */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

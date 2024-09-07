@@ -1,12 +1,13 @@
+# local_dev/run.py
 import os
 import structlog
 
 from openai import OpenAI
 from dotenv import load_dotenv
 
-from config.logging_config import setup_logging
-from src.flashcard_service.flashcard_service import FlashcardService
-from src.utils.global_helpers import load_yaml_config, read_file
+from src.config import setup_logging
+from src.services.flashcard_service import FlashcardService
+from src.utils.file_util import load_yaml_config, read_file
 
 # Assuming a project structure like:
 # backend/
@@ -43,7 +44,7 @@ logger.info("Logging setup complete.")
 # Load environment variables
 load_dotenv()
 # Load configs
-app_config = load_yaml_config(config_dir, 'app_config.yaml')
+app_config = load_yaml_config(config_dir, 'quizard_config.yaml')
 run_config = load_yaml_config(config_dir, 'run_config.yaml')
 
 # Initialize OpenAI client
@@ -57,7 +58,7 @@ mode = run_config['mode']
 
 # Initialize and run flashcard_service with the text_input
 app = FlashcardService(openai=client, app_config=app_config, model_name=model_name, lang=lang, mode=mode)
-flashcard_deck = app.run(user_input=input_text)
+flashcard_deck = app.generate(user_input=input_text)
 
 # Save the output as csv file
 flashcard_deck.save_as_csv(os.path.join(output_root_dir, run_config['run_name']))

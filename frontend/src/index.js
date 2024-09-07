@@ -1,17 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css';
+import App from './app/components/App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+async function enableMocking() {
+    if (process.env.REACT_APP_USE_MOCKS) {
+        const { worker } = require('./mocks/browser')
 
-// If you want to start measuring performance in your flashcard_service, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+        // Start the Service Worker
+        return worker.start({
+            onUnhandledRequest: 'bypass' // or 'warn' based on preference
+        });
+    }
+}
+
+enableMocking().then(() => {
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    );
+}).catch(err => {
+    console.error('Error starting mock worker:', err);
+});

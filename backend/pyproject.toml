@@ -6,7 +6,7 @@ authors = ["tonyzamyatin <anton.zamyatin14@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "~3.11"
 openai = "*"
 python-dotenv = "*"
 tiktoken = "*"
@@ -16,6 +16,14 @@ flask-restful = "*"
 flask-cors = "*"
 celery = {extras = ["redis"], version = "*"}
 structlog = "^24.1.0"
+pytest = "^8.0.2"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+genanki = "^0.13.1"
+pyhumps = "^3.8.0"
+pydantic = "^2.6.4"
+injector = "^0.21.0"
+dependency-injector = "^4.41.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^3.0.3"

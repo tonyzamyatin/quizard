@@ -1,0 +1,79 @@
+.config-container {
+    max-width: 522px;
+}
+
+/* This class is to make the distance between the h2 and box equal between the individual steps in the generation process.
+   The Silder in Step 2 takes up 48px in height and has 10px button and top margin each + 10px regular top margin of the box.
+   However, the big gap between the two components looks ugly, if there's no Slider to fill up the space...
+   TODO: Find prettier solution once PDF reader is ready and Slider has to activated.
+*/
+
+
+
+.config-menu {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    /*margin-top: 78px;*/
+    border-radius: inherit;
+    background-color: var(--quizard-pale-violet);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    /* Vertically center children */
+    align-items: center;        /* Horizontally center children */
+}
+
+/* Label and Select Grouping */
+.config-menu div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px; /* Space between each label-select pair */
+}
+
+/* New or Modified Classes */
+.config-menu label {
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 10px; /* Space between label and select */
+}
+
+.config-menu select {
+    width: 196px;
+    height: 40px;
+    border: none;
+    background-color: white;
+    border-radius: var(--outer-border-radius);
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    cursor: pointer;
+    font-size: 1em;
+    outline: none;
+}
+
+/* For option styling */
+.config-menu option {
+    font-size: 1em; /* Matching Font Size */
+    padding: 8px 10px;
+}
+
+/* Smooth transition for dropdown */
+.config-menu select {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Larger dropdown arrow */
+.config-menu select::-ms-expand {
+    font-size: 16px;
+}
+
+/* To apply the same styles for Firefox */
+@-moz-document url-prefix() {
+    .config-menu select {
+        text-indent: 0.01px;
+        text-overflow: '';
+        width: 100%;
+    }
+}

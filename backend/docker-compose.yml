@@ -1,31 +1,30 @@
-version: '3'
-
+# docker-compose.yml
 services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.app
-    image: quizard:latest
+      dockerfile: Dockerfile
+    image: quizard-app:latest
     ports:
       - "5000:5000"
     env_file:
-      - .env  # Use environment variables defined in the .env file
-    volumes:
-      - ./src:/app/src  # Mount the backend directory to the app directory in the container
-    command: poetry run python -m src.rest.app
+      - .env
+    command: python -m src.rest.flask_app
     depends_on:
       - rabbitmq
       - redis
   worker:
     build:
       context: .
-      dockerfile: Dockerfile.app
-    image: quizard:latest
+      dockerfile: Dockerfile
+    image: quizard-app:latest
+    env_file:
+      - .env
     depends_on:
       - web
       - redis
       - rabbitmq
-    command: poetry run celery -A src.celery worker -l info
+    command: celery  -A src.celery.celery_worker worker -l info
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
@@ -34,10 +33,18 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
-#    environment:
-#      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
