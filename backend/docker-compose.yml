@@ -1,6 +1,7 @@
 # docker-compose.yml
+version: '3.8'
 services:
-  web:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,7 +10,9 @@ services:
       - "5000:5000"
     env_file:
       - .env
-    command: python -m src.rest.flask_app
+    environment:
+      - APP_SERVICE=api
+#    command: python -m src.rest.flask_app
     depends_on:
       - rabbitmq
       - redis
@@ -20,11 +23,13 @@ services:
     image: quizard-app:latest
     env_file:
       - .env
+    environment:
+      - APP_SERVICE=worker
     depends_on:
-      - web
+      - api
       - redis
       - rabbitmq
-    command: celery  -A src.celery.celery_worker worker -l info
+#    command: celery  -A src.celery.celery_worker worker -l info
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
