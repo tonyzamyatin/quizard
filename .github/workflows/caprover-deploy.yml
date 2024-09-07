@@ -101,7 +101,7 @@ jobs:
       - name: Deploy Frontend Image to CapRover
         uses: caprover/deploy-from-github@v1.1.2
         with:
-          server: "${{ secrets.CAPROVER_SERVER }}" 
-          app: "${{ secrets.CAPROVER_FRONTEND_APP_NAME }}""
-          token: "${{ secrets.CAPROVER_FRONTEND_APP_TOKEN }}"
-          image: "${{ github.repository_owner }}/quizard:frontend-latest" 
+          server: "${{ secrets.CAPROVER_SERVER }}"
+          app: "${{ secrets.CAPROVER_WORKER_APP_NAME }}"
+          token: "${{ secrets.CAPROVER_WORKER_APP_TOKEN }}"
+          image: "${{ github.repository_owner }}/quizard:worker-latest"
