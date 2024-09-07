@@ -22,7 +22,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
@@ -55,7 +55,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
