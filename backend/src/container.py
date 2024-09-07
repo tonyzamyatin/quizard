@@ -70,7 +70,6 @@ def configure_services(container: Container) -> None:
     container.flashcard_generator_task_service.override(
         providers.Factory(
             FlashcardGeneratorTaskService,
-            flask_app=container.flask_app,
             celery_app=container.celery_app,
         )
     )

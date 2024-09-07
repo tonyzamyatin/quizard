@@ -10,6 +10,7 @@ from src.enums.task_states import TaskState
 from src.container import Container
 from src.services.task_service.task_service_interface import ITaskService
 from src.celery.tasks import flashcard_generator_task
+from src.utils.env_util import get_env_variable
 
 logger = structlog.get_logger(__name__)
 
@@ -21,8 +22,7 @@ class FlashcardGeneratorTaskService(ITaskService):
     """
 
     @inject
-    def __init__(self, flask_app=Provide[Container.flask_app], celery_app=Provide[Container.celery_app]):
-        self.flask_app = flask_app
+    def __init__(self, celery_app=Provide[Container.celery_app]):
         self.celery_app = celery_app
 
     def start_task(self, task: FlashcardGeneratorTaskDto, *args, **kwargs):
@@ -64,12 +64,13 @@ class FlashcardGeneratorTaskService(ITaskService):
         self.celery_app.control.revoke(task_id, terminate=True)
 
     def generate_retrieval_token(self, task_id: str):
-        s = URLSafeSerializer(self.flask_app.config['SECRET_KEY'])
+        logger.info(f"generate_retrieval_token(): SECRET_KEY (environment) - {get_env_variable('SECRET_KEY')}")
+        s = URLSafeSerializer(get_env_variable('SECRET_KEY'))
         return s.dumps(task_id)
 
     def verify_retrival_token(self, token):
         try:
-            s = URLSafeSerializer(self.flask_app.config['SECRET_KEY'])
+            s = URLSafeSerializer(get_env_variable('SECRET_KEY'))
             task_id = s.loads(token)
             return task_id
         except BadSignature:
