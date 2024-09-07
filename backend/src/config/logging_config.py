@@ -14,17 +14,10 @@ load_dotenv()
 
 def setup_logging():
     log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
-    log_to_file = os.getenv('LOG_TO_FILE', 'False').lower() in ('true', '1', 't')
     log_format = '%(message)s'
 
-    if log_to_file:
-        log_dir = get_logs_dir()
-        log_dir.mkdir(parents=True, exist_ok=True)
-        log_file_path = log_dir / 'app.log'
-        handler = RotatingFileHandler(log_file_path, maxBytes=10000000, backupCount=5)
-        handlers = [handler]
-    else:
-        handlers = [logging.StreamHandler()]
+    # Only use StreamHandler to send logs to console (stdout) and let Docker manage the logs accessible via `docker logs`
+    handlers = [logging.StreamHandler()]
 
     logging.basicConfig(level=log_level, format=log_format, handlers=handlers)
 

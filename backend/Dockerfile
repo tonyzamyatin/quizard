@@ -37,7 +37,10 @@ COPY --from=builder /app/.venv .venv
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
-COPY --chown=appuser:appuser . .
+# Only copy essential files
+COPY --chown=appuser:appuser pyproject.toml poetry.lock ./
+COPY --chown=appuser:appuser src/ ./src/
+COPY --chown=appuser:appuser assets/ ./assets/
 USER appuser
 
 # Entrypoint / command is in docker-compose.yml

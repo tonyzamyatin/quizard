@@ -10,10 +10,7 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - .env  # Use environment variables defined in the .env file
-    volumes:
-      - ./src:/src  # Mount the backend directory to the app directory in the container
-      - ./logs:/app/logs
+      - .env
     command: python -m src.rest.flask_app
     depends_on:
       - rabbitmq
@@ -33,7 +30,7 @@ services:
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
-      - "8080:15672"  # Management interface (only for dev)
+      - "8080:15672"  # Management interface
       - "5672:5672"   # RabbitMQ server
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
