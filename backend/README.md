@@ -28,18 +28,11 @@ This project relies on several environment variables to configure different part
 | `REDIS_PORT`           | Port on which Redis listens for connections.                                 | A valid port number.               |
 | `REDIS_PRIMARY_DB_ID`  | Redis database ID to use.                                                    | An integer representing the DB ID. |
 
-### Backend Configuration
-
-| Variable               | Description                                                                 | Possible Values                    |
-|------------------------|-----------------------------------------------------------------------------|------------------------------------|
-| `REACT_APP_BACKEND_URL` | The URL of the backend server.                                               | A valid URL.                       |
-
 ### Logging Configuration
 
 | Variable               | Description                                                                 | Possible Values                    |
 |------------------------|-----------------------------------------------------------------------------|------------------------------------|
 | `LOG_LEVEL`            | The logging level for the application.                                       | `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` |
-| `LOG_TO_FILE`          | Specifies whether logs should be written to a file.                          | `TRUE`, `FALSE`                    |
 
 ### Application-Specific Configuration
 
@@ -57,16 +50,14 @@ For example, to create a `.env` file, you can add:
 ENVIRONMENT=development
 OPENAI_API_KEY=your-openai-api-key
 SECRET_KEY=your-secret-key
-RABBITMQ_DEFAULT_USER=dev_user
+RABBITMQ_DEFAULT_USER=root_user
 RABBITMQ_DEFAULT_PASS=your-rabbitmq-pw
 RABBITMQ_PORT=5672
 RABBITMQ_HOST=rabbitmq
 REDIS_HOST=redis
 REDIS_PORT=6379
 REDIS_PRIMARY_DB_ID=0
-REACT_APP_BACKEND_URL=http://localhost:5000
 LOG_LEVEL=INFO
-LOG_TO_FILE=TRUE
 QUIZARD_CONFIG=quizard_config.yaml
 ```
 
