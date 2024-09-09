@@ -18,11 +18,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to Docker Hub
+      - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
@@ -51,11 +52,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to Docker Hub
+      - name: Log in to container Registry
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
@@ -97,11 +99,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to Docker Hub
+      - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
       - name: Install dependencies
         run: npm install
