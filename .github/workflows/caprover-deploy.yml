@@ -25,13 +25,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
+      - name: Preset Image Name
+        run: echo "IMAGE_API_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-backend-api:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
         with:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ github.repository_owner }}/quizard-backend-api:latest
+          tags: ${{ env.IMAGE_URL }}
 
       - name: Deploy API Image to CapRover
         uses: caprover/deploy-from-github@v1.1.2
@@ -39,7 +42,7 @@ jobs:
           server: "${{ secrets.CAPROVER_SERVER }}"
           app: "${{ secrets.CAPROVER_API_APP_NAME }}"
           token: "${{ secrets.CAPROVER_API_APP_TOKEN }}"
-          image: "${{ github.repository_owner }}/quizard:api-latest"
+          tags: ${{ env.IMAGE_API_URL }}
 
   build-and-deploy-worker:
     runs-on: ubuntu-latest
@@ -58,6 +61,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+      
+      - name: Preset Image Name
+        run: echo "IMAGE_WORKER_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-backend-worker:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
@@ -65,7 +71,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ github.repository_owner }}/quizard-backend-worker:latest
+          tags: ${{ env.IMAGE_WORKER_URL }}
 
       - name: Deploy Worker Image to CapRover
         uses: caprover/deploy-from-github@v1.1.2
@@ -73,9 +79,8 @@ jobs:
           server: "${{ secrets.CAPROVER_SERVER }}"
           app: "${{ secrets.CAPROVER_WORKER_APP_NAME }}"
           token: "${{ secrets.CAPROVER_WORKER_APP_TOKEN }}"
-          image: "${{ github.repository_owner }}/quizard:worker-latest"
+          image: "${{ env.IMAGE_WORKER_URL }}"
   
-
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
 
@@ -114,14 +119,16 @@ jobs:
         run: npm run build --verbose
         working-directory: ./frontend
 
+      - name: Preset Image Name
+        run: echo "IMAGE_FRONTEND_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-frontend:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push Frontend Docker Image
         uses: docker/build-push-action@v5
         with:
           context: ./frontend  
           file: ./frontend/Dockerfile  
           push: true
-          tags: ${{ github.repository_owner }}/quizard-frontend:latest  
-          no-cache: true
+          tags: ${{ env.IMAGE_FRONTEND_URL }}
 
       - name: Deploy Frontend Image to CapRover
         uses: caprover/deploy-from-github@v1.1.2
@@ -129,4 +136,4 @@ jobs:
           server: "${{ secrets.CAPROVER_SERVER }}" 
           app: "${{ secrets.CAPROVER_FRONTEND_APP_NAME }}"
           token: "${{ secrets.CAPROVER_FRONTEND_APP_TOKEN }}"
-          image: "${{ github.repository_owner }}/quizard:frontend-latest" 
+          image: "${{ env.IMAGE_FRONTEND_URL }}"
