@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import CTAButton from "../../global/CTAButton/CTAButton";
 import {useExternalScript} from "../../../hooks/useExternalScript";
 import {useGeneratorState} from "../GeneratorContext";

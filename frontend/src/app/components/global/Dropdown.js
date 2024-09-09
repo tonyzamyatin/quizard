@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 function Dropdown({ id, labelText, options, selected,  onChange }) {
     return (

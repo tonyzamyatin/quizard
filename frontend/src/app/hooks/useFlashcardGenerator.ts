@@ -67,7 +67,7 @@ export function useFlashcardGenerator() {
                 clearInterval(pollingIntervalId.current);
             }
         };
-    }, [step, taskId, taskPollingHandler]);
+    }, [step, taskId, taskPollingHandler, pollingTimeout]);
 
     async function taskPollingHandler() {
         try {
