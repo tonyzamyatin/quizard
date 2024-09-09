@@ -74,7 +74,7 @@ export function useFlashcardGenerator() {
             console.log('Error occurred when polling flashcard generator task:', error);
             isPollingActive.current = false;
         }
-    }, [step, taskId, pollingTimeout, setGeneratorTaskInfo, setStep]);
+    }, [step, taskId, setGeneratorTaskInfo, setStep]);
 
     /**
      * Poll the flashcard generator task until it is complete.
