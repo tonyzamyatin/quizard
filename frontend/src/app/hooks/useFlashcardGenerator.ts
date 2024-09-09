@@ -1,5 +1,5 @@
 // src/app/hooks/useFlashcardGenerator.ts
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
     cancelFlashcardGeneratorTask,
     fetchFlashcardFile,
@@ -50,26 +50,7 @@ export function useFlashcardGenerator() {
         sessionStorage.setItem('savedGeneratorTaskDto', JSON.stringify(generatorTaskDto));
     }, [generatorTaskDto]);
 
-    /**
-     * Poll the flashcard generator task until it is complete.
-     * Polling starts when the step is set to 'WAIT'.
-     * The polling interval is set to 'pollingDelayLong' when the task is pending and 'pollingDelayShort' when the task is in progress.
-     */
-    useEffect(() => {
-        // console.debug('Polling use effect called')
-        if (step === GeneratorStep.WAIT && taskId) {
-            // console.debug('Activating polling')
-            isPollingActive.current = true
-            pollingIntervalId.current = window.setInterval(taskPollingHandler, pollingTimeout);
-        }
-        return () => {
-            if (pollingIntervalId.current) {
-                clearInterval(pollingIntervalId.current);
-            }
-        };
-    }, [step, taskId, taskPollingHandler, pollingTimeout]);
-
-    async function taskPollingHandler() {
+    const taskPollingHandler = useCallback(async () => {
         try {
             if (step !== GeneratorStep.WAIT) return;
             if (!isPollingActive.current) return;
@@ -93,7 +74,26 @@ export function useFlashcardGenerator() {
             console.log('Error occurred when polling flashcard generator task:', error);
             isPollingActive.current = false;
         }
-    }
+    }, [step, taskId, pollingTimeout, setGeneratorTaskInfo, setStep]);
+
+    /**
+     * Poll the flashcard generator task until it is complete.
+     * Polling starts when the step is set to 'WAIT'.
+     * The polling interval is set to 'pollingDelayLong' when the task is pending and 'pollingDelayShort' when the task is in progress.
+     */
+    useEffect(() => {
+        // console.debug('Polling use effect called')
+        if (step === GeneratorStep.WAIT && taskId) {
+            // console.debug('Activating polling')
+            isPollingActive.current = true
+            pollingIntervalId.current = window.setInterval(taskPollingHandler, pollingTimeout);
+        }
+        return () => {
+            if (pollingIntervalId.current) {
+                clearInterval(pollingIntervalId.current);
+            }
+        };
+    }, [step, taskId, taskPollingHandler, pollingTimeout]);
 
     /**
      * Start the flashcard generator task and set the step to 'WAIT'.
