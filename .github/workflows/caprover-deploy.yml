@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
       - name: Preset Image Name for API
-        run: echo "IMAGE_API_URL=ghcr.io/${{ github.repository_owner }}/quizard-backend-api:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+        run: echo "IMAGE_API_URL=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
