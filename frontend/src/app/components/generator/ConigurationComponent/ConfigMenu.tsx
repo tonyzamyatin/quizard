@@ -1,16 +1,15 @@
 import React from "react";
 import Dropdown from "../../global/Dropdown";
-import {
-    FileFormat,
-    Mode,
-    Language,
-    LanguageDisplayNames,
-    ModeDisplayNames,
-    FileFormatDisplayNames,
-    DisplayNameMap, OptionEnumType,
-} from "../../../enum/generatorOptions";
 import {useGeneratorState} from "../GeneratorContext";
 import {displayNameFromEnumValue, enumValueFromDisplayName} from "../../../util/generatorOptionsUtil";
+import {
+    DisplayNameMap,
+    FileFormat, FileFormatDisplayNames,
+    Language,
+    LanguageDisplayNames,
+    Mode, ModeDisplayNames,
+    OptionEnumType
+} from "../../../enum/GeneratorOptions";
 
 // TODO: Pep up config menu by using icons and make the ConfigurationComponent process more user friendly
 function ConfigMenu() {

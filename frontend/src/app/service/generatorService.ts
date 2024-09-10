@@ -4,7 +4,7 @@
 
 import {GeneratorTask, GeneratorTaskInfo} from "../dto/generator";
 import {sendRequest} from "../util/requestUtil";
-import {FileFormat} from "../enum/generatorOptions";
+import {FileFormat} from "../enum/GeneratorOptions";
 
 // API Endpoint
 const endpoint = '/flashcards/generator';

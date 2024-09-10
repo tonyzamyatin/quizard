@@ -1,9 +1,10 @@
-import {DisplayNameMap, OptionEnum, OptionEnumType} from "../enum/generatorOptions";
 /*
     * This file contains utility functions for mapping  between enum values of generator options and their
     * corresponding display names.
  */
 
+
+import {DisplayNameMap, OptionEnum, OptionEnumType} from "../enum/GeneratorOptions";
 
 /**
  * Returns the display name for the given enum value.
