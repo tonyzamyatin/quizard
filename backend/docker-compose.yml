@@ -1,8 +1,7 @@
 # docker-compose.yml
-version: '3'
-
+version: '3.8'
 services:
-  web:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,10 +9,10 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - .env  # Use environment variables defined in the .env file
-    volumes:
-      - ./src:/src  # Mount the backend directory to the app directory in the container
-    command: python -m src.rest.flask_app
+      - .env
+    environment:
+      - APP_SERVICE=api
+#    command: python -m src.rest.flask_app
     depends_on:
       - rabbitmq
       - redis
@@ -24,15 +23,17 @@ services:
     image: quizard-app:latest
     env_file:
       - .env
+    environment:
+      - APP_SERVICE=worker
     depends_on:
-      - web
+      - api
       - redis
       - rabbitmq
-    command: celery  -A src.celery_config.celery_worker worker -l info
+#    command: celery  -A src.celery.celery_worker worker -l info
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
-      - "8080:15672"  # Management interface (only for dev)
+      - "8080:15672"  # Management interface
       - "5672:5672"   # RabbitMQ server
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}

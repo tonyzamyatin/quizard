@@ -3,16 +3,19 @@ import ProgressBar from "./ProgressBar";
 import  {GeneratorStep} from "../../../enum/GeneratorStep";
 import {useGeneratorState} from "../GeneratorContext";
 import CTAButton from "../../global/CTAButton/CTAButton";
+import {safeDivide} from "../../../util/generatorComponentUtil";
 
 function WaitingPage() {
 
     const { setStep, generatorTaskInfo, cancelFlashcards } = useGeneratorState();
-    let { currentBatch, totalBatches } = generatorTaskInfo;
-    currentBatch = currentBatch || 0;
-    totalBatches = totalBatches || 1;
+
+    // Provide fallback values if generatorTaskInfo is undefined
+    const currentBatch = generatorTaskInfo?.currentBatch || 0;
+    const totalBatches = generatorTaskInfo?.totalBatches || 1;
+
 
     // Progress of flashcard generation process in percent
-    const progress = currentBatch / totalBatches * 100
+    const progress = safeDivide(currentBatch, totalBatches) * 100
 
 
     const renderProgressBar = () => {

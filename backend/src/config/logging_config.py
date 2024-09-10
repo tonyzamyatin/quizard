@@ -6,26 +6,18 @@ from logging.handlers import RotatingFileHandler
 import structlog
 from dotenv import load_dotenv
 
+from src.utils.path_util import get_project_root, get_logs_dir
+
 # Load environment variables
 load_dotenv()
 
 
 def setup_logging():
-    current_script_dir = os.path.dirname(__file__)
-    default_log_file_path = os.path.join(os.path.dirname(os.path.dirname(current_script_dir)), 'logs', 'default.log')
-    log_file_path = os.getenv('LOG_FILE_PATH', default_log_file_path)
     log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
-    log_to_file = os.getenv('LOG_TO_FILE', 'no').lower() == 'yes'
     log_format = '%(message)s'
 
-    if log_to_file:
-        log_dir = os.path.dirname(log_file_path)
-        if not os.path.exists(log_dir):
-            os.makedirs(log_dir)
-        handler = RotatingFileHandler(log_file_path, maxBytes=10000000, backupCount=5)
-        handlers = [handler]
-    else:
-        handlers = [logging.StreamHandler()]
+    # Only use StreamHandler to send logs to console (stdout) and let Docker manage the logs accessible via `docker logs`
+    handlers = [logging.StreamHandler()]
 
     logging.basicConfig(level=log_level, format=log_format, handlers=handlers)
 

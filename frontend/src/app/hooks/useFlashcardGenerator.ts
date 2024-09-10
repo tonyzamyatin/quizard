@@ -1,5 +1,5 @@
 // src/app/hooks/useFlashcardGenerator.ts
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
     cancelFlashcardGeneratorTask,
     fetchFlashcardFile,
@@ -50,26 +50,10 @@ export function useFlashcardGenerator() {
         sessionStorage.setItem('savedGeneratorTaskDto', JSON.stringify(generatorTaskDto));
     }, [generatorTaskDto]);
 
-    /**
-     * Poll the flashcard generator task until it is complete.
-     * Polling starts when the step is set to 'WAIT'.
-     * The polling interval is set to 'pollingDelayLong' when the task is pending and 'pollingDelayShort' when the task is in progress.
-     */
-    useEffect(() => {
-        if (step === GeneratorStep.WAIT && taskId) {
-            pollingIntervalId.current = window.setInterval(taskPollingHandler, pollingTimeout);
-        }
-        return () => {
-            if (pollingIntervalId.current) {
-                clearInterval(pollingIntervalId.current);
-            }
-        };
-    }, [step, taskId, taskPollingHandler]);
-
-    async function taskPollingHandler() {
+    const taskPollingHandler = useCallback(async () => {
         try {
             if (step !== GeneratorStep.WAIT) return;
-            if (isPollingActive.current) return;
+            if (!isPollingActive.current) return;
 
             isPollingActive.current = true;
             const taskInfo = await fetchFlashcardGeneratorTaskInfo(taskId);
@@ -90,7 +74,26 @@ export function useFlashcardGenerator() {
             console.log('Error occurred when polling flashcard generator task:', error);
             isPollingActive.current = false;
         }
-    }
+    }, [step, taskId, setGeneratorTaskInfo, setStep]);
+
+    /**
+     * Poll the flashcard generator task until it is complete.
+     * Polling starts when the step is set to 'WAIT'.
+     * The polling interval is set to 'pollingDelayLong' when the task is pending and 'pollingDelayShort' when the task is in progress.
+     */
+    useEffect(() => {
+        // console.debug('Polling use effect called')
+        if (step === GeneratorStep.WAIT && taskId) {
+            // console.debug('Activating polling')
+            isPollingActive.current = true
+            pollingIntervalId.current = window.setInterval(taskPollingHandler, pollingTimeout);
+        }
+        return () => {
+            if (pollingIntervalId.current) {
+                clearInterval(pollingIntervalId.current);
+            }
+        };
+    }, [step, taskId, taskPollingHandler, pollingTimeout]);
 
     /**
      * Start the flashcard generator task and set the step to 'WAIT'.
@@ -119,7 +122,7 @@ export function useFlashcardGenerator() {
         if (flashcardResultJSON) {
             const flashcardResult = JSON.parse(flashcardResultJSON);
             flashcardBlob = await fetch(flashcardResult.blob).then(r => r.blob());
-            flashcardFileName = flashcardResult.filename;
+            flashcardFileName = flashcardResult.filename + '.' + fileFormat;
         } else {
             const retrievalToken = generatorTaskInfo.retrievalToken;
             if (!retrievalToken || !fileFormat) {
@@ -129,8 +132,7 @@ export function useFlashcardGenerator() {
 
                 const result = await fetchFlashcardFile(retrievalToken, fileFormat);
                 flashcardBlob = result.blob;
-                flashcardFileName = result.filename;
-
+                flashcardFileName = result.filename + '.' + fileFormat;
                 // Save the flashcard file to session storage
                 const reader = new FileReader();
                 reader.readAsDataURL(result.blob);
@@ -152,6 +154,8 @@ export function useFlashcardGenerator() {
      * Cancel the flashcard generator task and set the step to 'UPLOAD_TEXT'.
      */
     async function cancelFlashcards() {
+        isPollingActive.current = false
+        setGeneratorTaskInfo(createDefaultGeneratorTaskInfo)
         try {
             await cancelFlashcardGeneratorTask(taskId);
 

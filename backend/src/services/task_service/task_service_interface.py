@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from celery.result import AsyncResult
-
 from src.enums.task_states import TaskState
 
 
@@ -49,7 +47,7 @@ class ITaskService(ABC):
     @abstractmethod
     def get_task_info(self, task_id: str) -> dict:
         """
-        Get the information of the task.
+        Get the metadata of the task.
 
         Parameters
         ----------

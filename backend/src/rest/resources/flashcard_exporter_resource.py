@@ -40,17 +40,15 @@ class FlashcardExporterResource(Resource):
         file_format = request.args.get('format', default='', type=str)
         if file_format == '':
             raise ValidationError("File format not specified")
-        try:
-            file_format = ExportFormat[file_format]
-        except ValueError:
+        if file_format not in ExportFormat.values():
             raise ValidationError(f"Unsupported file type: {file_format}")
         task_id = self.task_service.verify_retrival_token(token)
         flashcard_deck = self.task_service.get_task_result(task_id)
         file = self.flashcard_service.export_flashcard_deck(flashcard_deck, file_format)
-        if file_format == 'csv':
+        if file_format == ExportFormat.csv:
             filename = "flashcards.csv"
             mimetype = "text/csv"
-        elif file_format == 'anki':
+        elif file_format == ExportFormat.anki:
             filename = "flashcards.apkg"
             mimetype = "application/x-sqlite3"
 

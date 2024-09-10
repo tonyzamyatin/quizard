@@ -2,8 +2,6 @@ import React from "react";
 
 function CTAButton({ buttonText, buttonType, onButtonClick, active=true, nonHover=false}) {
 
-    const buttonTypes = []
-
     function handleClick() {
         if (active) { // Only call onButtonClick if the button is active
             onButtonClick();

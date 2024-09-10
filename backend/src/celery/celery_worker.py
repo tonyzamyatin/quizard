@@ -1,4 +1,4 @@
-# src.celery_config.celery_worker.py
+# src.celery.celery_worker.py
 from celery.signals import task_failure
 import structlog
 

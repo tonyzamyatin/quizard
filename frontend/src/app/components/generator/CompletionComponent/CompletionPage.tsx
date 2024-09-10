@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import CTAButton from "../../global/CTAButton/CTAButton";
 import {useExternalScript} from "../../../hooks/useExternalScript";
 import {useGeneratorState} from "../GeneratorContext";
@@ -13,12 +13,6 @@ function CompletionPage() {
     const shareThisScript = "https://platform-api.sharethis.com/js/sharethis.js#property=65dc401e98ac00001970d5d9&product=inline-share-buttons";
     const state = useExternalScript(shareThisScript);
 
-    /**
-     * Download flashcards on component mount
-     */
-    useEffect(() => {
-        downloadFlashcards();
-    }, []);
 
     /**
      * On back button click, reset the generator task and file format, clear session storage and go back to the text upload step.

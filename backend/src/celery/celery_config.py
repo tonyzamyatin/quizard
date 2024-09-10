@@ -1,4 +1,4 @@
-# src/celery_config/celery_config.py
+# src/celery/celery.py
 from celery import Celery, Task
 from dependency_injector.wiring import inject, Provide
 from flask import Flask
@@ -62,7 +62,7 @@ def create_celery_app(flask_app=Provide[Container.flask_app]) -> Celery:
             result_serializer='pickle',
             accept_content=['pickle', 'json'],
         )
-        flask_app.extensions["celery_config"] = celery_app
+        flask_app.extensions["celery"] = celery_app
     except KeyError as e:
         # Raised if the 'CELERY' key is missing in the Flask app's configuration
         raise RuntimeError(f"Missing 'CELERY' key in Flask configuration: {e}")

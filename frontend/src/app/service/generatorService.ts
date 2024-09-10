@@ -38,7 +38,7 @@ export async function fetchFlashcardGeneratorTaskInfo(taskId: string): Promise<G
         endpoint: endpoint,
         method: 'GET'
     });
-    const taskInfo = response.data.taskInfo;
+    const taskInfo = response.data;
     if (!taskInfo) {
         console.warn('Response missing taskInfo:');
     }

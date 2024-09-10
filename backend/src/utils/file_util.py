@@ -1,17 +1,18 @@
 # src/utils/file_util.py
 import os
+from pathlib import Path
 
 import yaml
 
 from src.custom_exceptions.internal_exceptions import ConfigLoadingError
 
 
-def load_yaml_config(config_dir: str, config_name: str) -> dict:
+def load_yaml_config(config_dir: Path, config_name: str) -> dict:
     """
     Loads a YAML configuration file.
 
     Parameters:
-        config_dir (str): Directory where the config file is stored.
+        config_dir (Path): Directory where the config file is stored.
         config_name (str): Name of the YAML config file to load (with extension).
 
     Returns:
@@ -24,7 +25,7 @@ def load_yaml_config(config_dir: str, config_name: str) -> dict:
         IsADirectoryError: If the path refers to a directory instead of a file.
         OSError: If another OS-related error occurs.
     """
-    file_path = os.path.join(config_dir, f"{config_name}")
+    file_path = config_dir / config_name
     try:
         with open(file_path) as file:
             try:

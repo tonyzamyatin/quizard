@@ -35,3 +35,12 @@ def inset_into_string(insert: str, target: str, position: int) -> str:
     else:
         # Insert the string at the specified position
         return target[:position] + insert + target[position:]
+
+
+def truncate_text(text, length=30):
+    """
+    Truncate the input text to a specified length.
+    """
+    if isinstance(text, str) and len(text) > length:
+        return text[:length] + "..."  # Add ellipsis if text is truncated
+    return text

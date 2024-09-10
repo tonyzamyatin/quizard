@@ -183,7 +183,7 @@ class TestFlashcardGenerator:
             ]
         })
         # Call the method you want to test
-        flashcards = generator.make_gpt_completion(
+        flashcards = generator.make_gpt_completion_request(
             model="test_model",
             messages=messages,
             max_tokens=100,

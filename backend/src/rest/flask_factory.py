@@ -2,6 +2,7 @@
 from flask import Flask
 
 from src.rest import flask_error_handlers
+from src.rest.custom_json_provider import CustomJSONProvider
 
 
 def create_flask_app(broker_url: str, result_backend_url: str, import_name: str) -> Flask:
@@ -60,6 +61,7 @@ def create_flask_app(broker_url: str, result_backend_url: str, import_name: str)
         raise RuntimeError(f"Failed to create or configure the Flask app: {e}")
 
     # Initialize error handlers with the flask app
-    flask_error_handlers.init_app(flask_app)
-
+    flask_error_handlers.set_error_handlers(flask_app)
+    # Set custom JSON provider
+    flask_app.json = CustomJSONProvider(flask_app)
     return flask_app
