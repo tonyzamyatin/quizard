@@ -42,7 +42,7 @@ jobs:
           server: "${{ secrets.CAPROVER_SERVER }}"
           app: "${{ secrets.CAPROVER_API_APP_NAME }}"
           token: "${{ secrets.CAPROVER_API_APP_TOKEN }}"
-          tags: ${{ env.IMAGE_API_URL }}
+          image: ${{ env.IMAGE_API_URL }}
 
   build-and-deploy-worker:
     runs-on: ubuntu-latest
