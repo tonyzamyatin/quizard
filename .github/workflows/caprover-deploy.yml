@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
       - name: Preset Image Name
-        run: echo "IMAGE_API_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-backend-api:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        run: echo "IMAGE_API_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-backend-api:latest" >> $GITHUB_ENV
 
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
@@ -63,7 +63,7 @@ jobs:
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
       
       - name: Preset Image Name
-        run: echo "IMAGE_WORKER_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-backend-worker:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        run: echo "IMAGE_WORKER_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-backend-worker:latest" >> $GITHUB_ENV
 
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
@@ -120,7 +120,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Preset Image Name
-        run: echo "IMAGE_FRONTEND_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-frontend:$(echo ${{ github.sha }} | cut -c1-7) | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        run: echo "IMAGE_FRONTEND_URL=$(echo ghcr.io/${{ github.repository_owner }}/quizard-frontend:latest" >> $GITHUB_ENV
 
       - name: Build and push Frontend Docker Image
         uses: docker/build-push-action@v5
