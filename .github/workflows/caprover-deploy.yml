@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
 
       - name: Preset Image Name for API
-        run: echo "IMAGE_API_URL=ghcr.io/${{ github.repository_owner }}/quizard-backend-api:latest" >> $GITHUB_ENV
+        run: echo "IMAGE_API_URL=ghcr.io/${{ github.repository_owner }}/quizard-backend-api:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
@@ -61,9 +61,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
-            
+
       - name: Preset Image Name for Worker
-        run: echo "IMAGE_WORKER_URL=ghcr.io/${{ github.repository_owner }}/quizard-backend-worker:latest" >> $GITHUB_ENV
+        run: echo "IMAGE_WORKER_URL=ghcr.io/${{ github.repository_owner }}/quizard-backend-worker:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
@@ -79,7 +79,7 @@ jobs:
           server: "${{ secrets.CAPROVER_SERVER }}"
           app: "${{ secrets.CAPROVER_WORKER_APP_NAME }}"
           token: "${{ secrets.CAPROVER_WORKER_APP_TOKEN }}"
-          image: "${{ env.IMAGE_WORKER_URL }}"
+          image: ${{ env.IMAGE_WORKER_URL }}
   
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
@@ -120,7 +120,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Preset Image Name for Frontend
-        run: echo "IMAGE_FRONTEND_URL=ghcr.io/${{ github.repository_owner }}/quizard-frontend:latest" >> $GITHUB_ENV
+        run: echo "IMAGE_FRONTEND_URL=ghcr.io/${{ github.repository_owner }}/quizard-frontend:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push Frontend Docker Image
         uses: docker/build-push-action@v5
@@ -136,4 +136,4 @@ jobs:
           server: "${{ secrets.CAPROVER_SERVER }}" 
           app: "${{ secrets.CAPROVER_FRONTEND_APP_NAME }}"
           token: "${{ secrets.CAPROVER_FRONTEND_APP_TOKEN }}"
-          image: "${{ env.IMAGE_FRONTEND_URL }}"
+          image: ${{ env.IMAGE_FRONTEND_URL }}
