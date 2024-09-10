@@ -1,7 +1,5 @@
 import React from "react";
 import Dropdown from "../../global/Dropdown";
-
-
 import {useGeneratorState} from "../GeneratorContext";
 import {displayNameFromEnumValue, enumValueFromDisplayName} from "../../../util/generatorOptionsUtil";
 import {
