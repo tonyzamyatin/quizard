@@ -1,3 +1,12 @@
+name: Build and Deploy Quizard Backend API and Worker
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    workflow_dispatch:
+
 jobs:
   build-and-deploy-api:
     runs-on: ubuntu-latest
@@ -155,3 +164,4 @@ jobs:
                   "gitHash": ""
                 }' \
             https://${{ secrets.CAPROVER_SERVER }}/api/v2/user/apps/appData/${{ secrets.CAPROVER_FRONTEND_APP_NAME }}
+
