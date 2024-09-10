@@ -34,7 +34,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ env.IMAGE_URL }}
+          tags: ${{ env.IMAGE_API_URL }}
 
       - name: Deploy API Image to CapRover
         uses: caprover/deploy-from-github@v1.1.2
