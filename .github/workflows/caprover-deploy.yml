@@ -90,8 +90,8 @@ jobs:
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./worker
-          file: ./worker/Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ env.IMAGE_WORKER_URL }}
 
