@@ -1,3 +1,0 @@
-Identify the language of the following text and create flashcards based on its content, keeping all flashcards in the same language as the text:
-
-Cancers are characterized by uncontrolled cell growth. They vary widely in treatment and prognosis, with some forms being more treatable than others. Certain hallmarks like avoiding apoptosis and evading the immune system are common across many cancer types. The disease involves multiple mutations acquired over time.

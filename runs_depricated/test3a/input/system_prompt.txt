@@ -1,7 +1,0 @@
-Extract and internally make a list of all the topics covered by the previous without outputting it. Next, taking the text as reference, for each topic in the list generate the following amount of flashcards with the frontside being a term or question and the backside being the definition or answer respectively:
-
-- As many flashcards with terms/definitions as needed to cover all relevant terms for the topic;
-- Five flashcards with open-ended questions/answers;
-- And one flashcards that expands on the topic to challenge the understanding of the student and make him ponder or delve deeper into the topic y doing additional research.
-
-Only output the flashcards. The flash cards should be formatted in csv as follows: frontside;backside.

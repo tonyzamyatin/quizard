@@ -1,1 +1,0 @@
-Generate three flash cards for the previous text with frontside being a question and the backside being the answer. The questions should be open ended to test understanding of the topic and the flash cards should be formatted in csv as follows: frontside;backside.

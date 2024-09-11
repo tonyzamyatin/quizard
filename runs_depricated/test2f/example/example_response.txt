@@ -1,3 +1,0 @@
-What are some examples of posttranscriptional regulation mechanisms?;Some examples of posttranscriptional regulation mechanisms include changes in RNA secondary structure, covalent modifications of RNA, and changes in RNA stability.
-What are the two principal manners of controlling transcription/translation by modifying the secondary structure of RNA in bacteria?;The two principal manners are attenuation and riboswitches.
-What is attenuation?;Attenuation is the reduction of transcription through an attenuator sequence. It is a feature of operons responsible for amino acid synthesis.
