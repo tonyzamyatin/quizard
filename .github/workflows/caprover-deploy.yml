@@ -164,3 +164,4 @@ jobs:
                   "gitHash": ""
                 }' \
             ${{ secrets.CAPROVER_SERVER_URL }}/api/v2/user/apps/appData/${{ secrets.CAPROVER_FRONTEND_APP_NAME }}
+
