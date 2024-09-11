@@ -55,7 +55,8 @@ jobs:
       - name: Switch to caprover-releases branch and update captain-definition for API
         run: |
           git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
-          git pull origin ${{ env.CAPROVER_BRANCH }} --rebase  # Pull remote changes
+          git fetch origin
+          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
           echo '{
             "schemaVersion": 2,
             "imageName": "${{ env.IMAGE_API_URL }}"
@@ -102,7 +103,8 @@ jobs:
       - name: Switch to caprover-releases branch and update captain-definition for Worker
         run: |
           git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
-          git pull origin ${{ env.CAPROVER_BRANCH }} --rebase  # Pull remote changes
+          git fetch origin
+          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
           echo '{
             "schemaVersion": 2,
             "imageName": "${{ env.IMAGE_WORKER_URL }}"
@@ -169,7 +171,8 @@ jobs:
       - name: Switch to caprover-releases branch and update captain-definition for Frontend
         run: |
           git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
-          git pull origin ${{ env.CAPROVER_BRANCH }} --rebase  # Pull remote changes
+          git fetch origin
+          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
           echo '{
             "schemaVersion": 2,
             "imageName": "${{ env.IMAGE_FRONTEND_URL }}"
