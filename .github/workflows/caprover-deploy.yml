@@ -38,11 +38,27 @@ jobs:
 
       - name: Deploy API Image to CapRover via API
         run: |
-          auth_token=$(curl -s -X POST \
+          # Debugging - log server URL and secrets
+          echo "Deploying to CapRover server: ${{ secrets.CAPROVER_SERVER_URL }}"
+          
+          # Get auth token from CapRover login
+          response=$(curl -s -X POST \
               -H "Content-Type: application/json" \
               -d '{"password":"${{ secrets.CAPROVER_API_PASSWORD }}"}' \
-              ${{ secrets.CAPROVER_SERVER_URL }}/api/v2/login | jq -r '.token')
-
+              ${{ secrets.CAPROVER_SERVER_URL }}/api/v2/login)
+          
+          # Log the response for debugging
+          echo "Login response: $response"
+          
+          # Try to parse token, and log any parsing errors
+          auth_token=$(echo $response | jq -r '.token')
+          
+          if [ "$auth_token" = "null" ] || [ -z "$auth_token" ]; then
+            echo "Error: Failed to retrieve auth token."
+            exit 1
+          fi
+          
+          # Now use the auth token to deploy the image
           curl -X POST \
             -H "X-Captain-Auth: $auth_token" \
             -H "x-namespace: captain" \
@@ -52,7 +68,6 @@ jobs:
                   "gitHash": ""
                 }' \
             ${{ secrets.CAPROVER_SERVER_URL }}/api/v2/user/apps/appData/${{ secrets.CAPROVER_API_APP_NAME }}
-
   build-and-deploy-worker:
     runs-on: ubuntu-latest
     needs: build-and-deploy-api
