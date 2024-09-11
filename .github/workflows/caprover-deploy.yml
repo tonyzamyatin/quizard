@@ -7,6 +7,10 @@ on:
       - dev
     workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
+
 env:
   DOCKER_REGISTRY: ghcr.io
   DOCKER_USERNAME: ${{ github.actor }}  # Use your GitHub username as the registry username
