@@ -47,6 +47,11 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_API_URL }}
 
+      - name: Set Git User for Commit
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+
       - name: Switch to caprover-releases branch and update captain-definition for API
         run: |
           git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
@@ -87,6 +92,11 @@ jobs:
           file: ./worker/Dockerfile
           push: true
           tags: ${{ env.IMAGE_WORKER_URL }}
+
+      - name: Set Git User for Commit
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
 
       - name: Switch to caprover-releases branch and update captain-definition for Worker
         run: |
@@ -148,6 +158,11 @@ jobs:
           file: ./frontend/Dockerfile  
           push: true
           tags: ${{ env.IMAGE_FRONTEND_URL }}
+
+      - name: Set Git User for Commit
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
 
       - name: Switch to caprover-releases branch and update captain-definition for Frontend
         run: |
