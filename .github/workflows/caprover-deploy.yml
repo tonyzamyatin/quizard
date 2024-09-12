@@ -13,14 +13,9 @@ permissions:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_USERNAME: ${{ github.actor }}
-  DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-  CAPROVER_SERVER: https://captain.caprover.quizard.dev
-  CAPROVER_API_APP_NAME: quizard-backend-api
-  CAPROVER_WORKER_APP_NAME: quizard-backend-worker
-  CAPROVER_FRONTEND_APP_NAME: quizard-frontend
-
-
+  DOCKER_USERNAME: ${{ github.actor }}  # Use your GitHub username as the registry username
+  DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}  # Use GITHUB_TOKEN for GHCR authentication
+  CAPROVER_BRANCH: caprover-releases  # Branch used for CapRover deployment
 
 jobs:
   # Job for API app
@@ -42,7 +37,7 @@ jobs:
           password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Preset Image Name for API
-        run: echo "IMAGE_API_URL=${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/quizard-backend-api:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+        run: echo "IMAGE_API_URL=${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/quizard:backend-api-$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push API Docker Image
         uses: docker/build-push-action@v5
@@ -52,23 +47,22 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_API_URL }}
 
-      - name: Deploy API Image to CapRover via API
+      - name: Set Git User for Commit
         run: |
-          auth_token=$(curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -d '{"password":"${{ secrets.CAPROVER_PASSWORD }}"}' \
-              ${{ env.CAPROVER_SERVER }}/api/v2/login | jq -r '.token')
-
-          curl -X POST \
-            -H "X-Captain-Auth: $auth_token" \
-            -H "x-namespace: captain" \
-            -H "Content-Type: application/json" \
-            -d '{
-                  "captainDefinitionContent": "{\"schemaVersion\":2,\"imageName\":\"${{ env.IMAGE_API_URL }}\"}",
-                  "gitHash": ""
-                }' \
-            ${{ env.CAPROVER_SERVER }}/api/v2/user/apps/appData/${{ env.CAPROVER_API_APP_NAME }}
-
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+      - name: Switch to caprover-releases branch and update captain-definition for API
+        run: |
+          git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
+          git fetch origin
+          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
+          echo '{
+            "schemaVersion": 2,
+            "imageName": "${{ env.IMAGE_API_URL }}"
+          }' > captain-definition-api
+          git add captain-definition-api
+          git commit -m "Update captain-definition for API deployment"
+          git push origin ${{ env.CAPROVER_BRANCH }}
   # Job for Worker app
   build-and-deploy-worker:
     runs-on: ubuntu-latest
@@ -89,7 +83,7 @@ jobs:
           password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Preset Image Name for Worker
-        run: echo "IMAGE_WORKER_URL=${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/quizard-backend-worker:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+        run: echo "IMAGE_WORKER_URL=${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/quizard:backend-worker-$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push Worker Docker Image
         uses: docker/build-push-action@v5
@@ -99,23 +93,22 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_WORKER_URL }}
 
-      - name: Deploy Worker Image to CapRover via API
+      - name: Set Git User for Commit
         run: |
-          auth_token=$(curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -d '{"password":"${{ secrets.CAPROVER_PASSWORD }}"}' \
-              ${{ env.CAPROVER_SERVER }}/api/v2/login | jq -r '.token')
-
-          curl -X POST \
-            -H "X-Captain-Auth: $auth_token" \
-            -H "x-namespace: captain" \
-            -H "Content-Type: application/json" \
-            -d '{
-                  "captainDefinitionContent": "{\"schemaVersion\":2,\"imageName\":\"${{ env.IMAGE_WORKER_URL }}\"}",
-                  "gitHash": ""
-                }' \
-            ${{ env.CAPROVER_SERVER }}/api/v2/user/apps/appData/${{ env.CAPROVER_WORKER_APP_NAME }}
-
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+      - name: Switch to caprover-releases branch and update captain-definition for Worker
+        run: |
+          git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
+          git fetch origin
+          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
+          echo '{
+            "schemaVersion": 2,
+            "imageName": "${{ env.IMAGE_WORKER_URL }}"
+          }' > captain-definition-worker
+          git add captain-definition-worker
+          git commit -m "Update captain-definition for Worker deployment"
+          git push origin ${{ env.CAPROVER_BRANCH }}
   # Job for Frontend app
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
@@ -131,7 +124,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -156,7 +148,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Preset Image Name for Frontend
-        run: echo "IMAGE_FRONTEND_URL=${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/quizard-frontend:$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+        run: echo "IMAGE_FRONTEND_URL=${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/quizard:frontend-$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build and push Frontend Docker Image
         uses: docker/build-push-action@v5
@@ -166,19 +158,20 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_FRONTEND_URL }}
 
-      - name: Deploy Frontend Image to CapRover via API
+      - name: Set Git User for Commit
         run: |
-          auth_token=$(curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -d '{"password":"${{ secrets.CAPROVER_PASSWORD }}"}' \
-              ${{ env.CAPROVER_SERVER }}/api/v2/login | jq -r '.token')
-
-          curl -X POST \
-            -H "X-Captain-Auth: $auth_token" \
-            -H "x-namespace: captain" \
-            -H "Content-Type: application/json" \
-            -d '{
-                  "captainDefinitionContent": "{\"schemaVersion\":2,\"imageName\":\"${{ env.IMAGE_FRONTEND_URL }}\"}",
-                  "gitHash": ""
-                }' \
-            ${{ env.CAPROVER_SERVER }}/api/v2/user/apps/appData/${{ env.CAPROVER_FRONTEND_APP_NAME }}
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+      - name: Switch to caprover-releases branch and update captain-definition for Frontend
+        run: |
+          git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
+          git fetch origin
+          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
+          echo '{
+            "schemaVersion": 2,
+            "imageName": "${{ env.IMAGE_FRONTEND_URL }}"
+          }' > captain-definition-frontend
+          git add captain-definition-frontend
+          git commit -m "Update captain-definition for Frontend deployment"
+          git push origin ${{ env.CAPROVER_BRANCH }}
+          
