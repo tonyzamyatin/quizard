@@ -13,8 +13,8 @@ permissions:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_USERNAME: ${{ github.actor }}  # Use your GitHub username as the registry username
-  DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}  # Use GITHUB_TOKEN for GHCR authentication
+  DOCKER_USERNAME: ${{ github.repository_owner  }}  # Use your GitHub repo owner's username as the registry username
+  DOCKER_PASSWORD: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}  # Use PERSONAL_ACCESS_TOKEN_GITHUB for GHCR authentication
   CAPROVER_BRANCH: caprover-releases  # Branch used for CapRover deployment
 
 jobs:
@@ -174,4 +174,3 @@ jobs:
           git add captain-definition-frontend
           git commit -m "Update captain-definition for Frontend deployment"
           git push origin ${{ env.CAPROVER_BRANCH }}
-          
