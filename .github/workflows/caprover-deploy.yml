@@ -13,9 +13,15 @@ permissions:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_USERNAME: ${{ github.repository_owner  }}  # Use your GitHub repo owner's username as the registry username
-  DOCKER_PASSWORD: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}  # Use PERSONAL_ACCESS_TOKEN_GITHUB for GHCR authentication
-  CAPROVER_BRANCH: caprover-releases  # Branch used for CapRover deployment
+  DOCKER_USERNAME: ${{ github.repository_owner }}
+  DOCKER_PASSWORD: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}  # Use personal access token for GHCR
+  CAPROVER_SERVER: ${{ secrets.CAPROVER_SERVER }}
+  CAPROVER_API_APP_NAME: ${{ secrets.CAPROVER_API_APP_NAME }}
+  CAPROVER_WORKER_APP_NAME: ${{ secrets.CAPROVER_WORKER_APP_NAME }}
+  CAPROVER_FRONTEND_APP_NAME: ${{ secrets.CAPROVER_FRONTEND_APP_NAME }}
+  CAPROVER_API_APP_TOKEN: ${{ secrets.CAPROVER_API_APP_TOKEN }}
+  CAPROVER_WORKER_APP_TOKEN: ${{ secrets.CAPROVER_WORKER_APP_TOKEN }}
+  CAPROVER_FRONTEND_APP_TOKEN: ${{ secrets.CAPROVER_FRONTEND_APP_TOKEN }}
 
 jobs:
   # Job for API app
@@ -47,26 +53,18 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_API_URL }}
 
-      - name: Set Git User for Commit
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-      - name: Switch to caprover-releases branch and update captain-definition for API
-        run: |
-          git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
-          git fetch origin
-          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
-          echo '{
-            "schemaVersion": 2,
-            "imageName": "${{ env.IMAGE_API_URL }}"
-          }' > captain-definition-api
-          git add captain-definition-api
-          git commit -m "Update captain-definition for API deployment"
-          git push origin ${{ env.CAPROVER_BRANCH }}
+      - name: Deploy API Image to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ env.CAPROVER_SERVER }}
+          app: ${{ env.CAPROVER_API_APP_NAME }}
+          token: ${{ env.CAPROVER_API_APP_TOKEN }}
+          image: ${{ env.IMAGE_API_URL }}
+
   # Job for Worker app
   build-and-deploy-worker:
     runs-on: ubuntu-latest
-    needs: build-and-deploy-api  # Run after API job
+    needs: build-and-deploy-api
 
     steps:
       - name: Check out repository
@@ -93,22 +91,14 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_WORKER_URL }}
 
-      - name: Set Git User for Commit
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-      - name: Switch to caprover-releases branch and update captain-definition for Worker
-        run: |
-          git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
-          git fetch origin
-          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
-          echo '{
-            "schemaVersion": 2,
-            "imageName": "${{ env.IMAGE_WORKER_URL }}"
-          }' > captain-definition-worker
-          git add captain-definition-worker
-          git commit -m "Update captain-definition for Worker deployment"
-          git push origin ${{ env.CAPROVER_BRANCH }}
+      - name: Deploy Worker Image to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ env.CAPROVER_SERVER }}
+          app: ${{ env.CAPROVER_WORKER_APP_NAME }}
+          token: ${{ env.CAPROVER_WORKER_APP_TOKEN }}
+          image: ${{ env.IMAGE_WORKER_URL }}
+
   # Job for Frontend app
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
@@ -124,6 +114,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -158,19 +149,10 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_FRONTEND_URL }}
 
-      - name: Set Git User for Commit
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-      - name: Switch to caprover-releases branch and update captain-definition for Frontend
-        run: |
-          git checkout -b ${{ env.CAPROVER_BRANCH }} || git checkout ${{ env.CAPROVER_BRANCH }}
-          git fetch origin
-          git reset --hard origin/${{ env.CAPROVER_BRANCH }}
-          echo '{
-            "schemaVersion": 2,
-            "imageName": "${{ env.IMAGE_FRONTEND_URL }}"
-          }' > captain-definition-frontend
-          git add captain-definition-frontend
-          git commit -m "Update captain-definition for Frontend deployment"
-          git push origin ${{ env.CAPROVER_BRANCH }}
+      - name: Deploy Frontend Image to CapRover
+        uses: caprover/deploy-from-github@v1.1.2
+        with:
+          server: ${{ env.CAPROVER_SERVER }}
+          app: ${{ env.CAPROVER_FRONTEND_APP_NAME }}
+          token: ${{ env.CAPROVER_FRONTEND_APP_TOKEN }}
+          image: ${{ env.IMAGE_FRONTEND_URL }}
