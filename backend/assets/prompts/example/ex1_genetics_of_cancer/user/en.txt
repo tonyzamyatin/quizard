@@ -1,8 +1,0 @@
-Recognition characteristics of cancer
-Cancers are characterized by uncontrolled cell growth and division. There are certain hallmarks of cancer that are very common in many types of
-cancer. Cancer cells must not only continue to divide, but also find ways to prevent death. When cells accumulate large amounts of DNA damage, they
-usually undergo programmed cell death, known as apoptosis. Another barrier is the immune system, which is constantly on the hunt for cancer and kills
-cells with certain DNA damage. Some of the most common cancer mutations (such as p53) therefore prevent apoptosis or help evade the immune system.
-Genome instability is another hallmark of cancer. A combination of just a handful of specific mutations is sufficient to initiate cancer. However,
-enough mutations must first accumulate to hit these highly carcinogenic oncogenes and tumor suppressors. An increase in the mutation rate, therefore,
-correlates with the number of mutations that accumulate. Such an increase in mutation rate is referred to as genome instability.

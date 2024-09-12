@@ -1,0 +1,8 @@
+name: quizard-backend
+services:
+    flask:
+      environment:
+        DEBUG: 0
+      ports:
+        - "127.0.0.1:80:5000"
+      image: flask

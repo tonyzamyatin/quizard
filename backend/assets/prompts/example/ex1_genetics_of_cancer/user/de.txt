@@ -1,9 +1,0 @@
-Erkennungsmerkmale von Krebs
-Krebserkrankungen sind durch unkontrolliertes Zellwachstum und -teilung gekennzeichnet. Es gibt bestimmte Merkmale von Krebs, die bei vielen
-Krebsarten sehr häufig vorkommen. Krebszellen müssen sich nicht nur weiter teilen, sondern auch Wege finden, um den Tod zu verhindern.
-Wenn Zellen große Mengen an DNA-Schäden anhäufen, unterziehen sie sich normalerweise dem programmierten Zelltod, der Apoptose. Eine weitere Barriere
-stellt das das Immunsystem dar, das ständig auf Krebsjagd ist und Zellen mit bestimmten DNA-Schäden abtötet.
-Einige der häufigsten Krebsmutationen (wie z.B. p53) verhindern daher die Apoptose oder tragen dazu bei dem Immunsystem zu entgehen.
-Die Instabilität des Genoms ist ein weiteres Kennzeichen von Krebs. Eine Handvoll bestimmter Mutationen sind ausreichend, um in Kombination Krebs in die Wege zu leite. Jedoch müssen zuerst genug Mutationen
-akkumulieren, um diese höchst krebserregenden Onkogene und Tumorsupressoren zu treffen. Ein Anstieg in der Mutationsrater korreliert daher, mit der
-Zahl der Mutationen die sich ansammeln. Dieser Anstieg der Mutationsrate wird als Genominstabilität bezeichnet.

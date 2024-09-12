@@ -2,7 +2,6 @@ from flask import Flask, request
 from generate_flashcards import generate_flashcards
 from dotenv import load_dotenv
 import os
-
 app = Flask(__name__)
 
 # Loads env file from current directory

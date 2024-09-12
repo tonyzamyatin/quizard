@@ -2,14 +2,14 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["moritzsattl <moritz.sattlegger@gmail.com>"]
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 flask = "^3.0.3"
-python-dotenv = "^1.0.1"
 openai = "^1.44.1"
+python-dotenv = "^1.0.1"
 
 
 [build-system]

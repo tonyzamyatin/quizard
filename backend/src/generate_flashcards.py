@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-# TODO Load this prompts from assets
+# TODO Load this prompts from assets folder
 system_prompt = """
 Your task is to generate flashcards based on the input text to promote student learning. Create the cards in the format "front;back". Proceed as follows:
 1. Identify all key concepts and formulate in-depth comprehension questions (front side) that require detailed answers (back side). Add information
