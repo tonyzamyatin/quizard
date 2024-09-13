@@ -1,21 +1,18 @@
-// TODO: Better logging
-// TODO: Add doc strings
+import { GeneratorTask, GeneratorTaskInfo } from "../dto/generator";
+import { sendRequest } from "../util/requestUtil";
+import { FileFormat } from "../enum/GeneratorOptions";
 
-
-import {GeneratorTask, GeneratorTaskInfo} from "../dto/generator";
-import {sendRequest} from "../util/requestUtil";
-import {FileFormat} from "../enum/GeneratorOptions";
-
-// API Endpoint
-const endpoint = '/flashcards/generator';
+// API Endpoints
+const generator_endpoint = '/api/flashcards/generator';
+const exporter_endpoint = '/api/flashcards/exporter';
 
 export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTask): Promise<string> {
     console.group('startFlashcardGeneratorTask');
-    console.info(`Endpoint: ${endpoint}`);
+    console.info(`Endpoint: ${generator_endpoint}`);
     console.info('Method: POST');
     console.info('Payload:', generatorTaskDto);
     const response = await sendRequest({
-        endpoint: endpoint,
+        endpoint: generator_endpoint,
         method: 'POST',
         data: generatorTaskDto
     });
@@ -30,9 +27,9 @@ export async function startFlashcardGeneratorTask(generatorTaskDto: GeneratorTas
 }
 
 export async function fetchFlashcardGeneratorTaskInfo(taskId: string): Promise<GeneratorTaskInfo> {
-    const endpoint = `/flashcards/generator/${taskId}`;
+    const endpoint = `${generator_endpoint}/${taskId}`;
     console.group('fetchFlashcardGeneratorTaskInfo');
-    console.log(`Endpoint:${ endpoint }`);
+    console.log(`Endpoint: ${endpoint}`);
     console.log('Method: GET');
     const response = await sendRequest({
         endpoint: endpoint,
@@ -46,10 +43,10 @@ export async function fetchFlashcardGeneratorTaskInfo(taskId: string): Promise<G
     return taskInfo;
 }
 
-export async function cancelFlashcardGeneratorTask(taskId: string ) {
-    const endpoint = `/flashcards/generator/${taskId}`
+export async function cancelFlashcardGeneratorTask(taskId: string) {
+    const endpoint = `${generator_endpoint}/${taskId}`;
     console.group('cancelFlashcardGenerationTask');
-    console.log(`Endpoint:${ endpoint }`);
+    console.log(`Endpoint: ${endpoint}`);
     console.log('Method: DELETE');
     await sendRequest({
         endpoint: endpoint,
@@ -64,14 +61,14 @@ export async function cancelFlashcardGeneratorTask(taskId: string ) {
  * @param fileFormat the file format to download the flashcards in
  * @returns {Promise<{blob: Blob, filename: string}>} the flashcard file as a blob and the filename
  */
-export async function fetchFlashcardFile(retrievalToken: string, fileFormat: FileFormat ): Promise<{blob: Blob, filename: string}> {
+export async function fetchFlashcardFile(retrievalToken: string, fileFormat: FileFormat): Promise<{ blob: Blob, filename: string }> {
     console.group('getGeneratorTaskResult');
     if (retrievalToken == null) {
-        console.warn('Retrieval token is missing')
+        console.warn('Retrieval token is missing');
         throw new Error('Retrieval token must not be null or undefined');
     }
-    const endpoint = `/flashcards/exporter/${retrievalToken}?format=${fileFormat}`;
-    console.log(`Endpoint:${ endpoint }`);
+    const endpoint = `${exporter_endpoint}/${retrievalToken}?format=${fileFormat}`;
+    console.log(`Endpoint: ${endpoint}`);
     console.log('Method: GET');
     const response = await sendRequest({
         endpoint: endpoint,
