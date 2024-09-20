@@ -3,7 +3,7 @@
 
 #syntax=docker/dockerfile:1
 ARG PYTHON_VERSION=3.11
-FROM python:${PYTHON_VERSION}-slim as builder
+FROM python:${PYTHON_VERSION}-slim AS builder
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -29,7 +29,7 @@ COPY pyproject.toml poetry.lock* ./
 
 RUN poetry install --no-root --only main && rm -rf $POETRY_CACHE_DIR
 
-FROM python:${PYTHON_VERSION}-slim as runtime
+FROM python:${PYTHON_VERSION}-slim AS runtime
 WORKDIR /app
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
