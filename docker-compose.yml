@@ -1,26 +1,17 @@
-# docker-compose.yml
 version: '3.8'
 services:
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: quizard-app:latest
-    ports:
-      - "5000:5000"   # Use 5000 for local dev
+    image: quizard-app:backend-api  # Use the commit-tagged image in .prod override to be used in CI/CD workflow
     env_file:
       - .env
     environment:
       - APP_SERVICE=api
-#    command: python -m src.rest.flask_app
     depends_on:
       - rabbitmq
       - redis
+
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: quizard-app:latest
+    image: quizard-app:backend-worker  # Use the commit-tagged image in .prod override to be used in CI/CD workflow
     env_file:
       - .env
     environment:
@@ -29,7 +20,7 @@ services:
       - api
       - redis
       - rabbitmq
-#    command: celery  -A src.celery.celery_worker worker -l info
+
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
@@ -53,3 +44,6 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
+
+  frontend:
+    image: quizard-app:frontend  # Frontend image for production

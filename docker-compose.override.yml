@@ -1,0 +1,24 @@
+# docker-compose.yml override used for local development. It uses the local docker files to build the images.
+# Use the following command in local development to build and run the docker images:
+# >>> docker-compose up --build -d
+version: '3.8'
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"  # Flask dev server port for local dev
+    environment:
+      - ENVIRONMENT=development
+    command: python -m src.rest.flask_app  # Flask dev server command
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - ENVIRONMENT=development
+    command: celery -A src.celery.celery_worker worker -l info  # Celery worker command for dev
+
+

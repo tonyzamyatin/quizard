@@ -1,0 +1,25 @@
+# docker-compose.yml override used in production
+# For this to work in tandem with the CI/CD workflow, the image urls must be preset as environement variables as they are used by this docker-compose override
+# Use the following commands in the CI/CD workflow to start the containers based on the base docker-compose.yml and this production override:
+# >>> docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
+# >>> docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+version: '3.8'
+services:
+  api:
+    image: ${IMAGE_API_URL}  # Pull image built in CI with commit hash
+    ports:
+      - "8080:8080"
+    environment:
+      - ENVIRONMENT=production
+    command: gunicorn -b 0.0.0.0:8080 src.rest.flask_app:flask_app  # Gunicorn command for production
+
+  worker:
+    image: ${IMAGE_WORKER_URL}  # Pull image built in CI with commit hash
+    environment:
+      - ENVIRONMENT=production
+    command: celery -A src.celery.celery_worker worker --loglevel=INFO  # Celery production command
+
+  frontend:
+    image: ${IMAGE_FRONTEND_URL}  # Pull image built in CI with commit hash
+    ports:
+      - "80:80"
