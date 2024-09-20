@@ -70,10 +70,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Copy Docker Compose files to server using SCP
+        run: |
+          scp -o StrictHostKeyChecking=no docker-compose.yml docker-compose.prod.yml .env ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/
+
       - name: Deploy to Production Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd /path/to/docker/compose
+            cd ~  # Move to home directory where docker-compose files are located
             export IMAGE_API_URL=${{ env.IMAGE_API_URL }}
             export IMAGE_WORKER_URL=${{ env.IMAGE_WORKER_URL }}
             export IMAGE_FRONTEND_URL=${{ env.IMAGE_FRONTEND_URL }}
