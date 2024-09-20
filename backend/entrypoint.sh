@@ -7,7 +7,7 @@ if [ "$APP_SERVICE" = "api" ]; then
         python -m src.rest.flask_app
     else
         echo "Running in production mode with Gunicorn..."
-        gunicorn -b 0.0.0.0:8080 src.rest.flask_app:flask_app
+        gunicorn -b 0.0.0.0:8080 "src.rest.flask_app:create_app()"
     fi
 elif [ "$APP_SERVICE" = "worker" ]; then
     echo "Starting Celery Worker..."
