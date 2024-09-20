@@ -40,10 +40,15 @@ def setup_api(flask_app: Flask, task_service=Provide[Container.flashcard_generat
     api.add_resource(HealthCheckResource, '/health')
 
 
-if __name__ == '__main__':
+# Factory function for Gunicorn
+def create_app():
     container = get_container()
     flask_app = container.flask_app()
     setup_api(flask_app)
+    return flask_app
+
+
+if __name__ == '__main__':
 
     try:
         environment = get_env_variable('ENVIRONMENT')
@@ -51,6 +56,7 @@ if __name__ == '__main__':
         environment = 'production'
     if environment == 'development':
         logger.info("Starting Flask development server...")
+        flask_app = create_app()
         flask_app.run(debug=True, host='0.0.0.0', port=5000)
     else:
         logger.info("WSGI server (Gunicorn or similar) will run Flask in production.")
