@@ -1,6 +1,9 @@
 # Use official node image as base
 FROM node:20.11-alpine AS builder
 
+# Set environment to development to install devDependencies (attempted bugfix)
+ENV NODE_ENV=development
+
 # Set working directory
 WORKDIR /app
 
