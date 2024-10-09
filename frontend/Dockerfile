@@ -1,8 +1,8 @@
 # Use official node image as base
-FROM node:20.11-alpine AS builder
+FROM node:20.11.1-alpine AS builder
 
 # Set environment to development to install devDependencies (attempted bugfix)
-ENV NODE_ENV=development
+# ENV NODE_ENV=development
 
 # Set working directory
 WORKDIR /app
@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --production
+RUN npm install
 
 # Copy the rest of the application
 COPY . .
