@@ -72,7 +72,7 @@ jobs:
 
       - name: Copy Docker Compose files to server using SCP
         run: |
-          scp -o StrictHostKeyChecking=no docker-compose.yml docker-compose.prod.yml .env ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/
+          scp -o StrictHostKeyChecking=no docker-compose.yml docker-compose.prod.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/
 
       - name: Deploy to Production Server
         run: |
