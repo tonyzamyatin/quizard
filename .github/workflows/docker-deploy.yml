@@ -81,7 +81,22 @@ jobs:
             export IMAGE_API_URL=${{ env.IMAGE_API_URL }}
             export IMAGE_WORKER_URL=${{ env.IMAGE_WORKER_URL }}
             export IMAGE_FRONTEND_URL=${{ env.IMAGE_FRONTEND_URL }}
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml down --remove-orphans  # Stop existing containers
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml pull  # Pull the latest images
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d  # Bring up the new containers
+            
+            # Stop and remove old containers and pull latest images
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml down --remove-orphans
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+            
+            # Retry mechanism to handle port conflicts automatically
+            retries=0
+            max_retries=5
+            while ! docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d && [ $retries -lt $max_retries ]; do
+              echo "Port conflict or other issue detected. Retrying deployment... attempt $((retries + 1))"
+              retries=$((retries + 1))
+              sleep 5  # Wait for 5 seconds before retrying
+            done
+            
+            if [ $retries -eq $max_retries ]; then
+              echo "Failed to deploy after $max_retries attempts due to port conflict or other issues."
+              exit 1
+            fi
           EOF
