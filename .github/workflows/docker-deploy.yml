@@ -81,6 +81,7 @@ jobs:
             export IMAGE_API_URL=${{ env.IMAGE_API_URL }}
             export IMAGE_WORKER_URL=${{ env.IMAGE_WORKER_URL }}
             export IMAGE_FRONTEND_URL=${{ env.IMAGE_FRONTEND_URL }}
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml down --remove-orphans  # Stop existing containers
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull  # Pull the latest images
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d  # Bring up the new containers
           EOF
